@@ -3,7 +3,9 @@ title: "Measuring Urban Regimes in Japan through Spending Priorities"
 subtitle: "Replication Code"
 author: "Timothy Fraser"
 date: "December 29, 2020"
-output: html_notebook
+output: 
+  html_notebook:
+    self_contained: true
 ---
 
 This document details replication code necessary to reproduce indices measuring each city in Japan in terms of the prevalence and influence of several types of urban regimes. The urban regime, coined by Clarence Stone in his study of Atlanta, describes a constellation of actors and interests which shape its governance.
@@ -12,11 +14,22 @@ Stone and likeminded scholars sorted American cities into four types of urban re
 
 Japan has its own adjacent literature on urban politics.
 
-# 0. Packages
+# 0. Setup
+
+## 0.1 Packages
 
 ```{r packages, message = FALSE, warning = FALSE}
 library(tidyverse)
 library(viridis)
+```
+
+## 0.2 Setup Folders
+
+```{r folders, message = FALSE, warning = FALSE}
+# Initialize model/ folder
+dir.create("model")
+# Initialize table/ folder
+dir.create("table")
 ```
 
 # 1. Gather Data
@@ -2418,7 +2431,7 @@ get_glh = function(model, term){
   }
 }
 
-save(get_tex, get_gof, get_vif, get_lh, get_missing, get_glh, file = "table_functions.RData")
+save(get_tex, get_gof, get_vif, get_lh, get_missing, get_glh, file = "table/table_functions.RData")
 
 rm(list = ls())
 ```
@@ -2515,7 +2528,7 @@ m9 <- read_rds("raw_data/mi.rds") %>%
 
 
 ### Social Welfare
-load("table_functions.RData")
+load("table/table_functions.RData")
 
 # Get VIF scores
 myvif <- list(m2,m3,m4,m5,m6,m7,m8,m9) %>%
@@ -2533,10 +2546,10 @@ goflist <- list("N (city-years)" = mygof$nobs, "Max VIF" = mygof$vif, "F-statist
 # Get texreg objects
 mytex <- list(m2,m3,m4,m5,m6,m7,m8,m9) %>% map(~get_tex(.))
 outcome = "Social Welfare"
-save(mytex, mygof, goflist, outcome, file = "table_soc.RData")
+save(mytex, mygof, goflist, outcome, file = "table/table_soc.RData")
 
 # Save the best fit model at the end, because it's enormous.
-m9 %>% saveRDS("model_soc.RData")
+m9 %>% saveRDS("model/model_soc.RData")
 
 rm(list=ls())
 ```
@@ -2631,7 +2644,7 @@ m9 <- read_rds("raw_data/mi.rds") %>%
          ylag) )
 
 
-load("table_functions.RData")
+load("table/table_functions.RData")
 
 # Get VIF scores
 myvif <- list(m2,m3,m4,m5,m6,m7,m8,m9) %>%
@@ -2649,10 +2662,10 @@ goflist <- list("N (city-years)" = mygof$nobs, "Max VIF" = mygof$vif, "F-statist
 # Get texreg objects
 mytex <- list(m2,m3,m4,m5,m6,m7,m8,m9) %>% map(~get_tex(.))
 outcome = "Developmental"
-save(mytex, mygof, goflist, outcome, file = "table_dev.RData")
+save(mytex, mygof, goflist, outcome, file = "table/table_dev.RData")
 
 # Save the best fit model at the end, because it's enormous.
-m9 %>% saveRDS("model_dev.RData")
+m9 %>% saveRDS("model/model_dev.RData")
 
 rm(list=ls())
 ```
@@ -2748,7 +2761,7 @@ m9 <- read_rds("raw_data/mi.rds") %>%
          ylag) )
 
 
-load("table_functions.RData")
+load("table/table_functions.RData")
 
 # Get VIF scores
 myvif <- list(m2,m3,m4,m5,m6,m7,m8,m9) %>%
@@ -2766,10 +2779,10 @@ goflist <- list("N (city-years)" = mygof$nobs, "Max VIF" = mygof$vif, "F-statist
 # Get texreg objects
 mytex <- list(m2,m3,m4,m5,m6,m7,m8,m9) %>% map(~get_tex(.))
 outcome = "Middle Class"
-save(mytex, mygof, goflist, outcome, file = "table_mid.RData")
+save(mytex, mygof, goflist, outcome, file = "table/table_mid.RData")
 
 # Save the best fit model at the end, because it's enormous.
-m9 %>% saveRDS("model_mid.RData")
+m9 %>% saveRDS("model/model_mid.RData")
 
 rm(list=ls())
 ```
@@ -2908,14 +2921,14 @@ get_ktable = function(tableno){
     return()
 }
 
-save(mycoefnames, mycolumns, get_ktable, file = "captions.RData")
+save(mycoefnames, mycolumns, get_ktable, file = "table/captions.RData")
 ```
 
 ## Table
 
 ```{r}
-load("table_soc.RData")
-load("captions.RData")
+load("table/table_soc.RData")
+load("table/captions.RData")
 
 texreg::htmlreg(
   file = "viz/table_soc.html", l = mytex, 
@@ -2928,8 +2941,8 @@ texreg::htmlreg(
   <br><i>Unit of Observation</i>: Japanese municipality governments over time (2000-2018), with annual fixed effects.", sep = ""))
 ```
 ```{r}
-load("table_dev.RData")
-load("captions.RData")
+load("table/table_dev.RData")
+load("table/captions.RData")
 
 texreg::htmlreg(
   file = "viz/table_dev.html", l = mytex, 
@@ -2943,8 +2956,8 @@ texreg::htmlreg(
 ```
 
 ```{r}
-load("table_mid.RData")
-load("captions.RData")
+load("table/table_mid.RData")
+load("table/captions.RData")
 
 texreg::htmlreg(
   file = "viz/table_soc.html", l = mytex, 
@@ -3074,16 +3087,16 @@ bind_rows(
     return()
 }
 
-m9 <- read_rds("model_soc.RData")
-load("table_functions.RData")
+m9 <- read_rds("model/model_soc.RData")
+load("table/table_functions.RData")
 soc <- get_stat(m9)
 
-m9 <- read_rds("model_dev.RData")
-load("table_functions.RData")
+m9 <- read_rds("model/model_dev.RData")
+load("table/table_functions.RData")
 dev <- get_stat(m9)
 
-m9 <- read_rds("model_mid.RData")
-load("table_functions.RData")
+m9 <- read_rds("model/model_mid.RData")
+load("table/table_functions.RData")
 mid <- get_stat(m9)
 
 bind_rows(
@@ -3120,7 +3133,7 @@ mylags = c("pop", "inhabitable_area", "income", "age_elder",
            "college", "unemployed", "migration", "LDP_Komeito_house", "LDP_Komeito_pref", 
            "bonding", "bridging", "linking")
 
-m9 <- read_rds("model_soc.RData")
+m9 <- read_rds("model/model_soc.RData")
 
 m9$analyses[[1]]
 # IF you're doing first differences, you could always...
@@ -3232,7 +3245,7 @@ myconstants = list(
   "pref45" = 0,
   "pref46" = 0,
   "pref47" = 0)
-#m9 <-read_rds("model_soc.RData")
+#m9 <-read_rds("model/model_soc.RData")
 #m9$analyses[[1]]$model$`ntile(bridging, 4)` %>% summary()
 
 # Write a function to get a consistent multivariate normal distribution pertaining to each imputed dataset
@@ -3421,13 +3434,13 @@ get_stats = function(data){
 
 save(get_simrange_mi, get_simrange, get_sim, get_dist, myconstants,
      get_fd, get_bands,get_stats,
-     file = "simulator.RData")
+     file = "table/simulator.RData")
 ```
 
 
 ```{r}
-load("simulator.RData")
-m9 <- read_rds("model_soc.RData")
+load("table/simulator.RData")
+m9 <- read_rds("model/model_soc.RData")
 
 mymatrix <- data.frame(year = as.character(2001:2018)) %>%
   model.matrix(~year - 1, .) %>% as_tibble() %>% 
