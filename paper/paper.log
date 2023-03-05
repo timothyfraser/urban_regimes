@@ -1,0 +1,1981 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2022.4.22)  8 MAY 2022 03:47
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**paper.tex
+(./paper.tex
+LaTeX2e <2020-02-02> patch level 2
+L3 programming layer <2020-02-14> (./elsarticle.cls
+Document Class: elsarticle 2020/11/20, 3.3: Elsevier Ltd
+(/usr/share/texlive/texmf-dist/tex/latex/l3kernel/expl3.sty
+Package: expl3 2020-02-14 L3 programming layer (loader) 
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdfmode.def
+File: l3backend-pdfmode.def 2020-02-03 L3 backend support: PDF mode
+\l__kernel_color_stack_int=\count167
+\l__pdf_internal_box=\box45
+)) (/usr/share/texlive/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
+Package: xparse 2020-02-14 L3 Experimental document command parser
+\l__xparse_current_arg_int=\count168
+\g__xparse_grabber_int=\count169
+\l__xparse_m_args_int=\count170
+\l__xparse_v_nesting_int=\count171
+) (/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2019/09/21 v2.5h e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count172
+)
+\@bls=\dimen134
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2019/12/20 v1.4l Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo
+File: size10.clo 2019/12/20 v1.4l Standard LaTeX file (size option)
+)
+\c@part=\count173
+\c@section=\count174
+\c@subsection=\count175
+\c@subsubsection=\count176
+\c@paragraph=\count177
+\c@subparagraph=\count178
+\c@figure=\count179
+\c@table=\count180
+\abovecaptionskip=\skip47
+\belowcaptionskip=\skip48
+\bibindent=\dimen135
+) (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2019/11/30 v1.2a Enhanced LaTeX Graphics (DPC,SPQR)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks14
+) (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2019/11/30 v1.4a Standard LaTeX Graphics (DPC,SPQR)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
+) (/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 105.
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
+))
+\Gin@req@height=\dimen136
+\Gin@req@width=\dimen137
+)
+\c@tnote=\count181
+\c@fnote=\count182
+\c@cnote=\count183
+\c@ead=\count184
+\c@author=\count185
+\@eadauthor=\toks15
+\c@affn=\count186
+\absbox=\box46
+\elsarticlehighlightsbox=\box47
+\elsarticlegrabsbox=\box48
+\keybox=\box49
+\Columnwidth=\dimen138
+\space@left=\dimen139
+\els@boxa=\box50
+\els@boxb=\box51
+\leftMargin=\dimen140
+\@enLab=\toks16
+\@sep=\skip49
+\@@sep=\skip50
+(./paper.spl) (/usr/share/texlive/texmf-dist/tex/latex/natbib/natbib.sty
+Package: natbib 2010/09/13 8.31b (PWD, AO)
+\bibhang=\skip51
+\bibsep=\skip52
+LaTeX Info: Redefining \cite on input line 694.
+\c@NAT@ctr=\count187
+)
+\splwrite=\write3
+\openout3 = `paper.spl'.
+
+(/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2020/01/02 v5.9 Page Geometry
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty
+Package: iftex 2019/11/07 v1.0c TeX engine tests
+))
+\Gm@cnth=\count188
+\Gm@cntv=\count189
+\c@Gm@tempcnt=\count190
+\Gm@bindingoffset=\dimen141
+\Gm@wd@mp=\dimen142
+\Gm@odd@mp=\dimen143
+\Gm@even@mp=\dimen144
+\Gm@layoutwidth=\dimen145
+\Gm@layoutheight=\dimen146
+\Gm@layouthoffset=\dimen147
+\Gm@layoutvoffset=\dimen148
+\Gm@dimlist=\toks17
+)
+\appnamewidth=\dimen149
+) (/usr/share/texlive/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip16
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+) (/usr/share/texlive/texmf-dist/tex/latex/lineno/lineno.sty
+Package: lineno 2005/11/02 line numbers on paragraphs v4.41
+\linenopenalty=\count191
+\output=\toks18
+\linenoprevgraf=\count192
+\linenumbersep=\dimen150
+\linenumberwidth=\dimen151
+\c@linenumber=\count193
+\c@pagewiselinenumber=\count194
+\c@LN@truepage=\count195
+\c@internallinenumber=\count196
+\c@internallinenumbers=\count197
+\quotelinenumbersep=\dimen152
+\bframerule=\dimen153
+\bframesep=\dimen154
+\bframebox=\box52
+LaTeX Info: Redefining \\ on input line 3056.
+) (/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty
+Package: fontenc 2020/02/11 v2.0o Standard LaTeX package
+) (/usr/share/texmf/tex/latex/lm/lmodern.sty
+Package: lmodern 2009/10/30 v1.6 Latin Modern Fonts
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  OT1/cmr/m/n --> OT1/lmr/m/n on input line 22.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `normal'
+(Font)                  OML/cmm/m/it --> OML/lmm/m/it on input line 23.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
+(Font)                  OMS/cmsy/m/n --> OMS/lmsy/m/n on input line 24.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
+(Font)                  OMX/cmex/m/n --> OMX/lmex/m/n on input line 25.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 26.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `bold'
+(Font)                  OML/cmm/b/it --> OML/lmm/b/it on input line 27.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
+(Font)                  OMS/cmsy/b/n --> OMS/lmsy/b/n on input line 28.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
+(Font)                  OMX/cmex/m/n --> OMX/lmex/m/n on input line 29.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
+(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 31.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
+(Font)                  OT1/cmss/m/n --> OT1/lmss/m/n on input line 32.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
+(Font)                  OT1/cmr/m/it --> OT1/lmr/m/it on input line 33.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
+(Font)                  OT1/cmtt/m/n --> OT1/lmtt/m/n on input line 34.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 35.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
+(Font)                  OT1/cmss/bx/n --> OT1/lmss/bx/n on input line 36.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/cmr/bx/it --> OT1/lmr/bx/it on input line 37.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
+(Font)                  OT1/cmtt/m/n --> OT1/lmtt/m/n on input line 38.
+) (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\@emptytoks=\toks19
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+)) (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2020/01/20 v2.17e AMS math features
+\@mathmargin=\skip53
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01 AMS text
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks20
+\ex@=\dimen155
+)) (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen156
+) (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 2016/03/08 v2.02 operator names
+)
+\inf@bad=\count198
+LaTeX Info: Redefining \frac on input line 227.
+\uproot@=\count199
+\leftroot@=\count266
+LaTeX Info: Redefining \overline on input line 389.
+\classnum@=\count267
+\DOTSCASE@=\count268
+LaTeX Info: Redefining \ldots on input line 486.
+LaTeX Info: Redefining \dots on input line 489.
+LaTeX Info: Redefining \cdots on input line 610.
+\Mathstrutbox@=\box53
+\strutbox@=\box54
+\big@size=\dimen157
+LaTeX Font Info:    Redeclaring font encoding OML on input line 733.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 734.
+\macc@depth=\count269
+\c@MaxMatrixCols=\count270
+\dotsspace@=\muskip17
+\c@parentequation=\count271
+\dspbrk@lvl=\count272
+\tag@help=\toks21
+\row@=\count273
+\column@=\count274
+\maxfields@=\count275
+\andhelp@=\toks22
+\eqnshift@=\dimen158
+\alignsep@=\dimen159
+\tagshift@=\dimen160
+\tagwidth@=\dimen161
+\totwidth@=\dimen162
+\lineht@=\dimen163
+\@envbody=\toks23
+\multlinegap=\skip54
+\multlinetaggap=\skip55
+\mathdisplay@stack=\toks24
+LaTeX Info: Redefining \[ on input line 2859.
+LaTeX Info: Redefining \] on input line 2860.
+) (/usr/share/texlive/texmf-dist/tex/generic/iftex/ifxetex.sty
+Package: ifxetex 2019/10/25 v0.7 ifxetex legacy package. Use iftex instead.
+) (/usr/share/texlive/texmf-dist/tex/generic/iftex/ifluatex.sty
+Package: ifluatex 2019/10/25 v1.5 ifluatex legacy package. Use iftex instead.
+) (/usr/share/texlive/texmf-dist/tex/latex/base/fixltx2e.sty
+Package: fixltx2e 2016/12/29 v2.1a fixes to LaTeX (obsolete)
+Applying: [2015/01/01] Old fixltx2e package on input line 46.
+
+Package fixltx2e Warning: fixltx2e is not required with releases after 2015
+(fixltx2e)                All fixes are now in the LaTeX kernel.
+(fixltx2e)                See the latexrelease package for details.
+
+Already applied: [0000/00/00] Old fixltx2e package on input line 53.
+) (/usr/share/texlive/texmf-dist/tex/latex/upquote/upquote.sty
+Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verba
+tim
+(/usr/share/texlive/texmf-dist/tex/latex/base/textcomp.sty
+Package: textcomp 2020/02/02 v2.0n Standard LaTeX package
+)) (/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty
+Package: inputenc 2018/08/11 v1.3c Input encoding file
+\inpenc@prehook=\toks25
+\inpenc@posthook=\toks26
+) (/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype.sty
+Package: microtype 2019/11/18 v2.7d Micro-typographical refinements (RS)
+\MT@toks=\toks27
+\MT@count=\count276
+LaTeX Info: Redefining \textls on input line 790.
+\MT@outer@kern=\dimen164
+LaTeX Info: Redefining \textmicrotypecontext on input line 1354.
+\MT@listname@count=\count277
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype-pdftex.def
+File: microtype-pdftex.def 2019/11/18 v2.7d Definitions specific to pdftex (RS)
+
+LaTeX Info: Redefining \lsstyle on input line 914.
+LaTeX Info: Redefining \lslig on input line 914.
+\MT@outer@space=\skip56
+)
+Package microtype Info: Loading configuration file microtype.cfg.
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype.cfg
+File: microtype.cfg 2019/11/18 v2.7d microtype main configuration file (RS)
+)) (/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+Package: hyperref 2020/01/14 v7.00d Hypertext links for LaTeX
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
+Package: ltxcmds 2019/12/15 v1.24 LaTeX kernel commands for general use (HO)
+) (/usr/share/texlive/texmf-dist/tex/latex/pdftexcmds/pdftexcmds.sty
+Package: pdftexcmds 2019/11/24 v0.31 Utility functions of pdfTeX for LuaTeX (HO
+)
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+) (/usr/share/texlive/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty
+Package: kvsetkeys 2019/12/15 v1.18 Key value parser (HO)
+) (/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+) (/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
+) (/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty
+Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
+) (/usr/share/texlive/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty
+Package: letltxmacro 2019/12/03 v1.6 Let assignment for LaTeX macros (HO)
+) (/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty
+Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
+) (/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+Package: kvoptions 2019/11/29 v3.13 Key value format for package options (HO)
+)
+\@linkdim=\dimen165
+\Hy@linkcounter=\count278
+\Hy@pagecounter=\count279
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def
+File: pd1enc.def 2020/01/14 v7.00d Hyperref: PDFDocEncoding definition (HO)
+Now handling font encoding PD1 ...
+... no UTF-8 mapping file for font encoding PD1
+) (/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty
+Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
+) (/usr/share/texlive/texmf-dist/tex/generic/etexcmds/etexcmds.sty
+Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
+)
+\Hy@SavedSpaceFactor=\count280
+\pdfmajorversion=\count281
+Package hyperref Info: Option `unicode' set `true' on input line 4421.
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def
+File: puenc.def 2020/01/14 v7.00d Hyperref: PDF Unicode definition (HO)
+Now handling font encoding PU ...
+... no UTF-8 mapping file for font encoding PU
+)
+Package hyperref Info: Hyper figures OFF on input line 4547.
+Package hyperref Info: Link nesting OFF on input line 4552.
+Package hyperref Info: Hyper index ON on input line 4555.
+Package hyperref Info: Plain pages OFF on input line 4562.
+Package hyperref Info: Backreferencing OFF on input line 4567.
+Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
+Package hyperref Info: Bookmarks ON on input line 4800.
+\c@Hy@tempcnt=\count282
+LaTeX Info: Redefining \url on input line 5159.
+\XeTeXLinkMargin=\dimen166
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty
+Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
+)
+))
+\Fld@menulength=\count283
+\Field@Width=\dimen167
+\Fld@charsize=\dimen168
+Package hyperref Info: Hyper figures OFF on input line 6430.
+Package hyperref Info: Link nesting OFF on input line 6435.
+Package hyperref Info: Hyper index ON on input line 6438.
+Package hyperref Info: backreferencing OFF on input line 6445.
+Package hyperref Info: Link coloring OFF on input line 6450.
+Package hyperref Info: Link coloring with OCG OFF on input line 6455.
+Package hyperref Info: PDF/A mode OFF on input line 6460.
+LaTeX Info: Redefining \ref on input line 6500.
+LaTeX Info: Redefining \pageref on input line 6504.
+(/usr/share/texlive/texmf-dist/tex/generic/atbegshi/atbegshi.sty
+Package: atbegshi 2019/12/05 v1.19 At begin shipout hook (HO)
+)
+\Hy@abspage=\count284
+\c@Item=\count285
+\c@Hfootnote=\count286
+)
+Package hyperref Info: Driver (autodetected): hpdftex.
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+File: hpdftex.def 2020/01/14 v7.00d Hyperref driver for pdfTeX
+(/usr/share/texlive/texmf-dist/tex/latex/atveryend/atveryend.sty
+Package: atveryend 2019-12-11 v1.11 Hooks at the very end of document (HO)
+)
+\Fld@listcount=\count287
+\c@bookmark@seq@number=\count288
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+Package: rerunfilecheck 2019/12/05 v1.9 Rerun checks for auxiliary files (HO)
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
+Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
+)
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
+86.
+)
+\Hy@SectionHShift=\skip57
+)
+Package hyperref Info: Option `breaklinks' set `true' on input line 52.
+
+Package hyperref Warning: Option `bookmarks' has already been used,
+(hyperref)                setting the option has no effect on input line 52.
+
+Package hyperref Info: Option `colorlinks' set `true' on input line 52.
+\cslhangindent=\skip58
+\csllabelwidth=\skip59
+\cslentryspacingunit=\skip60
+(/usr/share/texlive/texmf-dist/tex/latex/tools/calc.sty
+Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count289
+\calc@Bcount=\count290
+\calc@Adimen=\dimen169
+\calc@Bdimen=\dimen170
+\calc@Askip=\skip61
+\calc@Bskip=\skip62
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count291
+\calc@Cskip=\skip63
+) (/usr/share/texlive/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2020/01/03 v3.4h Customizing captions (AR)
+(/usr/share/texlive/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2020/01/03 v1.8h caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 61.
+\captionmargin=\dimen171
+\captionmargin@=\dimen172
+\captionwidth=\dimen173
+\caption@tempdima=\dimen174
+\caption@indent=\dimen175
+\caption@parindent=\dimen176
+\caption@hangindent=\dimen177
+Package caption Info: elsarticle document class detected.
+)
+\c@caption@flags=\count292
+\c@continuedfloat=\count293
+Package caption Info: hyperref package is loaded.
+) (/usr/share/texlive/texmf-dist/tex/latex/setspace/setspace.sty
+Package: setspace 2011/12/19 v6.7a set line spacing
+) (/usr/share/texlive/texmf-dist/tex/latex/graphics/lscape.sty
+Package: lscape 2000/10/22 v3.01 Landscape Pages (DPC)
+) (/usr/share/texlive/texmf-dist/tex/latex/colortbl/colortbl.sty
+Package: colortbl 2020/01/04 v1.0e Color table columns (DPC)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty
+Package: array 2019/08/31 v2.4l Tabular extension package (FMi)
+\col@sep=\dimen178
+\ar@mcellbox=\box55
+\extrarowheight=\dimen179
+\NC@list=\toks28
+\extratabsurround=\skip64
+\backup@length=\skip65
+\ar@cellbox=\box56
+) (/usr/share/texlive/texmf-dist/tex/latex/graphics/color.sty
+Package: color 2019/11/23 v1.2a Standard LaTeX Color (DPC)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package color Info: Driver file: pdftex.def on input line 147.
+)
+\everycr=\toks29
+\minrowclearance=\skip66
+) (/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2016/05/11 v2.12 LaTeX color extensions (UK)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: pdftex.def on input line 225.
+LaTeX Info: Redefining \color on input line 709.
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1348.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1352.
+Package xcolor Info: Model `RGB' extended on input line 1364.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1366.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1367.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1368.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1369.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1370.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1371.
+) (/usr/share/texlive/texmf-dist/tex/latex/makecell/makecell.sty
+Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
+\rotheadsize=\dimen180
+\c@nlinenum=\count294
+\TeXr@lab=\toks30
+) (/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty
+Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
+\heavyrulewidth=\dimen181
+\lightrulewidth=\dimen182
+\cmidrulewidth=\dimen183
+\belowrulesep=\dimen184
+\belowbottomsep=\dimen185
+\aboverulesep=\dimen186
+\abovetopsep=\dimen187
+\cmidrulesep=\dimen188
+\cmidrulekern=\dimen189
+\defaultaddspace=\dimen190
+\@cmidla=\count295
+\@cmidlb=\count296
+\@aboverulesep=\dimen191
+\@belowrulesep=\dimen192
+\@thisruleclass=\count297
+\@lastruleclass=\count298
+\@thisrulewidth=\dimen193
+) (/usr/share/texlive/texmf-dist/tex/latex/tools/longtable.sty
+Package: longtable 2020/01/07 v4.13 Multi-page Table package (DPC)
+\LTleft=\skip67
+\LTright=\skip68
+\LTpre=\skip69
+\LTpost=\skip70
+\LTchunksize=\count299
+\LTcapwidth=\dimen194
+\LT@head=\box57
+\LT@firsthead=\box58
+\LT@foot=\box59
+\LT@lastfoot=\box60
+\LT@cols=\count300
+\LT@rows=\count301
+\c@LT@tables=\count302
+\c@LT@chunks=\count303
+\LT@p@ftn=\toks31
+) (/usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty
+Package: multirow 2019/05/31 v2.5 Span multiple rows of a table
+\multirow@colwidth=\skip71
+\multirow@cntb=\count304
+\multirow@dima=\skip72
+\bigstrutjot=\dimen195
+) (/usr/share/texlive/texmf-dist/tex/latex/wrapfig/wrapfig.sty
+\wrapoverhang=\dimen196
+\WF@size=\dimen197
+\c@WF@wrappedlines=\count305
+\WF@box=\box61
+\WF@everypar=\toks32
+Package: wrapfig 2003/01/31  v 3.6
+) (/usr/share/texlive/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count306
+\float@exts=\toks33
+\float@box=\box62
+\@float@everytoks=\toks34
+\@floatcapt=\box63
+) (/usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape.sty
+Package: pdflscape 2019/12/05 v0.12 Display of landscape pages in PDF (HO)
+Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
+) (/usr/share/texlive/texmf-dist/tex/latex/tabu/tabu.sty
+Package: tabu 2019/01/11 v2.9 - flexible LaTeX tabulars (FC+tabu-fixed) + inter
+mediate FMi
+(/usr/share/texlive/texmf-dist/tex/latex/varwidth/varwidth.sty
+Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
+\@vwid@box=\box64
+\sift@deathcycles=\count307
+\@vwid@loff=\dimen198
+\@vwid@roff=\dimen199
+)
+\c@taburow=\count308
+\tabu@nbcols=\count309
+\tabu@cnt=\count310
+\tabu@Xcol=\count311
+\tabu@alloc=\count312
+\tabu@nested=\count313
+\tabu@target=\dimen256
+\tabu@spreadtarget=\dimen257
+\tabu@naturalX=\dimen258
+\tabucolX=\dimen259
+\tabu@Xsum=\dimen260
+\extrarowdepth=\dimen261
+\abovetabulinesep=\dimen262
+\belowtabulinesep=\dimen263
+\tabustrutrule=\dimen264
+\tabu@thebody=\toks35
+\tabu@footnotes=\toks36
+\tabu@box=\box65
+\tabu@arstrutbox=\box66
+\tabu@hleads=\box67
+\tabu@vleads=\box68
+\tabu@cellskip=\skip73
+) (/usr/share/texlive/texmf-dist/tex/latex/threeparttable/threeparttable.sty
+Package: threeparttable 2003/06/13  v 3.0
+\@tempboxb=\box69
+) (/usr/share/texlive/texmf-dist/tex/latex/threeparttablex/threeparttablex.sty
+Package: threeparttablex 2013/07/23 v0.3 by daleif
+(/usr/share/texlive/texmf-dist/tex/latex/environ/environ.sty
+Package: environ 2014/05/04 v0.3 A new way to define environments
+(/usr/share/texlive/texmf-dist/tex/latex/trimspaces/trimspaces.sty
+Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
+))
+\TPTL@width=\skip74
+) (/usr/share/texlive/texmf-dist/tex/generic/ulem/ulem.sty
+\UL@box=\box70
+\UL@hyphenbox=\box71
+\UL@skip=\skip75
+\UL@hook=\toks37
+\UL@height=\dimen265
+\UL@pe=\count314
+\UL@pixel=\dimen266
+\ULC@box=\box72
+Package: ulem 2019/11/18
+\ULdepth=\dimen267
+) (./paper.aux
+
+LaTeX Warning: Label `tab:regimeclass' multiply defined.
+
+
+LaTeX Warning: Label `fig:bands' multiply defined.
+
+)
+\openout1 = `paper.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 11
+9.
+(/usr/share/texmf/tex/latex/lm/t1lmr.fd
+File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
+) (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count315
+\scratchdimen=\dimen268
+\scratchbox=\box73
+\nofMPsegments=\count316
+\nofMParguments=\count317
+\everyMPshowfont=\toks38
+\MPscratchCnt=\count318
+\MPscratchDim=\dimen269
+\MPnumerator=\count319
+\makeMPintoPDFobject=\count320
+\everyMPtoPDFconversion=\toks39
+) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+(/usr/share/texlive/texmf-dist/tex/latex/grfext/grfext.sty
+Package: grfext 2019/12/03 v1.3 Manage graphics extensions (HO)
+)
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+Package grfext Info: Graphics extension search list:
+(grfext)             [.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 504.
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: custom
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* hratio: 1:1
+* vratio: 1:1
+* modes: 
+* h-part:(L,W,R)=(64.75394pt, 468.0pt, 64.75394pt)
+* v-part:(T,H,B)=(111.52342pt, 622.0pt, 111.52342pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=468.0pt
+* \textheight=622.0pt
+* \oddsidemargin=-7.51605pt
+* \evensidemargin=-7.51605pt
+* \topmargin=-22.74657pt
+* \headheight=50.0pt
+* \headsep=12.0pt
+* \topskip=10.0pt
+* \footskip=18.0pt
+* \marginparwidth=65.0pt
+* \marginparsep=11.0pt
+* \columnsep=24.0pt
+* \skip\footins=24.0pt plus 2.0pt minus 12.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+LaTeX Info: Redefining \microtypecontext on input line 119.
+Package microtype Info: Generating PDF output.
+Package microtype Info: Character protrusion enabled (level 2).
+Package microtype Info: Using default protrusion set `alltext'.
+Package microtype Info: Automatic font expansion enabled (level 2),
+(microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
+Package microtype Info: Using default expansion set `basictext'.
+LaTeX Info: Redefining \showhyphens on input line 119.
+Package microtype Info: No adjustment of tracking.
+Package microtype Info: No adjustment of interword spacing.
+Package microtype Info: No adjustment of character kerning.
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-cmr.cfg
+File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman 
+(RS)
+)
+\AtBeginShipoutBox=\box74
+Package hyperref Info: Link coloring ON on input line 119.
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2019/09/16 v2.46 Cross-referencing by name of section
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty
+Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
+) (/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
+)
+\c@section@level=\count321
+)
+LaTeX Info: Redefining \ref on input line 119.
+LaTeX Info: Redefining \pageref on input line 119.
+LaTeX Info: Redefining \nameref on input line 119.
+(./paper.out) (./paper.out)
+\@outlinefile=\write4
+\openout4 = `paper.out'.
+
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: float package is loaded.
+Package caption Info: longtable package is loaded.
+(/usr/share/texlive/texmf-dist/tex/latex/caption/ltcaption.sty
+Package: ltcaption 2018/08/26 v1.4a longtable captions (AR)
+)
+Package caption Info: threeparttable package is loaded.
+Package caption Info: wrapfig package is loaded.
+Package caption Info: End \AtBeginDocument code.
+LaTeX Font Info:    Trying to load font information for T1+lmss on input line 1
+44.
+(/usr/share/texmf/tex/latex/lm/t1lmss.fd
+File: t1lmss.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+Package microtype Info: Loading generic protrusion settings for font family
+(microtype)             `lmss' (encoding: T1).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 1
+44.
+(/usr/share/texmf/tex/latex/lm/ot1lmr.fd
+File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 1
+44.
+(/usr/share/texmf/tex/latex/lm/omllmm.fd
+File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 
+144.
+(/usr/share/texmf/tex/latex/lm/omslmsy.fd
+File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 
+144.
+(/usr/share/texmf/tex/latex/lm/omxlmex.fd
+File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10> on input line 144.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7> on input line 144.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 144.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 144
+.
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+) (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msa.cfg
+File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 144
+.
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+) (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msb.cfg
+File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
+)
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <8> on input line 144.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <6> on input line 144.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 1
+44.
+(/usr/share/texmf/tex/latex/lm/t1lmtt.fd
+File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+Package microtype Info: Loading generic protrusion settings for font family
+(microtype)             `lmtt' (encoding: T1).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
+
+Overfull \hbox (2.22221pt too wide) has occurred while \output is active
+[] 
+ []
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\<def>-command' on input line 187.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\cnotenum' on input line 187.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\<def>-command' on input line 187.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\@corref' on input line 187.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\<let>-command' on input line 187.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\comma' on input line 187.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\<def>-command' on input line 187.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\@fnmark' on input line 187.
+
+[1
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] [3]
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 3
+01.
+(/usr/share/texmf/tex/latex/lm/ts1lmr.fd
+File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
+) [4] [5]
+Overfull \hbox (6.37515pt too wide) in paragraph at lines 435--435
+[]\T1/lmr/m/n/10 (-20) Developmental|  
+ []
+
+[6] [7
+
+
+] [8] [9] [10] [11] [12]
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <9> on input line 834.
+
+Overfull \hbox (8.75099pt too wide) in paragraph at lines 836--836
+[]|\T1/lmr/m/n/9 (-20) Developmental|  
+ []
+
+[13]
+</cloud/project/viz/bands.png, id=762, 578.16pt x 433.62pt>
+File: /cloud/project/viz/bands.png Graphic file (type png)
+<use /cloud/project/viz/bands.png>
+Package pdftex.def Info: /cloud/project/viz/bands.png  used on input line 883.
+(pdftex.def)             Requested size: 468.0pt x 350.9987pt.
+</cloud/project/viz/percent_area.png, id=766, 505.89pt x 289.08pt>
+File: /cloud/project/viz/percent_area.png Graphic file (type png)
+<use /cloud/project/viz/percent_area.png>
+Package pdftex.def Info: /cloud/project/viz/percent_area.png  used on input lin
+e 900.
+(pdftex.def)             Requested size: 468.0pt x 267.4345pt.
+</cloud/project/viz/map_categories_3.png, id=770, 542.025pt x 361.35pt>
+File: /cloud/project/viz/map_categories_3.png Graphic file (type png)
+<use /cloud/project/viz/map_categories_3.png>
+Package pdftex.def Info: /cloud/project/viz/map_categories_3.png  used on input
+ line 926.
+(pdftex.def)             Requested size: 468.0pt x 312.01208pt.
+[14] [15 </cloud/project/viz/bands.png (PNG copy)>] [16 </cloud/project/viz/per
+cent_area.png (PNG copy)>] [17 </cloud/project/viz/map_categories_3.png>] [18] 
+[19]
+File: paper_files/figure-latex//pointrange_2f844f1f2ae.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f844f1f2ae.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f844f1f2ae.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f8454d5bcd.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f8454d5bcd.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f8454d5bcd.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f859dd28d9.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f859dd28d9.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f859dd28d9.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f8470682a5.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f8470682a5.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f8470682a5.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f85911f370.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f85911f370.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f85911f370.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f81d9fa7f9.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f81d9fa7f9.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f81d9fa7f9.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f86545c7c9.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f86545c7c9.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f86545c7c9.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f84ad1c703.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f84ad1c703.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f84ad1c703.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f84bd7d419.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f84bd7d419.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f84bd7d419.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f85956d2e2.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f85956d2e2.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f85956d2e2.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f86297b492.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f86297b492.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f86297b492.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f849854f8d.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f849854f8d.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f849854f8d.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f86c0cdc5a.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f86c0cdc5a.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f86c0cdc5a.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f86a61011d.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f86a61011d.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f86a61011d.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f8692874f8.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f8692874f8.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f8692874f8.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f87948c81c.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f87948c81c.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f87948c81c.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f81b4d26dd.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f81b4d26dd.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f81b4d26dd.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f87cb15d90.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f87cb15d90.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f87cb15d90.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f85d8139b9.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f85d8139b9.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f85d8139b9.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f85e12e6d.pdf Graphic file (type pd
+f)
+<use paper_files/figure-latex//pointrange_2f85e12e6d.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f85e12e6d.pdf  u
+sed on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f846ab0011.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f846ab0011.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f846ab0011.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f858fc2f25.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f858fc2f25.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f858fc2f25.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f825119cbd.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f825119cbd.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f825119cbd.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f878140d1e.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f878140d1e.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f878140d1e.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f85362c669.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f85362c669.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f85362c669.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f8399a873a.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f8399a873a.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f8399a873a.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f84edd37a1.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f84edd37a1.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f84edd37a1.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+
+Overfull \hbox (2.71373pt too wide) in paragraph at lines 1135--1135
+[]\T1/lmr/bx/n/9 +0.04***|  
+ []
+
+File: paper_files/figure-latex//pointrange_2f84e2e14bb.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f84e2e14bb.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f84e2e14bb.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f847179bf1.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f847179bf1.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f847179bf1.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f82fac335e.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f82fac335e.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f82fac335e.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f8c0d8f35.pdf Graphic file (type pd
+f)
+<use paper_files/figure-latex//pointrange_2f8c0d8f35.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f8c0d8f35.pdf  u
+sed on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f8350d69dd.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f8350d69dd.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f8350d69dd.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f829765874.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f829765874.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f829765874.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f8370a11be.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f8370a11be.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f8370a11be.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f8314886f5.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f8314886f5.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f8314886f5.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f83903fa41.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f83903fa41.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f83903fa41.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f8711dfa22.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f8711dfa22.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f8711dfa22.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f871b206e2.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f871b206e2.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f871b206e2.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f81ea97516.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f81ea97516.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f81ea97516.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f81537205f.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f81537205f.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f81537205f.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f83479f653.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f83479f653.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f83479f653.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f83f50ca0e.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f83f50ca0e.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f83f50ca0e.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f82584ed38.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f82584ed38.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f82584ed38.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f8760a77c4.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f8760a77c4.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f8760a77c4.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f83f872521.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f83f872521.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f83f872521.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f85853be8b.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f85853be8b.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f85853be8b.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f8488a6798.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f8488a6798.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f8488a6798.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f825c55c2d.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f825c55c2d.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f825c55c2d.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f822aa5194.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f822aa5194.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f822aa5194.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f81215bd5a.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f81215bd5a.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f81215bd5a.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f81aeea639.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f81aeea639.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f81aeea639.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f8130adcca.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f8130adcca.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f8130adcca.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f859a15e84.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f859a15e84.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f859a15e84.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f818531392.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f818531392.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f818531392.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+
+Overfull \hbox (2.71373pt too wide) in paragraph at lines 1135--1135
+[]\T1/lmr/bx/n/9 +0.14***|  
+ []
+
+File: paper_files/figure-latex//pointrange_2f82c5a8a3a.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f82c5a8a3a.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f82c5a8a3a.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f84e1114e1.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f84e1114e1.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f84e1114e1.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f81a9f335a.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f81a9f335a.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f81a9f335a.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f86ec7cc4c.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f86ec7cc4c.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f86ec7cc4c.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f875e7601c.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f875e7601c.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f875e7601c.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f879b5ea5c.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f879b5ea5c.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f879b5ea5c.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+
+Overfull \hbox (2.71373pt too wide) in paragraph at lines 1135--1135
+[]\T1/lmr/bx/n/9 +0.12***|  
+ []
+
+File: paper_files/figure-latex//pointrange_2f8d46a7.pdf Graphic file (type pdf)
+
+<use paper_files/figure-latex//pointrange_2f8d46a7.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f8d46a7.pdf  use
+d on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f82ade56de.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f82ade56de.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f82ade56de.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//pointrange_2f8606b1c89.pdf Graphic file (type p
+df)
+<use paper_files/figure-latex//pointrange_2f8606b1c89.pdf>
+Package pdftex.def Info: paper_files/figure-latex//pointrange_2f8606b1c89.pdf  
+used on input line 1135.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+
+Overfull \hbox (53.33554pt too wide) in alignment at lines 1135--1135
+ [] [] [] [] [] [] [] [] [] [] 
+ []
+
+[20 <./paper_files/figure-latex//pointrange_2f844f1f2ae.pdf> <./paper_files/fig
+ure-latex//pointrange_2f8454d5bcd.pdf> <./paper_files/figure-latex//pointrange_
+2f859dd28d9.pdf> <./paper_files/figure-latex//pointrange_2f8470682a5.pdf> <./pa
+per_files/figure-latex//pointrange_2f85911f370.pdf> <./paper_files/figure-latex
+//pointrange_2f81d9fa7f9.pdf> <./paper_files/figure-latex//pointrange_2f86545c7
+c9.pdf> <./paper_files/figure-latex//pointrange_2f84ad1c703.pdf> <./paper_files
+/figure-latex//pointrange_2f84bd7d419.pdf> <./paper_files/figure-latex//pointra
+nge_2f85956d2e2.pdf> <./paper_files/figure-latex//pointrange_2f86297b492.pdf> <
+./paper_files/figure-latex//pointrange_2f849854f8d.pdf> <./paper_files/figure-l
+atex//pointrange_2f86c0cdc5a.pdf> <./paper_files/figure-latex//pointrange_2f86a
+61011d.pdf> <./paper_files/figure-latex//pointrange_2f8692874f8.pdf> <./paper_f
+iles/figure-latex//pointrange_2f87948c81c.pdf> <./paper_files/figure-latex//poi
+ntrange_2f81b4d26dd.pdf> <./paper_files/figure-latex//pointrange_2f87cb15d90.pd
+f> <./paper_files/figure-latex//pointrange_2f85d8139b9.pdf> <./paper_files/figu
+re-latex//pointrange_2f85e12e6d.pdf> <./paper_files/figure-latex//pointrange_2f
+846ab0011.pdf> <./paper_files/figure-latex//pointrange_2f858fc2f25.pdf> <./pape
+r_files/figure-latex//pointrange_2f825119cbd.pdf> <./paper_files/figure-latex//
+pointrange_2f878140d1e.pdf> <./paper_files/figure-latex//pointrange_2f85362c669
+.pdf> <./paper_files/figure-latex//pointrange_2f8399a873a.pdf> <./paper_files/f
+igure-latex//pointrange_2f84edd37a1.pdf> <./paper_files/figure-latex//pointrang
+e_2f84e2e14bb.pdf> <./paper_files/figure-latex//pointrange_2f847179bf1.pdf> <./
+paper_files/figure-latex//pointrange_2f82fac335e.pdf> <./paper_files/figure-lat
+ex//pointrange_2f8c0d8f35.pdf> <./paper_files/figure-latex//pointrange_2f8350d6
+9dd.pdf> <./paper_files/figure-latex//pointrange_2f829765874.pdf> <./paper_file
+s/figure-latex//pointrange_2f8370a11be.pdf> <./paper_files/figure-latex//pointr
+ange_2f8314886f5.pdf> <./paper_files/figure-latex//pointrange_2f83903fa41.pdf> 
+<./paper_files/figure-latex//pointrange_2f8711dfa22.pdf> <./paper_files/figure-
+latex//pointrange_2f871b206e2.pdf> <./paper_files/figure-latex//pointrange_2f81
+ea97516.pdf> <./paper_files/figure-latex//pointrange_2f81537205f.pdf> <./paper_
+files/figure-latex//pointrange_2f83479f653.pdf> <./paper_files/figure-latex//po
+intrange_2f83f50ca0e.pdf> <./paper_files/figure-latex//pointrange_2f82584ed38.p
+df> <./paper_files/figure-latex//pointrange_2f8760a77c4.pdf> <./paper_files/fig
+ure-latex//pointrange_2f83f872521.pdf> <./paper_files/figure-latex//pointrange_
+2f85853be8b.pdf> <./paper_files/figure-latex//pointrange_2f8488a6798.pdf> <./pa
+per_files/figure-latex//pointrange_2f825c55c2d.pdf> <./paper_files/figure-latex
+//pointrange_2f822aa5194.pdf> <./paper_files/figure-latex//pointrange_2f81215bd
+5a.pdf> <./paper_files/figure-latex//pointrange_2f81aeea639.pdf> <./paper_files
+/figure-latex//pointrange_2f8130adcca.pdf> <./paper_files/figure-latex//pointra
+nge_2f859a15e84.pdf> <./paper_files/figure-latex//pointrange_2f818531392.pdf> <
+./paper_files/figure-latex//pointrange_2f82c5a8a3a.pdf> <./paper_files/figure-l
+atex//pointrange_2f84e1114e1.pdf> <./paper_files/figure-latex//pointrange_2f81a
+9f335a.pdf> <./paper_files/figure-latex//pointrange_2f86ec7cc4c.pdf> <./paper_f
+iles/figure-latex//pointrange_2f875e7601c.pdf> <./paper_files/figure-latex//poi
+ntrange_2f879b5ea5c.pdf> <./paper_files/figure-latex//pointrange_2f8d46a7.pdf> 
+<./paper_files/figure-latex//pointrange_2f82ade56de.pdf> <./paper_files/figure-
+latex//pointrange_2f8606b1c89.pdf>]
+Overfull \hbox (7.42416pt too wide) in paragraph at lines 1241--1241
+[]\T1/lmr/m/n/9 (-20) Municipality|  
+ []
+
+
+Overfull \hbox (5.81522pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) SW|
+ []
+
+
+Overfull \hbox (6.3194pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) MC|
+ []
+
+
+Overfull \hbox (5.81522pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) SW|
+ []
+
+
+Overfull \hbox (6.3194pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) MC|
+ []
+
+
+Overfull \hbox (1.18384pt too wide) in paragraph at lines 1241--1241
+[]\T1/lmr/m/n/9 (-20) Kagoshima|  
+ []
+
+
+Overfull \hbox (1.18384pt too wide) in paragraph at lines 1241--1241
+[]\T1/lmr/m/n/9 (-20) Kagoshima|  
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 57|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 65|
+ []
+
+
+Overfull \hbox (0.53995pt too wide) in paragraph at lines 1241--1241
+[]\T1/lmr/m/n/9 (-20) Fukushima|  
+ []
+
+
+Overfull \hbox (0.53995pt too wide) in paragraph at lines 1241--1241
+[]\T1/lmr/m/n/9 (-20) Fukushima|  
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 54|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 88|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 94|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 81|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 92|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 59|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 50|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 62|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 62|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 67|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 50|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 66|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 56|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 64|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 52|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 53|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 65|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 53|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 55|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 51|
+ []
+
+
+Overfull \hbox (0.68063pt too wide) in paragraph at lines 1241--1241
+[]\T1/lmr/m/n/9 (-20) Ishinomaki|  
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 60|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 92|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 82|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 87|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 66|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 94|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 63|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 61|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 61|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 60|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 69|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 61|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 53|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 66|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 80|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 67|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 52|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 55|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 62|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 69|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 69|
+ []
+
+
+Overfull \hbox (3.0471pt too wide) in paragraph at lines 1241--1241
+[]\T1/lmr/m/n/9 (-20) Tomakomai|  
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 57|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 55|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 67|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 82|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 87|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 58|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 59|
+ []
+
+
+Overfull \hbox (2.9418pt too wide) in paragraph at lines 1241--1241
+[]\T1/lmr/m/n/9 (-20) Kitakyushu|  
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 62|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 67|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 81|
+ []
+
+
+Overfull \hbox (0.5291pt too wide) in paragraph at lines 1241--1241
+ []\T1/lmr/m/n/9 (-20) 62|
+ []
+
+[21] [22]
+</cloud/project/viz/distribution.png, id=1114, 433.62pt x 216.81pt>
+File: /cloud/project/viz/distribution.png Graphic file (type png)
+<use /cloud/project/viz/distribution.png>
+Package pdftex.def Info: /cloud/project/viz/distribution.png  used on input lin
+e 1289.
+(pdftex.def)             Requested size: 468.0pt x 234.01236pt.
+[23 </cloud/project/viz/distribution.png (PNG copy)>] [24]
+Overfull \hbox (27.22816pt too wide) in paragraph at lines 1370--1370
+[]\T1/lmr/m/n/9 (-20) Transformation|  
+ []
+
+File: paper_files/figure-latex//hist_2f846b3641.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f846b3641.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f846b3641.pdf  used on
+ input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f89b952f0.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f89b952f0.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f89b952f0.pdf  used on
+ input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f84b0f833a.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f84b0f833a.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f84b0f833a.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f8536b4b11.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f8536b4b11.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f8536b4b11.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f813a93714.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f813a93714.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f813a93714.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f8266b34e5.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f8266b34e5.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f8266b34e5.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f830f945ad.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f830f945ad.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f830f945ad.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f86a3465f8.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f86a3465f8.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f86a3465f8.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f8b288c9e.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f8b288c9e.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f8b288c9e.pdf  used on
+ input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f84e2641ce.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f84e2641ce.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f84e2641ce.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f846e3815e.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f846e3815e.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f846e3815e.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f8587dc1a9.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f8587dc1a9.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f8587dc1a9.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f85a7930a8.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f85a7930a8.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f85a7930a8.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f871e6f59.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f871e6f59.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f871e6f59.pdf  used on
+ input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f86413ffbb.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f86413ffbb.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f86413ffbb.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f894860cb.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f894860cb.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f894860cb.pdf  used on
+ input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f8300de1b1.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f8300de1b1.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f8300de1b1.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f855df7501.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f855df7501.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f855df7501.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f85c2e5133.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f85c2e5133.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f85c2e5133.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f874dae175.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f874dae175.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f874dae175.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f85e3f766c.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f85e3f766c.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f85e3f766c.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f813a7bd06.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f813a7bd06.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f813a7bd06.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+
+Overfull \hbox (0.56332pt too wide) in paragraph at lines 1370--1370
+[]\T1/lmr/m/n/9 (-20) 23774.73|  
+ []
+
+File: paper_files/figure-latex//hist_2f84e74bd5e.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f84e74bd5e.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f84e74bd5e.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f86a6b1ff3.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f86a6b1ff3.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f86a6b1ff3.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f84c4b837c.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f84c4b837c.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f84c4b837c.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f83c4a2a5b.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f83c4a2a5b.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f83c4a2a5b.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f865c0af8f.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f865c0af8f.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f865c0af8f.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f82f2eb299.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f82f2eb299.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f82f2eb299.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f82fa12fd.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f82fa12fd.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f82fa12fd.pdf  used on
+ input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f85d55d5b4.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f85d55d5b4.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f85d55d5b4.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f864be13dc.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f864be13dc.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f864be13dc.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f842eb840a.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f842eb840a.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f842eb840a.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f859e308e9.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f859e308e9.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f859e308e9.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f836bc3df8.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f836bc3df8.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f836bc3df8.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f83546d7f3.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f83546d7f3.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f83546d7f3.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f854dc7b4f.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f854dc7b4f.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f854dc7b4f.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+
+Overfull \hbox (12.4513pt too wide) in paragraph at lines 1370--1370
+[]\T1/lmr/m/n/9 (-20) quartiles(x)|  
+ []
+
+File: paper_files/figure-latex//hist_2f833e11491.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f833e11491.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f833e11491.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f819cffbdf.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f819cffbdf.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f819cffbdf.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f81fdeec28.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f81fdeec28.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f81fdeec28.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f85fc0f8f7.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f85fc0f8f7.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f85fc0f8f7.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f8568a2d5b.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f8568a2d5b.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f8568a2d5b.pdf  used o
+n input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+File: paper_files/figure-latex//hist_2f8784bdab.pdf Graphic file (type pdf)
+<use paper_files/figure-latex//hist_2f8784bdab.pdf>
+Package pdftex.def Info: paper_files/figure-latex//hist_2f8784bdab.pdf  used on
+ input line 1370.
+(pdftex.def)             Requested size: 48.42024pt x 12.2857pt.
+[25
+
+ <./paper_files/figure-latex//hist_2f846b3641.pdf> <./paper_files/figure-latex/
+/hist_2f89b952f0.pdf> <./paper_files/figure-latex//hist_2f84b0f833a.pdf> <./pap
+er_files/figure-latex//hist_2f8536b4b11.pdf> <./paper_files/figure-latex//hist_
+2f813a93714.pdf> <./paper_files/figure-latex//hist_2f8266b34e5.pdf> <./paper_fi
+les/figure-latex//hist_2f830f945ad.pdf> <./paper_files/figure-latex//hist_2f86a
+3465f8.pdf> <./paper_files/figure-latex//hist_2f8b288c9e.pdf> <./paper_files/fi
+gure-latex//hist_2f84e2641ce.pdf> <./paper_files/figure-latex//hist_2f846e3815e
+.pdf> <./paper_files/figure-latex//hist_2f8587dc1a9.pdf> <./paper_files/figure-
+latex//hist_2f85a7930a8.pdf> <./paper_files/figure-latex//hist_2f871e6f59.pdf> 
+<./paper_files/figure-latex//hist_2f86413ffbb.pdf> <./paper_files/figure-latex/
+/hist_2f894860cb.pdf> <./paper_files/figure-latex//hist_2f8300de1b1.pdf> <./pap
+er_files/figure-latex//hist_2f855df7501.pdf> <./paper_files/figure-latex//hist_
+2f85c2e5133.pdf> <./paper_files/figure-latex//hist_2f874dae175.pdf> <./paper_fi
+les/figure-latex//hist_2f85e3f766c.pdf> <./paper_files/figure-latex//hist_2f813
+a7bd06.pdf> <./paper_files/figure-latex//hist_2f84e74bd5e.pdf> <./paper_files/f
+igure-latex//hist_2f86a6b1ff3.pdf> <./paper_files/figure-latex//hist_2f84c4b837
+c.pdf> <./paper_files/figure-latex//hist_2f83c4a2a5b.pdf> <./paper_files/figure
+-latex//hist_2f865c0af8f.pdf> <./paper_files/figure-latex//hist_2f82f2eb299.pdf
+> <./paper_files/figure-latex//hist_2f82fa12fd.pdf> <./paper_files/figure-latex
+//hist_2f85d55d5b4.pdf>] [26 <./paper_files/figure-latex//hist_2f864be13dc.pdf>
+ <./paper_files/figure-latex//hist_2f842eb840a.pdf> <./paper_files/figure-latex
+//hist_2f859e308e9.pdf> <./paper_files/figure-latex//hist_2f836bc3df8.pdf> <./p
+aper_files/figure-latex//hist_2f83546d7f3.pdf> <./paper_files/figure-latex//his
+t_2f854dc7b4f.pdf> <./paper_files/figure-latex//hist_2f833e11491.pdf> <./paper_
+files/figure-latex//hist_2f819cffbdf.pdf> <./paper_files/figure-latex//hist_2f8
+1fdeec28.pdf> <./paper_files/figure-latex//hist_2f85fc0f8f7.pdf> <./paper_files
+/figure-latex//hist_2f8568a2d5b.pdf> <./paper_files/figure-latex//hist_2f8784bd
+ab.pdf>] [27
+
+]
+Overfull \hbox (12.59299pt too wide) in paragraph at lines 1469--1469
+[]\T1/lmr/m/n/10 (-20) Transformed$[]$|  
+ []
+
+
+Overfull \hbox (25.30545pt too wide) in alignment at lines 1469--1469
+ [] [] [] [] [] [] [] [] [] 
+ []
+
+[28
+
+] [29] [30] [31
+
+]
+Overfull \hbox (12.59299pt too wide) in paragraph at lines 1568--1568
+[]\T1/lmr/m/n/10 (-20) Transformed$[]$|  
+ []
+
+
+Overfull \hbox (25.30545pt too wide) in alignment at lines 1568--1568
+ [] [] [] [] [] [] [] [] [] 
+ []
+
+[32
+
+] [33] [34]
+Overfull \hbox (12.59299pt too wide) in paragraph at lines 1669--1669
+[]\T1/lmr/m/n/10 (-20) Transformed$[]$|  
+ []
+
+
+Overfull \hbox (25.30545pt too wide) in alignment at lines 1669--1669
+ [] [] [] [] [] [] [] [] [] 
+ []
+
+[35
+
+
+] [36] [37] (./paper.bbl [38
+
+] [39] [40])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1680.
+[41]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1680.
+(./paper.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1680.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1680.
+
+Package rerunfilecheck Info: File `paper.out' has not changed.
+(rerunfilecheck)             Checksum: 98F7C58827E6C7E319F9062E76A56F08;5908.
+
+LaTeX Warning: There were multiply-defined labels.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 18449 strings out of 481239
+ 304116 string characters out of 5920377
+ 644805 words of memory out of 5000000
+ 32748 multiletter control sequences out of 15000+600000
+ 623728 words of font info for 205 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 41i,15n,50p,864b,805s stack positions out of 5000i,500n,10000p,200000b,80000s
+pdfTeX warning (dest): name{Hfootnote.4} has been referenced but does not exi
+st, replaced by a fixed one
+
+pdfTeX warning (dest): name{Hfootnote.3} has been referenced but does not exist
+, replaced by a fixed one
+
+pdfTeX warning (dest): name{Hfootnote.2} has been referenced but does not exist
+, replaced by a fixed one
+
+pdfTeX warning (dest): name{Hfootnote.1} has been referenced but does not exist
+, replaced by a fixed one
+
+{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvip
+s/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/t
+exmf/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-math
+sy.enc}</usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb></usr/share/texmf/fon
+ts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx9.pfb
+></usr/share/texmf/fonts/type1/public/lm/lmmi6.pfb></usr/share/texmf/fonts/type
+1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/s
+hare/texmf/fonts/type1/public/lm/lmr6.pfb></usr/share/texmf/fonts/type1/public/
+lm/lmr7.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/
+fonts/type1/public/lm/lmr9.pfb></usr/share/texmf/fonts/type1/public/lm/lmri10.p
+fb></usr/share/texmf/fonts/type1/public/lm/lmri7.pfb></usr/share/texmf/fonts/ty
+pe1/public/lm/lmri8.pfb></usr/share/texmf/fonts/type1/public/lm/lmri9.pfb></usr
+/share/texmf/fonts/type1/public/lm/lmss8.pfb></usr/share/texmf/fonts/type1/publ
+ic/lm/lmsy6.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy7.pfb></usr/share/t
+exmf/fonts/type1/public/lm/lmtt8.pfb>
+Output written on paper.pdf (41 pages, 4761470 bytes).
+PDF statistics:
+ 1533 PDF objects out of 1728 (max. 8388607)
+ 1239 compressed objects within 13 object streams
+ 264 named destinations out of 1000 (max. 500000)
+ 28474 words of extra memory for PDF output out of 29859 (max. 10000000)
+

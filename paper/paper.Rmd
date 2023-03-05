@@ -1,0 +1,997 @@
+---
+title: "Big Spenders: Large-N Measures of Urban Regimes"
+author:
+  - name: Timothy Fraser
+    email: timothy.fraser.1@gmail.com
+    affiliation: Department of Political Science, Northeastern University
+    correspondingauthor: true
+    footnote: 1
+address:
+  - code: PhD Candidate, Political Science, Northeastern University
+    address: "Department of Political Science, Northeastern University"
+footnote:
+  - code: 1
+    text: "This is the first author footnote."
+abstract: |
+  This is the abstract.
+  It consists of two paragraphs.
+keywords: 
+  - "urban regime"
+  - "cities"
+  - "policy"
+  - "social welfare"
+  - "social capital"
+  - "Japan"
+journal: "Journal"
+date: "`r Sys.Date()`"
+classoption: preprint, 3p, authoryear
+
+bibliography: mybibfile.bib
+link-citations: true
+linkcolor: blue
+linenumbers: true
+numbersections: false
+
+always_allow_html: true
+
+output: 
+  rticles::elsevier_article:
+    keep_tex: true
+    citation_package: natbib
+    toc: yes 
+    toc_depth: 4 
+    fig_caption: TRUE 
+mainfont: Times New Roman
+
+header-includes:
+  - \usepackage{caption}
+  - \usepackage{setspace}\doublespacing
+  - \usepackage{lscape}
+  - \newcommand{\blandscape}{\begin{landscape}}
+  - \newcommand{\elandscape}{\end{landscape}}
+  - \usepackage{colortbl}  
+  - \usepackage{xcolor}
+  - \usepackage{makecell}
+
+editor_options: 
+  markdown: 
+    wrap: sentence
+    
+nocite: |
+  @edgington_2013, @funck_2007, @nunokawa_2007
+---
+
+\captionsetup[table]{labelformat=empty}
+\captionsetup[figure]{labelformat=empty}
+\captionsetup{font=large}
+
+```{r setup, message = FALSE, warning = FALSE, echo = FALSE, include = FALSE}
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+options(knitr.table.format = "latex") 
+# Install with devtools::install_github("benmarwick/wordcountaddin", type = "source", dependencies = TRUE)
+```
+
+# Introduction
+
+Who governs? As cities face increasing threats from climate change and climatic hazards, the coalitions and interests of power brokers who govern our cities are likely changing. Since Dahl's [-@dahl_1961] case study of New Haven's mayor posed the famous question, "Who Governs?", scholars have puzzled over the governance of cities: Much attention has been paid to different types of coalitions [@munoz_and_henry_1986; @stone_1989; @stoker_and_mossberger_1994; @gilliam_1996; @davies_2017; @russo_and_scarnato_2018], mayors [@ramirez_perez_et_al_2008; @debenedictis_kessner_and_warshaw_2016; @freier_and_thomasius_2016; @einstein_and_glick_2018], and interest groups [@logan_and_rabrenovic_1990; @mossberger_and_stoker_2001; @cooper_et_al_2005; @portney_and_berry_2016; @anzia_2019] that govern city politics.
+Urban regime scholars argue that the powerbrokers together constitute an "urban regime" [@stone_1993], coined in Clarence Stone's [-@stone_1989] study of Atlanta politics. "Urban regime" refers to elected officials and unelected powerbrokers alike, such as influential firms, NGOs, or citizens groups, who determine what policy actions a city can and cannot take [@mossberger_and_stoker_2001]. As cities experience more disasters, migration, and social change in the face of storms, floods, fires, hurricanes, and other disasters, we would naturally expect these urban regimes to change. But to date, these changes have been difficult to detect systematically, with most work on urban regimes focusing on single city case studies; to date, the largest samples of cities systematically classified by urban regime has been De Socio's [-@de_socio_2007] 24-city sample and Kilburn's [-@kilburn_2004] 14-city sample, using Stone's [-@stone_1993] 4 regime type classification.
+
+This study aims to fill that gap, introducing a framework for measuring city's propensity towards each of 4 common urban regime types, and evaluating the change in frequencies of urban regimes over time. I employ Stone's [-@stone_1993] 4-regime classification, which includes (1) caretaker, (2) developmental, (3) middle-class, and (4) social welfare regimes, discussed in the literature review.
+
+These categories raise natural questions in the face of climate change: In the face of crisis, have social welfare regimes become more common, compared to regimes prioritizing business or middle-class interests? Or, have city politics stagnated with a rise in caretaker regimes that simply maintain the status quo? To answer these questions, I apply this framework to a Large-N sample of 1741 Japanese municipalities over 20 years from 2000 to 2020. The Japan Statistical Bureau reports considerable annual data for each municipality, allowing scholars to approximate the basic contours of cities' urban regimes by a simple, publicly available proxy of each cities' governance priorities: *spending rates.* While spending cannot tell us specific actors that govern, it can broadly approximate which of Stone's [-@stone_1993] 4 types of regimes are driving city policy. Generally speaking, a true developmental regime would spend more city funs in support of business needs; similarly, a true social welfare regime would spend more in support of social welfare needs. Not to replace, but to aid qualitative investigations of urban regimes, this study designs a method to make Large-N comparisons among thousands of cities at a time. I posit that we can detect measurable differences among cities in terms of their spending rates.
+
+As a preview of my results, I find that even after accounting for population and inflation, city spending rates vary substantially over time, with certain urban regimes' spending priorities becoming more common with each passing year while others become less common. In particular, I document the 20-year rise of the social welfare regime as the most common type of urban regime, growing from just XX% of cities in 2000 to YY% of cities in 2020. I also detect geographic patterns, with coastal areas investing more heavily in social welfare regime priorities over time. These are exciting and heartening findings, because they indicate that while national-level governance on climate has made progress with starts and stops, our cities are not unilaterally gridlocked, stuck in caretaker, status quo regimes. Instead, many cities are transitioning to social welfare regimes, increasing their spending on social welfare issues like food security, housing, and disaster recovery above the median level nationwide.
+
+# Literature Review
+
+## Urban Regime Theory
+
+Since Stone's [-@stone_1989] examination of urban regimes in Atlanta, dozens of case studies have detailed different urban regimes and governance arrangements throughout the world [@stoker_and_mossberger_1994; @mossberger_and_stoker_2001; @de_socio_2007; @camou_2014; @davies_and_blanco_2017; @rosol_et_al_2017; @russo_and_scarnato_2018]. Over 30 years since the term's coining, urban regimes received praise [@kilburn_2004; @davies_and_imbroscio_2009] and criticism [@sites_1997; @davies_2003; @imbroscio_2003; @imbroscio_2004] for how easily it can be applied to understand city politics.
+
+Many regimes once thought to be long-standing have come undone and changed quickly in recent years [@stone_2015; @stone_et_al_2015], making the field awash in related terms like "urban governance" [@pierre_2014; @da_cruz_et_al_2019], governance networks [@gissendanner_2003; @davidson_et_al_2019], policy networks [@bulkeley_and_betsill_2013; @hawkins_et_al_2016; @wukich_2022], public-private partnerships [@stoker_1998; @davies_2017; @guo_and_ho_2019], and multi-tiered political orders [@stone_2015; @weaver_2022], or a just, socially equitable city [@campbell_1996; @fainstein_2010]. Others extended definitions of urban regimes, applying versions of it to social welfare crisis in the face of mass displacement and other social crises [@lambelet_2019].
+
+Nomenclature aside, these frameworks all generally aim to explain "who governs," but systematic categorizations of many cities at once have been rarer, usually confined to small-to-medium-N analyses [@sellers_2002; @kilburn_2004; @stone_et_al_2015; @davies_and_blanco_2017]. Below, I synthesize a basic typology of urban regimes for measurement from the extended literature, and outline the argument for why it matters 'who governs' cities in the face of climate change.
+
+## Redistributive Politics
+
+For the purposes of this study, urban regimes also are an effective, local level tool for thinking about the broader class of politics that climate resilience initiatives exemplify: redistributive policies, a familiar, long-standing, and particularly pernicious policy challenge for cities [@meltzer_and_scott_1981; @pierson_1994; @hacker_2004; @iversen_and_soskice_2006; @mettler_2011; @rueda_and_stemueller_2019]. National, regional, and city governments each work with redistributive policies, aiming to provide en masse specific public goods that are particularly difficult for residents to obtain individually, especially for vulnerable residents. 
+
+Previous literature dealt with electoral (Meltzer & Richards; Iversen & Soskice 2006), institutional [@pierson_1994; @hacker_2004; @mettler_2011], or street-level implementation [@lipsky_1980; @hupe_and_hill_2007] explanations for the success and continuity of redistributive policies.
+However, these studies dealt less with the community resources available to cities, like partnerships with businesses [@stone_1989; @mossberger_and_stoker_2001], civil society advocacy groups [@portney_and_berry_2016], neighborhood associations [@logan_and_rabrenovic_1990], and local networks [@aldrich_and_meyer_2015].
+These often overlooked community resources can play important roles in redistributing resources to residents in need [@aldrich_and_kioyta_2017; @klinenberg_2018].
+
+What kinds of redistributive policies, then, were past scholars writing about? The classic example of redistributive policy is social welfare support for low-income families and unemployment insurance [@pierson_1994; @hacker_2004], to abate the health and economic challenges of entrenched poverty [@ahammer_packham_2020; @berkowitz_and_basu_2021]. In addition to these, governments have tackled many redistributive policy issues in the past. These include, for example:
+
+-   Social security policies aimed to eliminate poverty among the elderly, by redistributing the resources of other age groups (Titmus 1965, Conde-Ruiz & Profeta 2007).
+
+-   Universal health care, or market solutions, both aim to eliminate loss of life and financial ruin due to medical expenses, by redistributing the costs of health care issues to the entire population [@mettler_2011].
+
+-   Public education sought to remedy lack of access of education and opportunity in working class families by publicly funding education through the taxbase [@mettler_2005].
+
+-   Highway systems [@congleton_and_bennett_1995; @zhu_and_brown_2013], electrification [@baker_and_phillips_2019; @breetz_et_al_2018], and public transportation [@hood_2006] seek to connect citizens and expand economic development, important to everyone, but are challenging for any one city or company to pay for [@boarnet_and_haughwout_2000].
+
+These redistributive programs frequently develop policy constituencies if the group benefitting from them is sizable enough [@meltzer_and_richard_1981; @campbell_2012]; in some states, these programs' continuation is conditional, becoming political currency for pork-barrel politics [@fukui_and_fukai_1996; @catalinac_et_al_2020], while in others, they become permanent fixtures in national policy [@pierson_1994].
+
+However, moving beyond these federal- or state-level examples, in fact, cities have been tackling redistributive issues for generations [@peterson_1981; @saiz_1999; @tonkiss_2020]. Cities use redistributive policies to remedy unequal access to employment in neighborhoods by funding public transit for all [@frankena_1973; @asensio_et_al_2003; @glaeser_et_al_2009; @fearnley_and_aarhaug_2019; @wiesel_and_liu_2021]. They may support local businesses that might struggle to secure consistent customers by providing public venues or markets [@tangires_1997]. Cities may use public funds to free up real estate and housing available in various neighborhoods [@detter_and_folster_2017], or, in the shameful history of many cities, cities can be complicit in redlining and illegally restricting access to housing [@rothstein_2017]. Lately, cities' efforts at improving health equity are especially visible, as cities conduct and manage public health campaigns, like current city efforts to rollout testing and vaccination during the COVID-19 pandemic [@berkowitz_and_basu_2021]. Some national governments lean on cities to provide services that legitimize their state [@wallace_2013]. And in many countries, cities play a key role in the disbursement and coordination of social welfare distribution [@katz_and_allen_2001; @weir_and_kind_2021], and must secure the necessary funding for these projects [@payson_2022].
+
+Climate resilience initiatives, on the other hand, are a new form of redistributive policy. These initiatives extend critical benefits to society, but often struggle to achieve electoral support because their benefits are diffuse, except to the most vulnerable in society who need them. However, not all types of urban regimes prioritize redistributive policies like social welfare support; indeed, three out of the four regime types discussed below specifically prioritize other needs. Social welfare's relevance to climate resilience makes it especially important to identify whether social welfare-oriented regimes are increasing or declining.
+
+## Types of Urban Regimes
+
+As discussed above, Clarence Stone [-@stone_1993] and later comparative studies [@kilburn_2004; @de_socio_2007] primarily relied on 4 main types of urban regimes, including (1) caretaker, (2) developmental, (3) middle-class, and (4) social welfare regimes. Over 30 years, scholars have created numerous other types of urban regimes, sometimes conflicting or concept stretching, as some have argued [@mossberger_and_stoker_2001]; however, these original 4 regime types are still arguably the main types at play today. I outline in Table \ref{tab:regimelit} a basic typology.
+
+\newpage
+\blandscape
+
+```{r regimelit, echo=FALSE, message=FALSE, warning=FALSE,  out.width="100%"}
+tab <- bind_rows(
+  # Caretaker
+  tibble(
+    Regime = c("Caretaker"),
+    Definition = c("maintains status quo, traditional municipal service provision"),
+    Examples = c("New Orleans (Whelan et al. 1994)"),
+    Related = c("Maintenance/Status Quo (Stone 1989)
+                 \n
+                 Bystander (Portz 1990)
+                 \n
+                 Austerity (Davies & Blanco 2017)"),
+    `Japanese Examples` = " - "),
+  
+  # Developmental
+  tibble(
+    Regime = c("Developmental"),
+    Definition = c("promotes economic growth while preventing economic decline"),
+    Examples = c("Atlanta (Stone 1989)"),
+    Related = c("Entrepreneurial Regimes (Euchner 1993)
+                 \n
+                 Public-Private Partnerships (Davies 2017)
+                 \n
+                 Player (Portz 1990)
+                 \n
+                 Castle Towns (Funabashi 2006; Hill & Fujita 1993)"),
+    `Japanese Examples` = "Tokyo (Saito 2003; Tsukamoto 2012; Sorensen et al. 2010)
+    \n
+    Kitakyushu (Yeum 2002)
+    \n
+    Minamata (Funabashi 2006)
+    \n
+    Kobe Post-1995 (Edgington 2010)"),
+  
+  # Middle Class
+  tibble(
+    Regime = c("Middle-Class"),
+    Definition = c("promotes egalitarian policies in education, health, environment, and city planning"),
+    Examples = c("Santa Cruz (Gendron & Domhoff 2018)"),
+    Related = c("Progressive (Stone 1989)
+                \n
+                'Anti-Regime' (DeLeon 1992)"),
+    `Japanese Examples` = "Mitaka (Takao 2006)
+                           \n
+                           Kyoto (Sugiyama & Takeuchi 2008)
+                           \n
+                           Iida (Fraser et al. 2020)"),
+  # Social Welfare
+  tibble(
+    Regime = c("Social Welfare"),
+    Definition = c("improves conditions for working class, expands social safety net"),
+    Examples = c("Early Toronto (Mahon 2007"),
+    Related = c("Opportunist (Stone 1989)
+                 \n
+                 Activist (Clark 2001)
+                 \n
+                 Stewardship Regimes (Nissen 1995)"),
+    `Japanese Examples` = "Yokohama (Hayashi 2013)
+                           \nMikura Ward, Kobe (Yasui 2007)")
+)
+require(knitr)
+require(kableExtra)
+kbl(tab, booktabs=TRUE,label = NA,
+  caption = "Table \\ref{tab:regimelit}\\label{tab:regimelit}: Typology of Urban Regimes") %>%
+  kable_styling(full_width = TRUE, latex_options = "striped") %>%
+  column_spec(column = 1, width = "2cm")
+```
+
+\elandscape
+\newpage
+
+The first type is (1) *caretaker regimes*. In these cities, the incumbent regime seeks to maintain a city's status quo [@turner_1992; @whelan_et_al_1994]. The municipality provides basic services, but avoids expanding.
+Past studies labeled the city of New Orleans, pre-Katrina, as a good example. Other terms capture the same approximate meaning, including maintenance regimes [@stone_1989] or bystander regimes [@portz_1990], which refer to regimes that played no major role when industrial firms closed shop in the US rustbelt. Relatedly, some cities have also organized under austerity regimes, focused on cutting expenses, rather than expanding policies; this subtype lies somewhere between caretaker regimes and developmental regimes, as they usually cut expenditures on social welfare or progressive causes, but not necessarily economic interests [@davies_and_blanco_2017]. To the author's knowledge, few studies have tracked caretaker regimes in Japan; this study aims to help remedy that.
+
+The second type is (2) *developmental regimes.* These regimes prioritize economic development and business interests, while preventing economic decline [@stone_1989; @austrian_and_rosentraub_2002; @de_socio_2007]. A robust literature has covered these, starting with archetypes like Stone's [-@stone_1989] Atlanta. Scholars have proposed several subtypes over the years that group well under developmental regimes, including entrepreneurial regimes, describing regimes' enticement with sports industries [@euchner_1993], tourism-focused regimes [@russo_and_scarnato_2018], public private partnerships [@davies_2017], and player cities, describing those which advocate intensely to bring in or keep industry [@portz_1990]. A related concept in the Japanese literature is "castle towns," referring to cities where the entire city government and economy is closely structured around one industry [@hill_and_fujita_1993]. Famous examples include Minamata, which suffered considerable environmental pollution due to the Chisso corporation in the 1950s [@funabashi_2006]; more recent examples of castle towns are nuclear power plant host communities [@aldrich_and_fraser_2017].
+
+Developmental regimes and related types have received considerable attention in Japan, with studies emphasizing the neoliberal, developmental priorities of property development in post-Bubble Tokyo [@saito_2003; @tsukamoto_2012; @sorensen_et_al_2010], developmental priorities in reconstruction plans from the Kobe Earthquake [@edgington_2010], and early efforts to reduce air pollution in industrial cities like Kitakyushu [@yeum_2002].
+
+The third common type is (3) *middle-class regimes* (a.k.a. progressive regimes\^[Usually called progressive regimes, I term these 'middle-class' regimes to avoid confusion with the next type, which support progressive, redistributive policies.]). These regimes support middle-class, progressive interests like environmentalism, health care, education, and quality city planning [@deleon_1992; @gendron_and_domhoff_2018; @rosdil_2016].
+Past examples include politically left-wing city politics in Santa Cruz, San Francisco, and Seattle, among others [@gendron_and_domhoff_2018]. These regimes focus on a specific type of progressivism, namely egalitarian ideals, such as environmental conservation and sustainability [@rosol_et_al_2017], but these regimes tend to support middle-class interests, rather than working class interests [@kilburn_2004].
+
+Famous Japanese examples include Mitaka City, a Tokyo suburb known for progressive environmental policy, quality of life, and citizen engagement [@takao_2006]. Similarly, large cities like Kyoto [@sugiyama_and_takeuchi_2008] and smaller cities like Iida in Nagano Prefecture [@fraser_et_al_2020] have both received attention for their cities' emphasis and leadership on environmentalism.
+
+Finally, the fourth type refers to (4) *social welfare regimes* (a.k.a. opportunist regimes*\^[\*Sometimes called "opportunist" regimes, referring to aims to expand the social safety net, this study re-terms this category 'social welfare regimes', to more respectfully characterize these policies.])*\*. These regimes prioritize social welfare support for the working class and related redistributive policies, such as unemployment insurance, public housing, and financial support for families in need, eg. after crisis [@stone_1993; @thompson_2005; @camou_2014; @lai_and_chui_2014; @arbaci_2019].Related monikers include 'opportunist regimes,' as in those aiming to expand the social safety net [@stone_1989], activist regimes [@clark_2001], which use neighborhood coalitions and activist groups to push for social equity [@thompson_2005], labor coalitions [@camou_2014], and stewardship regimes [@nissen_1995], which negotiate with businesses for fair treatment of workers. While the shape of social welfare policy varies by city and country, Canadian and UK cities are particularly known for efforts to expand social safety nets [@saraceno_2002], like Toronto's early work expanding childcare [@mahon_2007], although Toronto has shifted over time to a developmental/progressive regime. Japanese urban studies research has highlighted Yokohama for its particularly expansive support for the homeless [@hayashi_2013], as well as specific city wards like the working class neighborhood of Mikura in Kobe for its robust advocacy for social equity in the reconstruction process after the 1995 Kobe Earthquake [@yasui_2007].
+
+## Correlates of Urban Regimes
+
+Given how useful social welfare regimes can be in the era of climate change, what kinds of cities develop social welfare regimes, and which do not? While little literature directly tackles this question, past studies summarized below suggest several likely correlates.
+
+### Demographic and Financial Correlates of Urban Regimes
+
+First, we expect some cities are predisposed towards certain types of urban regimes. Highly populated cities, cities with higher income per capita, cities with more revenue per capita, and cities with better balanced budgets have more funds and other resources to spend on advancing a social welfare regime (or a developmental or middle-class regime, for that matter). But cities who receive a larger share of their annual budget from the national or prefectural government may face more pressure to conform with national or prefectural objectives, which often come in the shape of economic development policy. Such cities might invest *less* in social welfare. 
+
+### Partisanship and Urban Regimes
+
+Second, party interests may push some cities towards or against social welfare spending. The Liberal Democratic Party is, despite its name, Japan's long-time conservative party, and traditionally promotes business interests and economic development. Past studies explains that when the LDP accepts social welfare policies, it usually does so to counter any competitive advantage that policy gives left-leaning opposition parties prior to elections, as was the case in universal health care legislation. Cities where the Liberal Democratic Party performed well in recently elections thus likely have little incentive to adopt social welfare policies; their local officials and prefectural party machine are more likely to push for developmental policies.
+
+### Social Capital and Urban Regimes
+
+However, cities with greater collective action potential might be more likely to adopt social welfare regimes, if local residents have strong social capital. Past literature highlights that social capital, the social ties that bind residents [@putnam_2000; @woolcock_2010], come in three different forms with distinct impacts on public participation and policymaking: bonding, bridging, and linking social capital [@aldrich_and_meyer_2015].
+
+#### Bonding Social Capital
+
+Bonding social capital refers to strong in-group ties between members of the same social strata (eg. race, ethnicity, age, gender, income) [@mcpherson_et_al_2001; @mouw_2006]. We might expect bonding social ties to help residents petition for more middle class interests, which benefit a broad swath of residents, but fail to organize broad, cross-community coalitions to support social welfare [@tsai_2007; @cox_2011; @alcorta_et_al_2020]. 
+
+#### Bridging Social Capital
+
+In contrast, bridging social capital refers to strong inter-group ties connecting members of different social strata (eg. members of different racial, ethnic, age, gender, or income backgrounds) [@putnam_2000; @aldrich_2019]. A vast literature suggests that stronger bridging social ties help residents organize to improve access to public goods for the *entire* community, because they build strong inter-group trust and reciprocity that encourages folks to mobilize, vote, and participate in civil society. 
+
+#### Linking Social Capital
+
+Finally, linking social capital refers to vertical ties connecting residents to local officials [@woolcock_2010; @aldrich_2019]. We might expect that cities with stronger linking social capital are less likely to be caretaker regimes, but could result in greater social welfare, developmental, or middle class regimes, depending on residents' interests. In addition to the concepts discussed above, cities with higher levels of education and lower levels of population turnover also tend to build stronger social ties. To date however, despite the strong likelihood of a connection between social capital and urban regimes, no study to the author's knowledge has yet investigated these two concepts together.
+
+## Timing and Path Dependence
+
+Finally, timing matters. First, social welfare regimes (and spending in general) is notoriously path dependent, where once governments institutionalize certain spending programs, they tend to stick around. Second, regimes may shift according to the social constraints of the time. After the 2011 triple disaster, a surge of disaster recovery spending occurred in the Tohoku region; we might expect this disaster pushed some cities towards social welfare regimes in order to provide better for vulnerable families and elders in the aftermath. Conversely, some cities rebuild primarily according to central government instructions, spending primarily on infrastructure while neglecting community spending; as a result, the impact of the disaster on social welfare regime evolution is currently unclear. 
+
+Similarly, local and national rhetoric on spending has changed over time; concepts like the 1980s' Washington Consensus, the 1992 economic bubble burst in Japan, the 1995 Kobe Earthquake, the 2008 Great Recession, and the 2011 disaster each greatly shifted the conversation on spending; some governments post-recession advocated austerity, while the 2011 disaster highlighted great need and vulnerability of residents to crisis, both in Tohoku and elsewhere, leading to the 2015 Sendai Framework, which advocated a need for investment in local communities to 'build back better' after crisis so as not to leave communities vulnerable again. Each of these influences could propel or hinder the growth of social welfare regimes, begging the question, which direction have Japanese cities moved over time?
+
+## Hypotheses
+
+In summary, these four types capture a wide range of urban regime literature, each with distinct priorities that would lead to *more* or *less* spending in specific areas. I expect that these urban regimes are not evenly distributed throughout the country, but rather that some types of urban regimes are increasing over time. I hypothesize that social welfare regimes, compared to other types, have increased over the last two decades of climatic hazards, opening up new communities to new changes in the social safety net.
+Below, I outline set of methods to measure each cities' propensity towards these four regimes.
+
+
+# Data
+
+This study aims to describe and characterize the urban regimes of a large-N sample of cities over time, to determine how and under what conditions these cities' regimes have changed. I examine the case of Japan, tracking the full universe of municipalities (cities, towns, villages, and Tokyo's special wards) that govern their own budgetary and administrative affairs, each capable of producing an urban regime that shapes local governance and spending. 
+
+## Why Japan?
+
+While the urban regime framework was originally developed in a US context [@stone_1989], it has been applied widely throughout the world, with strong followings in the US [@kilburn_2004], UK [@bassett_1996; @davies_2017], Europe [@stoker_and_mossberger_1994; @arbaci_2019], Japan [@hill_fujita_2000; @saito_2003; @sorensen_et_al_2010; @tsukamoto_2012], China, Hong Kong [@lai_and_chui_2014], South Korea [@shin_et_al_2015], and comparative settings [@mossberger_and_stoker_2001; @ramirez_perez_et_al_2008]. Japan is a useful test case as an industrialized democracy and the 3rd largest economy in the world, a useful comparison case for many Global North states like the US, UK, France, Germany, South Korea, and Taiwan, among others. Facing frequent floods, typhoons, and earthquakes compared to peer economies, Japan's experience gives us a glimpse of what kind of urban regime transition we might expect in future years due to climate change in the cities of similar industrialized democracies.
+
+## Unit of Observation
+
+I track the full universe of 1739 municipalities for which spending data was available between 2000 and 2018, over 19 years. The final sample narrows into 1738 unique municipalities, which varied over time due to mergers and new divisions, from 1428 cities in 2000 to 1727 cities in 2018, dubbed 'cities' below, totaling 31,493 city-year observations. To ensure a comparable sample, this omits 12 outlier cities at times.^[I omitted 11 cities in the Fukushima Exclusion Zone from 2011 onwards, plus Yubari, Hokkaido for the full period, totaling 12 cities (n = 107 city-years). I omit these because these extremely depopulated cities face dire social and economic conditions quite different from the rest of Japan.]
+
+## Urban Regime Indices
+
+To represent urban regimes, this study developed new indices. Clarence Stone and likeminded scholars sorted cities into four types of urban regimes, including caretaker (status quo), developmental (pro-business), middle-class (egalitarian), and social-welfare (working-class) governing coalitions [@stone_1989; @stoker_and_mossberger_1994; @mossberger_and_stoker_2001; @kilburn_2004; @de_socio_2007]. Over time, Stone himself advocated for attention to change over time in urban regimes, arguing that "there is little reason to expect a stable and cohesive governing coalition in today's cities" [@stone_et_al_2015]. For this reason, one might now expect considerable variation in urban regimes among cities, especially over time. Though the inner-workings of governing coalitions in Japan's municipalities are black boxes, unobservable without detailed qualitative study of each, these coalitions can be generally sorted based on *how strongly each city's spending reflects the interests of a specific urban regime.* This matches Stone's original conception of urban regimes, about which he wrote: "If a governing coalition is to be viable, it must be able to mobilize resources commensurate with its main policy agenda" [@stone_1993]. 
+
+To represent these 4 urban regimes, this study presents 3 new indices, based on 15 spending indicators, depicting how much a city prioritizes spending types expected in a **social welfare** (SW), **middle class** (MC), or **developmental** (D) regime respectively, where low scores among all 3 depicting a **caretaker** regime (C). Each regime index reflects the average (mean) of cities logged spending rates on priorities that regime typically champions (described further below). I trimmed all logged rates to the 99% most common values to protect against outlier bias, clipping any city-years above the 99.5th percentile or below the 0.5th percentile at those limits.^[I use the mean, rather than median, to give each spending priority equal weight; the mean better captures variation particularly when one of these priorities (eg. social assistance vs. unemployment) exceeds or lags behind others.]
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+soc <- read_rds("/cloud/project/raw_data/correlations.rds") %>%
+  filter(regime == "regime_soc") %>%
+  with(label %>% `names<-`(covariate))
+
+mid <- read_rds("/cloud/project/raw_data/correlations.rds") %>%
+  filter(regime == "regime_mid") %>%
+  with(label %>% `names<-`(covariate))
+
+dev <- read_rds("/cloud/project/raw_data/correlations.rds") %>%
+  filter(regime == "regime_dev") %>%
+  with(label %>% `names<-`(covariate))
+```
+
+### Indicators
+
+Annual spending indicators are logged municipal spending rates, measured in 1000s of yen per capita to account for population, log-transformed to account for right-skew common in rates, and inflation-adjusted to the year 2020. I transformed each indicator into a mean-centered z-scores, to account for different ranges, and averaged related indicators together into the 3 indices. To demonstrate their internal validity below, I introduce each indicator and report their correlation with their respective index below, using the Pearson's r correlation coefficient (where -1 shows negative trends, +1 shows positive trends, and 0 shows neither). Each indicator captures a different aspect of that urban regime; no regime must invest equally in, for example, each social welfare indicator to count as such a social welfare regime, so maximal correlations are unlikely, but positive correlations are a good sign of internal validity. 
+
+Each indicator shows positive correlations with their overall index. This is a great sign, indicating that an increase in any of the three indices does generally correspond to a strong increase in its indicators. Additionally, spending rates produced better internal consistency than percentages of the budget, likely because each city's share of spending on different issues varies depending on external factors.
+
+- The **Social Welfare regime** index combines 6 types of spending on working-class interests, which are highly correlated with the final index, according to their Pearson's r correlation coefficient. These including (1) social welfare assistance for low income residents (r = `r soc["welfare"]`), (2) assistance for children (`r soc["welfare_kids"]`), (3) assistance for elders (`r soc["welfare_aged"]`), (4) labor expenditures including unemployment relief and vocational training (`r soc["unemployment"]`), (5) emergency services like fire departments (`r soc["emergency"]`), and (6) public housing (`r soc["housing"]`). Correlations vary somewhat, since some social welfare regimes focus more on unemployment while others focus more on social welfare for elders and children, for example, and so our average takes this variation into account.
+
+- The **Middle Class regime** index combines spending on 5 middle-class interests, which are highly correlated with the final index. These include (7) education (r = `r mid["education"]`), (8) social education (including lifelong learning and cultural facilities) (`r mid["edu_social"]`), (9) health care and public health services (`r mid["health"]`), environmental interests like (10) waste and recycling (`r mid["waste"]`), and (11) city planning (`r mid["planning"]`). (Planning has a weaker, but clearly positive linear relationship with middle class regimes, and it is an important aspect of cities focused on quality of life.)
+
+- The **Developmental regime** index combines spending rates on 4 economic development interests, which correlate well with the final index. These include (12) agriculture, forestry, and fisheries (r = `r dev["agr"]`), (13) commerce and manufacturing (`r dev["com_manuf"]`), large infrastructure like (14) roads and bridges (`r dev["roads_bridges"]`), as well as (15) ordinary construction works (`r dev["construction"]`). 
+
+Each index is mean-centered, where 0 represents the average level of spending nationwide over time on a certain regime's issue areas, and higher/lower values denote more/less spending rates on that regime's issue areas, on average. -1 represents one standard deviation lower spending than average, and +1 represents one standard deviation higher than average. Their distributions are highlighted in Figure A1.
+
+```{r, echo = FALSE} 
+rm(list= ls())
+```
+
+### Classifying Cities by Regime Type
+
+```{r, message=FALSE, warning = FALSE, echo = FALSE}
+tab <- bind_rows(
+    read_rds("/cloud/project/raw_data/datcat.rds") %>% 
+      group_by(type) %>%
+      summarize(percent = round(n() / nrow(.)*100, 1),
+                threshold = "Median"),
+    read_rds("/cloud/project/raw_data/datcat2.rds") %>% 
+      group_by(type) %>%
+      summarize(percent = round(n() / nrow(.)*100, 1),
+                threshold = "Mean")) %>%
+    pivot_wider(id_cols = c(type), names_from = threshold, values_from = percent) %>%
+    mutate(abbr = str_extract(type, "[(].+[)]") %>% str_remove_all("[(]|[)]")) %>%
+  left_join(by = "abbr", y = list(
+  name = c("Social Welfare", "Middle Class", "Developmental", "Caretaker", 
+           "Social Welfare Hybrid (1)", "Social Welfare Hybrid (2)", "Hybrid", "Middle Class Hybrid"),
+  abbr = c("SW", "MC", "D", "C",  "SW-MC", "SW-D", "SW-MC-D", "MC-D"),
+  soc =  c("High",  "Low",  "Low", "Low",  "High",     "High",    "High",       "Low"),
+  mid =  c("Low",  "High",  "High", "Low",  "High",     "Low",    "High",       "High"),
+  dev =  c("Low",  "Low",  "Low", "Low",  "Low",     "Low",    "High",       "High"),
+  order = 1:8) %>% as_tibble()) %>%
+  arrange(order) %>%
+  select(Name = name, `Code` = abbr, `Social Welfare` = soc, `Middle Class` = mid, `Developmental` = dev, 
+         Median, Mean)
+
+nums <- tab %>%
+  with(`Median` %>% `names<-`(Code))
+```
+
+
+\renewcommand{\baselinestretch}{0.5}\selectfont
+\renewcommand{\arraystretch}{1.5}
+
+```{r regimeclass, message=FALSE, warning = FALSE, echo = FALSE}
+tab %>%
+  kbl(format = "latex", booktabs = TRUE, longtable = TRUE, linesep = "\\addlinespace",escape = F,
+      # You can write LaTEX in the caption, as long as you use \\, not \
+      caption = "Table \\ref{tab:regimeclass}\\label{tab:regimeclass}: \\textbf{Regime Classifications}") %>%
+  kable_styling(latex_options = c("hold_position"), full_width = FALSE, font_size = 9) %>%
+  # Note: full_width must = FALSE when using background and color in kableExtra latex
+  # striped must also not be a latex_option
+  add_header_above(c(" " = 2, "Index Scores<sup>1</sup>" = 3, "Percentage of Cases\nby Threshold<sup>2</sup>" = 2)) %>%
+  column_spec(1, width = "3.9cm", 
+              color = c("black", "white", "white", "black",
+                        "white", "white", "white", "white"),
+              background = c("#ffb000", "#648FFF","#696880", "#ADADC9",
+                 "#DC267F", "#ff683b","#5542AD","#001FA2")) %>%
+  column_spec(2, width = "1.75cm") %>%
+  column_spec(3, width = "1.5cm", background = if_else(tab$`Social Welfare` == "High", "#C5C6D0", "white")) %>%
+  column_spec(4, width = "1.5cm", background = if_else(tab$`Middle Class` == "High", "#C5C6D0", "white")) %>%
+  column_spec(5, width = "1.75cm", background = if_else(tab$`Developmental` == "High", "#C5C6D0", "white")) %>%
+  column_spec(6, width = "1.25cm") %>%
+  column_spec(7, width = "1.25cm") %>%
+  pack_rows("\nClassic Regimes", 1, 4, hline_before = FALSE, latex_gap_space = "0.10cm") %>%
+  pack_rows("\nHybrid  Regimes", 5, 8, hline_before = TRUE, latex_gap_space = "0.25cm") %>%
+  footnote(
+    number = c("City-years classified based on three regime scores being above (High) or below (Low) threshold.",
+               "% of cases, when using median as threshold; robustness check uses mean as threshold."),
+    threeparttable = TRUE)  %>%
+  str_replace_all(c("<sup>" = "$^{",   "</sup>" = "}$")) %>%
+  knitr::asis_output()
+```
+
+\renewcommand{\arraystretch}{1}
+\renewcommand{\baselinestretch}{1}\selectfont
+
+Further, we use these indices to empirically classify cities into urban regime types, using our 3 indices' medians to demarcate 8 classifications, to represent the general range of regimes a city can occupy, including our 4 primary urban regimes and 4 hybrids. Table \ref{tab:regimeclass} lists each combination. If just 1 index ranked above the median, I classified a city as that type of regime, including Social Welfare (SW = `r nums["SW"]`%), Middle Class (MC = `r nums["MC"]`%), and Developmental regimes (D = `r nums["D"]`%). If all 3 indices ranked below the median, I classified that as a Caretaker regime (C = `r nums["C"]`%). **Hybrids** describe cities prioritizes interests of 2 or more regimes. If 2 indices ranked above the median, I classified that as either a Social Welfare Hybrid Regime (SW-MC = `r nums["SW-MC"]`%, SW-D = `r nums["SW-D"]`%) or a Middle Class Hybrid Regime (MC-D = `r nums["MC-D"]`%). 3 indices above the median translate to a full hybrid regime (SW-MC-D = `r nums["SW-MC-D"]`%). The more common hybrids tend to involve Social Welfare traits (and follow the same increase over time as social welfare regimes). (I repeated this process using the mean as our cutpoint, showing similar proportions of cases in each group.)
+
+```{r, message = FALSE, warning = FALSE, echo = FALSE}
+rm(list= ls())
+```
+
+## Change over Time
+
+```{r bands, out.width = "100%", message=FALSE, warning = FALSE, echo = FALSE, fig.cap="Figure \\ref{fig:bands}\\label{fig:bands}: Indices Change Over Time"}
+knitr::include_graphics("/cloud/project/viz/bands.png", dpi = 100)
+```
+
+But are these urban regimes fixed, or fluid? Do cities transition between regime types to accomplish their aims? I examined this with continuous and categorical analyses below. First, in Figure \ref{fig:bands}, I examined the changing median score (black line) over time for my 3 urban regime indices. Surrounding the median, red bands show the most common 50% of scores, represented by the interquartile range (25-75th percentiles), and grey bands show the most commonly occurring 90% scores among cities (5-95% percentiles). This chart shows that while cities' status as developmental and middle class regimes (based on their spending) did not change especially, the share of cities spending more on social welfare issues sharply increased in the years leading up to and after 2011.
+
+```{r area, out.width = "100%", message=FALSE, warning = FALSE, echo = FALSE, fig.cap="Figure \\ref{fig-area}\\label{fig-area}: Change in Regime Types by Percentage over Time"}
+knitr::include_graphics("/cloud/project/viz/percent_area.png", dpi = 100)
+```
+
+Second, to contextualize this, I measured the changing annual percentages of regimes based on their urban regime classifications from Table \ref{tab:regimeclass}; I stack the 4 types of regimes where social welfare regime indices were above the median. This highlights the sizable increase in social welfare spending. Social welfare regimes (yellow) increased from >1% in 2000 to 13% in 2018, with a max of 14% in 2012. Including social welfare hybrid regimes that also focused on middle class (orange) or developmental spending (red), these increased from 5% in 2000 to 32% in 2018, surging 18% between 2008 to 2012 to 31% in 2012. When we include hybrid regimes that spent above the median on social welfare, middle class, and developmental interests (purple), the total share spikes considerably. This combined total represents all cities that spent above the median on social welfare, regardless of their other regime scores. Starting at 23% in 2000, the share of cities that spent above the median on social welfare share increased considerably between 2008 and 2012, jumping 33% from 35% to 68%, ending in 2018 at 70% of the whole sample. During the same period, the frequency of solely middle class or developmental regimes declined greatly, from above 10% each to below 5% each, while caretaker regimes surged, then declined, starting and ending at about a quarter of cities.
+
+```{r map, out.width = "100%", message=FALSE, warning = FALSE, echo = FALSE, fig.cap="Figure \\ref{fig-map}\\label{fig-map}: The Spread of Social Welfare Regimes Over Time"}
+knitr::include_graphics("/cloud/project/viz/map_categories_3.png", dpi = 100)
+```
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE, eval = FALSE}
+r <- read_rds("/cloud/project/raw_data/map_regions.rds")
+
+r2000 <- r %>% filter(year == 2000)
+r2010 <- r %>% filter(year == 2010)
+r2018 <- r %>% filter(year == 2018)
+rm(list = ls())
+```
+
+The spread of social welfare regimes is especially evident in Figure \\ref{fig-map}, which uses an Azthumal Equidistant Projection, titled for readability (North is on the right), to map *when* and *where* these social welfare-inclined regimes emerged. East, northeast, and southeast Japan transitioned from caretaker regimes in 2000 to many new social welfare-related regimes by 2018. While the 2011 tsunami likely impacted this, the change appears to have preceded the 2011 tsunami, with many social welfare regimes emerging already by 2010. By 2018, a full 20.9% of cities in Kyushu had become pure Social Welfare regimes, with similar results in Shikoku (18.9%) and Chugoku (15.9%). After including social welfare hybrids (SW-M & SW-D), social welfare-related regimes are even more common in Shikoku (47.4%), Kyushu (46.5%), Kansai (39.6%), and Chugoku (36.4%). And after including pure hybrids (SW-MC-D), this covers almost all cities in some regions, especially frequent in Hokkaido (97.8% of cities), Shikoku (91.6%), Kyushu (87.2%), Chugoku (84.2%), and Tohoku (84.2%). These tallies represent a major change from 2000, when pure social welfare regimes were most common in Kyushu (2.4%). (Some places do, however, seem to host more hybrid regimes over time; hybrid appear very common in rural regimes in Hokkaido both in 2000 (72.4%) and in 2018 (97.8%), characterized by high per-capita spending on all three types of spending priorities.)
+
+To summarize, these descriptive investigations show that cities do transition between regime types, and that social welfare regimes have become considerably more common over time. But perhaps these increases are merely artifacts of other demographic or political economic changes; to ensure a more accurate picture, I turn to statistical methods with controls below.
+
+# Methods
+
+Next, I turn to statistical models to discern clearer estimates of the effect of time on urban regimes and of key correlates. Using the social welfare regime index as my dependent variable, I applied ordinary least squares models with annual fixed effects, the appropriate technique for a normally distributed outcome. Annual fixed effects account for temporal heterogeneity, the appropriate technique for capturing distinct effects each year. I generated 8 models (see Table A2), each with successively more statistical or design-based controls, to ensure our results are robust to model specification. (Then, for further validation, I repeated these models, predicting as my dependent variable the middle class regime index, in Table A3, and then the developmental regime index, in Table A4).
+
+## Basic Covariates
+
+I employ XX statistical controls to predict social welfare regime scores. In Model 1, I predicted social welfare regime scores using annual fixed effects plus basic demographic controls, including (1) population, (2) inhabitable area in hectares to account for city size, (3) the percentage of residents over age 65, to account for aging and policy preferences from elders vs. working-age adults, and (4) income per capita in 1000s of yen, to account for wealth. Further, I applied basic revenue controls: To represent cities' spending capacity, I controlled for (5) revenue per capita in 1000s of yen; (6) the percentage of revenue coming from national or prefectural government funding, to account for financial autonomy or lack thereof; and (7) each city's real term budget balance, so as not to overvalue the strength of a regime whose spending exceeds its means. 
+
+In Model 2, I added 5 disaster controls. To account for disaster conditions, I controlled for (8) disaster deaths and (9) buildings damaged, each per 100,000 residents, as well as (10) whether each town was hit by the 2011 tsunami or not (1/0). Further, I controlled for disaster spending rates per 1,000 residents on (11) recovery, meaning in this context physical reconstruction, and (12) disaster relief. None of my urban regime indicators overlap with disaster spending, although we might expect that social welfare and developmental priorities might overlap with recovery and relief efforts, so they are important covariates.
+
+Next, in Model 3, I added controls for the other 2 regime indices not being predicted; when predicting social welfare, I controlled for (13) middle class and (14) developmental regime scores, to disentangle their effects.
+
+Then, in Model 4, I added partisanship and collective action, alongside necessary controls. To represent support for political parties, I controlled for the percentage of voters who voted for the winning LDP candidate (or its coalition partner Komeito, which competes in separate jurisdiction). This helps account for pork-barrel politics, common among LDP candidates, where winning candidates reward supporting constituents with public works funding and construction contracts. I controlled for this two ways, using votes (15) in the most recent Lower House Election and (16) in the most recent prefectural election, to account for the more diverse politics of local elections. These are distinct concepts, with weak correlations (r = 0.12). These are better controls than, say, mayoral partisanship, because Japanese mayors often run as nonpartisan and *must* collaborate across party lines to govern.
+
+In addition to political ties, I also controlled for (17) bonding, (18) bridging, and (19) linking social capital, using Fraser's annual social capital indices (2000-2017), which measure each type of social capital from 0 to 1 by averaging indicators from publicly available proxies. These indices demonstrated strong internal and external validity in their validation study [@fraser_2021_IJDRR], predicting known correlates in public policy on environment, disasters, and health in 9 studies to date [eg. @fraser_et_al_2020; @fraser_and_aldrich_2021_SR; @fraser_et_al_2021_CRM; @fraser_et_al_2022_EIST]. The *bonding index* averages 7 proxies of in-group ties that capture much residents in a community hail from the *same* social strata, in terms of nationality, religion, education, employment status, employment by gender, communication capacity, and age. These homophily measures (not sheer demographics) capture the density of potential in-group social ties between members of the same social strata (see @fraser_2021_IJDRR for extended literature). The *bridging index* averages 8 measures of civil society participation, which tend to facilitate encounters and social ties between members of *different* social strata [@putnam_2000], including population-normalized rates of nonprofits, religious groups, unions, community centers, libraries, volunteerism, and voter turnout in prefecture and lower house elections. (I simplified the bridging index into equally sized quartiles to avoid collinearity with regime indicators, while still capturing a 4-point gradation from low to high.) Finally, the *linking index* averages 6 rates of access and connection to government officials, including local officials, prefectural officials, police, prefectural assembly members, and voteshare won by the winning party in prefectural and lower house elections.^[Winning party support is different from my controls for partisanship, which only captures the LDP/Komeito, excluding the Democratic Party of Japan, which was in power from 2009 to 2012). Social capital indices are distinct from partisanship controls; Lower House partisanship is only weakly correlated with bonding (r = -0.12), bridging (r = ~0), and linking (r = 0.34); prefectural partisanship is only weakly correlated with bonding (r = -0.09), bridging (r = -0.05), and linking (r = 0.06).]
+
+Last, I added to Model 4 controls for (20) education, using the share of college educated adults, (21) the share of unemployed adults in the labor force, and (21) the total migration rate, reflecting the sum of any in- or out-migration, which might negatively impact social cohesion and is an important control.
+
+## Robustness Checks
+
+Next, I added several further adjustments to ensure robust estimation. In Model 5, I added prefectural fixed effects, with Hokkaido as the baseline and modal category, to account for geographic heterogeneity. Then, in Model 6, I controlled for path dependence using a 1-year lagged dependent variable; for social welfare, this means controlling for the preceding year's social welfare score. Then, in Model 7, to guard against endogeneity bias, I lagged by 1 year all other predictors (aside from annual and prefectural fixed effects), to predict the *next* year's urban regime score using the preceding year's data. Lags constrains the sample in Models 6 onwards to 29755 cases (2001-2018), but ensures conservative estimates. 
+
+Finally, in Model 8, I add a series of standard log, logit, and root transformations to my predictors to better match their distributions and capture clear nonlinear trends, adding a small constant where necessary. Area, income, and migration were logged. Revenue used the square root; the 10th root was used for Population (to avoid colinearity with spending), disaster deaths, damages,recovery spending, and relief spending (since the distributions have frequent, meaningful zeros). Age, voteshares, social capital, education, and unemployment were logit transformed, since they are bounded at 0 and 1; the bridging index was left in quartiles to avoid collinearity with regime indicators. 
+
+Descriptive statistics and exact transformation for all predictors are shown in Table A1. 
+
+
+ All models do. ^ 
+
+These transformations made statistically significant improvements in log-likelihood compared to Model 7 (p < 0.001); similarly, the change in deviance statistic shows statistically significant reductions in the residual sum of squares after adding new variables to each model, indicating that Model 8 fit best. F Statistics shows that each model fits better than an intercept model. No problematic collinearity was observed, with all variance inflation factor scores below 10, the threshold for problematic collinearity. Multiple imputation (i = 5) was used to fill in missing data, representing less than 1% of data points (0.3%).^[Variables with missing data included prefectural votes (n = 1299, <0.172%), lower house votes (n = 521, <0.069%), income (n = 269, <0.036%), and college (n = 46, <0.006%), revenue-derived varaibles (n = 14, <0.002%).]
+
+Compared to our first model, our final, fully specified, transformed model explains 92% of the variance in social welfare regimes, an extremely high amount. Further, the sigma statistic (residual standard error) in Table A2 shows that my final model predicts each city-year's social welfare regime score with an average error of just 0.18 points, and within a 95% confidence interval of 0.35 points. These are extremely favorable accuracy levels, considering that my outcome has a range of 5.12.
+
+I applied the same analyses to middle class and developmental indices in Tables A3 and A4, as alternative perspectives, but my main analysis focuses on social welfare regimes, to distinguish the drivers behind the rise of this regime over time. My best models (Model 8 in each table) explain extremely high shares of variation in social welfare (R2 = 92%, Table A2), middle class (R2 = 83%), and developmental regime scores (R2 = 93%).
+
+## Simulating the Median City
+
+Finally, to formally test my hypotheses, I simulated quantities of interest from these highly accurate models using 1000 statistical simulations in R. Simulation is a frequently used method for generating model predictions [@king_et_al_2001; @imai_et_al_2008; @choirat_et_al_2017], accounting for both estimation uncertainty (using a multivariate normal distribution) and fundamental uncertainty (by averaging over random draws), which allows us to estimate expected outcomes with precise confidence intervals based on 1000 simulations. My simulations calculate the expected outcome for a hypothetical average city-year by varying just one predictor while holding all other predictors constant at their medians (or for categorical variables, their modes).
+
+Unless stated otherwise, all simulations below use Model 8 in Table A2 to predict social welfare regime scores for the median city. This city has a population of 24,750 residents, spans 4,170 hectares of inhabitable land, hosts an income per capita of 1,199,190 yen per capita (~$9,183 USD), with 28% of residents over age 65. The median city in Japan during this period also has low rates of adults with some college education (25%), moderately high unemployment (4.6%), and shares of high total migration (6%). It received 503,740 yen per capita in revenue last year, 16% of which came from national or prefectural government, and has a real term budget balance of +4.7. The city voted for winning LDP/Komeito candidate in moderate-to-high rates, at 51% in Lower House elections and 32% in prefectural elections. Further, we assume median levels of bonding (0.71), bridging (0.32 ~ 2nd quartile), and linking social capital (0.25). Then, to ensure our estimates are unaffected by disaster or other regimes, we hold all disaster conditions and spending variables at 0, for a city unaffected by 3/11, and hold all regime scores from the preceding year at 0 (the natural mean of these Z-scores, very close to the median); to account for time and geography, simulations assume a context of Aichi prefecture in 2018, as an 'ordinary' prefecture with cities large and small.
+
+
+## Time
+
+\newpage
+\renewcommand{\baselinestretch}{0.5}\selectfont
+\renewcommand{\arraystretch}{1.5}
+
+```{r, echo = FALSE, message=FALSE, warning = FALSE}
+mystat <- read_rds("/cloud/project/raw_data/effects.rds") %>%
+  mutate(type = case_when(
+    type == "Mean Post - Mean Pre" ~ "Post - Pre",
+    type == "Mean(2002:2010)" ~ "Mean Pre",
+    type == "Mean(2011:2018)" ~ "Mean Post", 
+    TRUE ~ type)) %>%
+  pivot_wider(id_cols = c(type), names_from = group, values_from = c(label, estimate, lower, upper)) %>%
+  magrittr::set_colnames(value = names(.) %>% str_replace_all(" ", "_")) %>%
+  mutate(se_Social_Welfare = str_extract(label_Social_Welfare, "[(].+[)]") %>% str_remove_all("[(]|[)]"),
+         se_Developmental = str_extract(label_Developmental, "[(].+[)]") %>% str_remove_all("[(]|[)]"),
+         se_Middle_Class = str_extract(label_Middle_Class, "[(].+[)]") %>% str_remove_all("[(]|[)]")) %>%
+  mutate(label_Social_Welfare = str_remove(label_Social_Welfare, " [(].+[)]"),
+         label_Developmental = str_remove(label_Developmental, " [(].+[)]"),
+         label_Middle_Class = str_remove(label_Middle_Class, " [(].+[)]")) %>%
+  mutate(`95% CI` = "", `95% CI ` = "",`95% CI  ` = "") %>%
+  slice(1:21) 
+
+mystat %>%
+  select(`Year` = type, 
+         `Estimate` = label_Social_Welfare, `SE` = se_Social_Welfare, `95% CI`,
+         `Estimate ` = `label_Developmental`, `SE ` = se_Developmental, `95% CI `,
+          `Estimate  ` = label_Middle_Class, `SE  ` = se_Middle_Class, `95% CI  `) %>%
+    kbl(format = "latex", booktabs = TRUE, longtable = TRUE, linesep = "\\addlinespace",
+        # You can write LaTEX in the caption, as long as you use \\, not \
+        caption = paste("Table 4", ": \\textbf{Linear Hypothesis Tests of Temporal Effects}", sep = "")) %>%
+    kable_styling(latex_options = c("striped", "hold_position"), full_width = TRUE, font_size = 9) %>%
+  column_spec(column = 1, width = "2.25cm") %>%
+  # Social Welfare
+  column_spec(column = 2, width = "1.35cm") %>%
+  column_spec(column = 3, width = "0.9cm") %>%
+  column_spec(4, image = spec_pointrange(
+    x = mystat$estimate_Social_Welfare, xmin = mystat$lower_Social_Welfare, xmax = mystat$upper_Social_Welfare, vline = 0)) %>%
+  # Developmental
+  column_spec(column = 5, width = "1.35cm") %>%
+  column_spec(column = 6, width = "0.9cm") %>%
+  column_spec(7, image = spec_pointrange(
+    x = mystat$estimate_Developmental, xmin = mystat$lower_Developmental, xmax = mystat$upper_Developmental, vline = 0)) %>%
+  # Middle Class
+  column_spec(column = 8, width = "1.35cm") %>%
+  column_spec(column = 9, width = "0.9cm") %>%
+  column_spec(10, image = spec_pointrange(
+    x = mystat$estimate_Middle_Class, xmin = mystat$lower_Middle_Class, xmax = mystat$upper_Middle_Class, vline = 0)) %>%
+    pack_rows("\nPre-Disaster", 1, 10) %>% 
+  row_spec(row = 10, bold = TRUE, background = "grey") %>%
+    pack_rows("\nPost-Disaster", 11, 19, hline_before = TRUE, latex_gap_space = "0.25cm") %>%
+  row_spec(row = 19, bold = TRUE, background = "grey") %>%
+    pack_rows("\nAverage Treatment Effect", 20, 20, hline_before = TRUE, latex_gap_space = "0.25cm") %>%
+  row_spec(row = 20, bold = TRUE, background = "grey") %>%
+    pack_rows("\nNet Gain over Time", 21, 21, hline_before = TRUE, latex_gap_space = "0.25cm") %>%
+  row_spec(row = 21, bold = TRUE, background = "grey") %>%
+  add_header_above(c(" ", "Social Welfare\nRegime" = 3, "Developmental\nRegime" = 3, "Middle Class\nRegime" = 3)) %>%
+  footnote(
+    general = c("Statistical Significance: *** p < 0.001, ** p < 0.01, * p < 0.05, . p < 0.10. All p-values and asterisks reflect two-tailed hypothesis tests. Based on annual fixed effects from Model 8 in Tables 3, A1, and A2."),
+    threeparttable = TRUE) %>%
+    str_replace_all(c("<sup>" = "$^{",   "</sup>" = "}$",
+                    "R2" = "R$^{2}$", "<b>" = "\textbf{",  "</b>" = "}",
+                    "<sqrt>" = "$sqrt{", "</sqrt>" = "}$")) %>%
+  knitr::asis_output() 
+
+```
+
+\newpage
+
+\renewcommand{\arraystretch}{1}
+
+
+## Political Drivers
+
+
+
+
+
+
+
+# Discussion
+
+This study measured cities' proclivities towards each of 4 types of urban regimes, commonly discussed in urban policy in the US or Japan (Stone 1989, Kilburn 2004, Basset 1996, Stoker & Mossberger 1994, Hill & Fujita 2000, Sorensen 2010, Ramirez-Perez et al. 2010, Mossberger & Stoker 2001). These included regimes that aim to maintain the (1) status quo in their city (rather undesirable for climate resilience initiatives); regimes that focus on promoting (2) economic development in their city (helpful for accelerating renewable energy booms, but perhaps not for ensuring equitable development with public support); regimes that focus on promoting (3) progressive middle class interests like health care, education, and environmentalism (helpful for renewable energy, but not as common in less prosperous communities); and regimes that focus on increasing (4) opportunity through social welfare policies.
+In the cases examined in Japan, cities with this last regime type tended to be deeply interested in disaster resilience, where city officials were deeply concerned with residents' vulnerability during crisis.
+
+Yet, as I show in the results of this study, some cities' governing coalitions are overcoming these collective action barriers and spending more on redistributive policies than others.
+This is critical, considering that my findings show *social welfare regimes* are becoming increasingly common in Japan, and are often mid-size or rural communities where great changes in social welfare are not generally expected.
+
+## Contributions to Literature
+
+\renewcommand{\baselinestretch}{0.5}\selectfont
+\renewcommand{\arraystretch}{1.5}
+
+```{r, eval = FALSE, include = FALSE}
+dat <- read_rds("/cloud/project/raw_data/dataset.rds") %>%
+  left_join(by = "muni_code", y = read_rds("/cloud/project/raw_data/muni_code.rds")) %>%
+  select(year, muni_code, muni, contains("regime")) %>%
+  pivot_longer(cols = c(contains("regime")), names_to = "regime", values_to = "value") %>%
+  left_join(by = c("year", "muni_code"), y = read_rds("/cloud/project/raw_data/datcat.rds") %>%
+              select(year, muni_code, type) %>% mutate(year = factor(year))) %>%
+  mutate(percentile = ntile(value, 100)) %>%
+  select(year, muni_code, muni, regime, value, percentile, type)
+
+mysum <- bind_rows(
+  # Kyoto - Social Welfare Hybrid (SW-MC)
+  dat %>%
+    filter(str_detect(muni, "Kyoto-shi")) %>%
+    filter(year %in% c(2000, 2018)),
+  
+  # Kobe - Middle Class Hybrid (MC-D) --> Social Welfare Hybrid (SW-MC)
+  dat %>%
+    filter(str_detect(muni, "Kobe-shi")) %>%
+    filter(year %in% c(2000, 2018)),
+  
+  # Fukuoka - Middle Class Hybrid (MC-D) --> Social Welfare Hybrid (SW-MC)
+  dat %>%
+    filter(str_detect(muni, "Fukuoka-shi")) %>%
+    filter(year %in% c(2000, 2018)),
+  
+  # Sendai - Middle Class
+  dat %>%
+    filter(str_detect(muni, "Sendai-shi")) %>%
+    filter(year %in% c(2000, 2018)),
+  
+  # Nagoya - Middle Class --> Social Welfare Hybrid (SW-MC)
+  dat %>%
+    filter(str_detect(muni, "Nagoya-shi")) %>%
+    filter(year %in% c(2000, 2018)),
+  
+  # Iida - Developmental --> Social Welfare Hybrid (SW-D)
+  dat %>%
+    filter(str_detect(muni, "Iida-shi")) %>%
+    filter(year %in% c(2000, 2018)),
+  
+  # Tomakomai - Social Welfare (SW-MC) --> Social Welfare (SW)
+  dat %>%
+    filter(str_detect(muni, "Tomakomai-shi")) %>%
+    filter(year %in% c(2000, 2018)),
+  
+  # Osaka - Hybrid (SW-MC-D) --> Social Welfare Hybrid (SW-C)
+  dat %>%
+    filter(str_detect(muni, "Osaka-shi")) %>%
+    filter(year %in% c(2000, 2018)),
+  
+  # Mitaka - Caretaker (WTF)
+  dat %>%
+    filter(str_detect(muni, "Mitaka-shi")) %>%
+    filter(year %in% c(2000, 2018)),
+  
+  
+  # Shinjuku - Middle Class (MC) --> Caretaker
+  dat %>%
+    filter(str_detect(muni, "Shinjuku-ku")) %>%
+    filter(year %in% c(2000, 2018)),
+  
+  
+  # Kagoshima - Caretaker (C) --> Social Welfare (SW)
+  dat %>%
+    filter(str_detect(muni, "Kagoshima-shi")) %>%
+    filter(year %in% c(2000, 2018)),
+  
+  
+  # Fukushima - Developmental (D) --> Caretaker (C)
+  dat %>%
+    filter(str_detect(muni, "Fukushima-shi")) %>%
+    filter(year %in% c(2000, 2018)),
+  
+  # Kitakyushu --> Hybrid (SW-MC-D) --> Social Welfare Hybrid (SW-MC)
+  dat %>%
+    filter(str_detect(muni, "Kitakyushu-shi")) %>%
+    filter(year %in% c(2000, 2018)),
+  
+  # Muroran --> Social Welfare (SW) --> Social Welfare Hybrid (SW-MC)
+  dat %>%
+    filter(str_detect(muni, "Muroran-shi")) %>%
+    filter(year %in% c(2000, 2018)),
+  
+  # Yokohama - Middle Class --> Social Welfare Hybrid (SW-MC)
+  dat %>%
+    filter(str_detect(muni, "Yokohama-shi")) %>%
+    filter(year %in% c(2000, 2018)),
+  
+  # Sapporo - Middle Class (MC) --> Social Welfare Hybrid (SW-MC)
+  dat %>%
+    filter(str_detect(muni, "Sapporo-shi")) %>%
+    filter(year %in% c(2000, 2018)),
+  
+  # Ishinomaki - Middle Class (MC) --> Hybrid (SW-MC-D)
+  dat %>%
+    filter(str_detect(muni, "Ishinomaki-shi")) %>%
+    filter(year %in% c(2000, 2018)),
+  
+  # Minato-ku - Middle Class -> Social Welfare Hybrid (SW-MC)
+  dat %>%
+    filter(str_detect(muni, "Minato-ku")) %>%
+    filter(year %in% c(2000, 2018)),
+  
+  # Mushashino - Middle Class (MC) - Social Welfare Hybrid (SW-MC)
+  dat %>%
+    filter(str_detect(muni, "Musashino-shi")) %>%
+    filter(year %in% c(2000, 2018)),
+  
+  # Hiroshima Middle Class --> Middle Class Hybrid
+  dat %>%
+    filter(str_detect(muni, "Hiroshima-shi")) %>%
+    filter(year %in% c(2000, 2018)),
+  
+  # Genkai - Developmental (D) --> Hybrid (SW-MC-D)
+  dat %>%
+    filter(str_detect(muni, "Genkai-cho")) %>%
+    filter(year %in% c(2000, 2018)),
+  
+  # Fukui - Developmental (D) --> Social Welfare (SW)
+  dat %>%
+    filter(str_detect(muni, "Fukui-shi")) %>%
+    filter(year %in% c(2000, 2018))
+)
+
+
+tab <- mysum %>% 
+  select(year, muni, regime, percentile, type) %>%
+  mutate(regime = regime %>% str_remove("regime_")) %>%
+  pivot_wider(id_cols = c(muni), names_from = c(regime, year), values_from = percentile) %>%
+  left_join(by = c("muni"),
+            y = mysum %>% select(year, muni, type) %>% distinct() %>%
+              pivot_wider(id_cols = c(muni), names_from = c(year),
+                names_prefix = "type_", values_from = type)) %>%
+  separate(col = muni, into = c("pref", "muni"), sep = " ") %>%
+  mutate(pref = str_remove(pref, "-fu|-ken|-to"),
+         muni = str_remove(muni, "-shi|-cho|-mura|-machi|-ku")) %>%
+  mutate_at(vars(type_2018, type_2000), list(~str_extract(., "[(].+[)]") %>% str_remove_all("[(]|[)]"))) %>%
+  mutate(Literature = muni %>% recode_factor(
+    "Kobe" = "Nunokawa 2007; Funck 2007; Edgington 2010", .default = "")) %>%
+  arrange(type_2000) %>%
+  select(Prefecture = pref, 
+         Municipality = muni,
+         Literature,
+         `Type` = type_2000, `SW` = soc_2000, `MC` = mid_2000, `D` = dev_2000, 
+         `Type ` = type_2018, `SW ` = soc_2018, `MC ` = mid_2018, `D ` = dev_2018) %>%
+  saveRDS("/cloud/project/raw_data/table_cases.rds")
+
+rm(list= ls())
+```
+
+```{r, echo=FALSE, warning = FALSE, message = FALSE, results = "asis"}
+
+tab <- read_rds("/cloud/project/raw_data/table_cases.rds") %>%
+    mutate(Literature = Municipality %>% recode_factor(
+    "Kobe" = "Nunokawa 2007; Funck 2007; Edgington 2010", 
+    "Muroran" = "Edgington 2013", 
+    .default = ""))
+
+
+tab %>%
+    kbl(format = "latex", booktabs = TRUE, longtable = TRUE, linesep = "\\addlinespace",
+        # You can write LaTEX in the caption, as long as you use \\, not \
+        caption = paste("Table 2", ": \\textbf{Urban Regime Change in Key Cities from Literature}", sep = "")) %>%
+    kable_styling(latex_options = c("striped", "hold_position"), full_width = TRUE, font_size = 9) %>%
+    add_header_above(header = c(" " = 3, "Regime in 2000" = 4, "Regime in 2018" = 4)) %>%
+    column_spec(column = 1, width = "1.5cm") %>%
+    column_spec(column = 2, width = "1.5cm") %>%
+    column_spec(column = 3, width = "2.5cm") %>%
+  # 2020
+    column_spec(column = 4, width = "1.7cm") %>%
+    column_spec(column = 5, width = "0.3cm") %>%
+    column_spec(column = 6, width = "0.3cm") %>%
+    column_spec(column = 7, width = "0.3cm") %>%
+  # 2018
+    column_spec(column = 8, width = "1.7cm") %>%
+    column_spec(column = 9, width = "0.3cm") %>%
+    column_spec(column = 10, width = "0.3cm") %>%
+    column_spec(column = 11, width = "0.3cm") %>%
+  footnote(number = c("SW = Social Welfare. MC = Middle Class. D = Developental. C = Caretaker.",
+                      "Numbers rank city-year as a percentile (0-100) compared to all other city-years."),
+    threeparttable = TRUE) %>%
+  str_replace_all(c("<sup>" = "$^{",   "</sup>" = "}$", "R2" = "R$^{2}$", 
+                    "<b>" = "\textbf{", "</b>" = "}", "<sqrt>" = "$sqrt{", "</sqrt>" = "}$")) %>%
+  knitr::asis_output() 
+```
+
+\renewcommand{\arraystretch}{1}
+
+
+
+## Limitations
+
+Recent scholarship has highlighted cases where urban regimes are more difficult to characterize. Depending on the country, urban governance and levels of local autonomy may vary due to institutional differences, laws, and tax structure.62-63 Some cities lack stable governing coalitions, dubbed 'non-regimes.'64 In practice, these either would not spend consistently on the same priorities, or would spend little on any new priorities, resembling a caretaker regime.
+Neighborhood organizations, nonprofits, and labor movements can also motivate and structure these cities' regimes,65 as can higher levels of government.66 These limitations aside, urban regimes, even amidst varying governance conditions, remain a useful way to characterize that development remains so prioritized in some cities, while opportunity-expanding policies remain prioritized in others.67 This study's measurement using developmental, opportunist, and progressive regime indices helps achieve that aim.
+
+
+
+\singlespacing
+
+# References {#references .unnumbered}
+
+
+<div id="refs"></div>
+
+
+
+# (APPENDIX) Appendix {-} 
+
+## Table of Contents
+
+
+\newpage
+
+## Figure A1 {#figure_A1}
+
+```{r figure_A1, out.width = "100%", echo = FALSE, message = FALSE, warning = FALSE, fig.cap= "Figure A1: Distributions of Urban Regime Indices"}
+knitr::include_graphics("/cloud/project/viz/distribution.png", dpi = 100)
+```
+
+\newpage
+
+## Table A1: Descriptives
+
+\newpage
+\blandscape
+
+\renewcommand{\baselinestretch}{0.5}\selectfont
+\renewcommand{\arraystretch}{1.5}
+
+```{r, echo = FALSE, message=FALSE, warning = FALSE, eval = FALSE}
+logit = function(x){log(x / (1 - x)) %>% return()}
+
+read_rds("/cloud/project/raw_data/dataset.rds") %>%
+  select(-year,-muni_code, -pref) %>%
+  pivot_longer(cols = -c(), names_to = "variable", values_to = "value") %>%
+  filter(variable != "social_capital") %>%
+  filter(variable != "tsunami") %>%
+  mutate(term = variable %>% recode_factor(
+    "regime_soc" = "Social Welfare Regime",
+    "regime_mid" = "Middle Class Regime",
+    "regime_dev" = "Developmental Regime",
+    "pop" = "Population",
+    "inhabitable_area" = "Inhabitable Area (ha)",
+    "age_elder" = "% Over Age 65",
+    "income" = "Income per capita<sup>1</sup>",
+    "rev" = "Revenue per capita<sup>1</sup>",
+    "rev_external" = "% National & Prefectural Funding",
+    "rev_to_exp" = "Real Term Budget Balance (+/-)",
+    "deaths" = "Disaster Deaths<sup>2</sup>", 
+    "damages" = "Disaster Damage<sup>2</sup>", 
+    "tsunami" = "Hit by 2011 tsunami (1/0)",
+    "dis_restoration" = "Disaster Recovery Spending Rate<sup>1</sup>",
+    "dis_relief" = "Disaster Relief Spending Rate<sup>1</sup>",
+    "LDP_Komeito_house" = "% LDP Coalition Votes: Lower House",
+    "LDP_Komeito_pref" = "% LDP Coalition Votes: Prefecture",
+    "bonding" = "Bonding Social Capital",
+    "bridging" = "Bridging Social Capital",
+    "linking" = "Linking Social Capital",
+    "college" = "% Some College",
+    "unemployment" = "% Unemployed",
+    "migration" = "Total Migration per capita"),
+    transformation = variable %>% recode_factor(
+      "regime_soc" = "x",
+      "regime_dev" = "x",
+      "regime_mid" = "x",
+      "pop" = "x<sup>1/10</sup>",
+      "inhabitable_area" = "log(x)",
+      "age_elder" = "logit(x)",
+      "income" = "log(x)",
+      "rev" = "sqrt(x)",
+      "rev_external" = "logit(x)",
+      "rev_to_exp" = "x",
+      "deaths" = "x<sup>1/10</sup>", 
+      "damages" = "x<sup>1/10</sup>", 
+      "tsunami" = "x",
+      "dis_restoration" = "x<sup>1/10</sup>",
+      "dis_relief" = "x<sup>1/10</sup>",
+      "LDP_Komeito_house" = "logit(x + 0.01)",
+      "LDP_Komeito_pref" = "logit(x + 0.01)",
+      "bonding" = "logit(x)",
+      "bridging" = "quartiles(x)",
+      "linking" = "logit(x)",
+      "college" = "logit(x)",
+      "unemployed" = "logit(x)",
+      "migration" = "log(x)")) %>%
+  group_by(variable) %>%
+  mutate(scaled = scales::rescale(value, to = c(0, 1))) %>%
+  group_by(variable) %>%
+  mutate(trans = case_when(
+    variable == "pop" ~ value^0.1,
+    variable == "inhabitable_area" ~ log(value),
+    variable == "income" ~ log(value),
+    variable == "age_elder" ~ logit(value),
+    variable == "rev" ~ sqrt(value),
+    variable == "rev_external" ~ logit(value),
+    variable == "deaths" ~ value^0.1,
+    variable == "damages" ~ value^0.1,
+    variable == "dis_restoration" ~ value^0.1,
+    variable == "dis_relief" ~ value^0.1,
+    variable == "LDP_Komeito_house" ~ logit(value + 0.01),
+    variable == "LDP_Komeito_pref" ~ logit(value + 0.01),
+    variable == "bonding" ~ logit(value),
+    variable == "bridging" ~ ntile(value, 4) %>% as.numeric(),
+    variable == "linking" ~ logit(value),
+    variable == "college" ~ logit(value),
+    variable == "unemployed" ~ logit(value),
+    variable == "migration" ~ log(value),
+    TRUE ~ value)) %>%
+  mutate(trans = scales::rescale(trans, to = c(0, 1))) %>%
+  ungroup() %>%
+  saveRDS("/cloud/project/raw_data/datalist.rds")
+
+```
+
+```{r, message=FALSE, warning = FALSE, echo = FALSE, results='asis', eval = FALSE}
+myvalue <- read_rds("/cloud/project/raw_data/datalist.rds") %>%
+  with(split(value, term))
+
+myscaled <- read_rds("/cloud/project/raw_data/datalist.rds") %>%
+  # Truncate the zeros for our disaster variables, 
+  # to better show the value added of the transformation.
+  mutate(identifier = case_when(
+    variable %in% c("deaths", "damages", "dis_restoration", "dis_relief") &
+    value == 0 ~ 1,   TRUE ~ 0)) %>%
+  filter(identifier == 0) %>%
+  with(split(scaled, term))
+
+mytrans <- read_rds("/cloud/project/raw_data/datalist.rds") %>%
+  # Truncate the zeros for our disaster variables, 
+  # to better show the value added of the transformation.
+  mutate(identifier = case_when(
+    variable %in% c("deaths", "damages", "dis_restoration", "dis_relief") &
+    value == 0 ~ 1,   TRUE ~ 0)) %>%
+  filter(identifier == 0) %>%
+  with(split(trans, term))
+
+myn <- read_rds("/cloud/project/raw_data/dataset.rds") %>% nrow()
+
+mystat <- read_rds("/cloud/project/raw_data/datalist.rds") %>%
+  group_by(`Variable` = term,variable) %>%
+  summarize(
+    Mean = mean(value, na.rm = TRUE) %>% round(2),
+    `Std. Dev.` = sd(value,na.rm = TRUE) %>% round(2),
+    Min = min(value, na.rm = TRUE) %>% round(2),
+    Median = median(value,na.rm = TRUE) %>% round(2),
+    Max = max(value, na.rm = TRUE) %>% round(2),
+    N = sum(!is.na(value), na.rm = TRUE),
+    `% Missing` = round(sum(is.na(value),na.rm= TRUE) * 100 / n(), 1),
+    `Distribution<sup>3</sup>` = "",
+    `Transformed<sup>3</sup>` = "",
+    Transformation = unique(transformation)) %>%
+  ungroup() %>%
+  mutate_at(vars(`Mean`:Max), 
+            list(~if_else(variable == "pop", 
+                          true = round(., 0) %>% as.character(), 
+                          false = as.character(.)))) %>%
+  select(-variable)
+
+mystat %>%
+    kbl(format = "latex", booktabs = TRUE, longtable = TRUE, linesep = "\\addlinespace",
+        # You can write LaTEX in the caption, as long as you use \\, not \
+        caption = paste("Table A1", ": \\textbf{Descriptive Statistics} \\newline \\normalsize", myn, " Japanese city-years (2000-2018)", sep = "")) %>%
+    kable_styling(latex_options = c("striped", "hold_position"), full_width = TRUE, font_size = 9) %>%
+    column_spec(column = 1, width = "4cm") %>%
+    #column_spec(2, bold = TRUE, width = "1.6cm") %>%
+    column_spec(9, image = spec_hist(myscaled)) %>%
+    column_spec(10, image = spec_hist(mytrans)) %>%
+    pack_rows("\nUrban Regime Indices", 1, 3, hline_before = TRUE, latex_gap_space = "0.25cm") %>% 
+    pack_rows("\nDemographics", 4, 7, hline_before = TRUE, latex_gap_space = "0.25cm") %>%
+    pack_rows("\nRevenue", 8, 10, hline_before = TRUE, latex_gap_space = "0.25cm") %>%
+    pack_rows("\nDisaster Conditions", 11, 12, hline_before = TRUE, latex_gap_space = "0.25cm") %>%
+    pack_rows("\nDisaster Spending", 13, 14, hline_before = TRUE, latex_gap_space = "0.25cm") %>%
+    pack_rows("\nPolitical Parties", 15, 16, hline_before = TRUE, latex_gap_space = "0.25cm") %>%
+    pack_rows("\nCollective Action", 17, 19, hline_before = TRUE, latex_gap_space = "0.25cm") %>%
+  pack_rows("\nExtra Controls", 20, 23, hline_before = TRUE, latex_gap_space = "0.25cm") %>%
+  add_header_above(header = c(" ", "Statistics" = 5, "Observations" = 2)) %>%
+  
+  footnote(
+    number = c("Spending measured in 1,000s of yen.",
+               "Disaster deaths and damages (# of buildings damaged) measured per 100,000 persons.",
+               "Zeros from unaffected cities in disaster variable distributions omitted to show nonzero values clearly."),
+    general = c("Categorical Variables include Year<sup>a</sup>, Prefecture<sup>b</sup>, and Tsunami<sup>c</sup>. Models use multiple imputation with 5 imputations to account for missing data."), 
+    alphabet = c("Years range from 2000 (n = 1428 cities) to 2018 (n = 1727). Mode is 2010 (n = 1732). In models, baseline year is 2000. Some municipalities consolidated over time, while others split. Dataset omits outliers including Fukushima Exclusion Zone cities from 2011-2018 and Yubari 2000-2018.",
+                 "47 Prefectures. Modal prefecture is Hokkaido, with 178 cities (10%, n = 1,738) and 3,327 city-years (10%, n = 31,493). In models, the baseline prefecture is Hokkaido.",
+                 "Tsunami hit 85 municipalities in 2011; cities labeled 2011-2018 as tsunami-affected (n = 680)."), 
+    footnote_order = c("general",  "alphabet", "number"), threeparttable = TRUE) %>%
+  str_replace_all(c("<sup>" = "$^{",   "</sup>" = "}$",
+                    "R2" = "R$^{2}$", "<b>" = "\textbf{",  "</b>" = "}",
+                    "<sqrt>" = "$sqrt{", "</sqrt>" = "}$")) %>%
+  knitr::asis_output() 
+
+```
+```{r, include=FALSE, message=FALSE, warning = FALSE}
+rm(list = ls())
+```
+
+\renewcommand{\arraystretch}{1}
+
+\elandscape
+\newpage
+
+
+## Table A2: Models of Social Welfare Regime Scores
+
+\blandscape
+\renewcommand{\baselinestretch}{0.5}\selectfont
+\renewcommand{\arraystretch}{1.5}
+
+```{r, results='asis', echo = FALSE, message = FALSE, warning = FALSE}
+load("/cloud/project/table_soc.RData")
+load("/cloud/project/captions.RData")
+get_ktable(tableno = "Table A2")
+```
+
+\renewcommand{\arraystretch}{1}
+
+\elandscape
+\newpage
+
+## Table A3: Models of Developmental Regime Scores
+
+\blandscape
+\renewcommand{\baselinestretch}{0.5}\selectfont
+\renewcommand{\arraystretch}{1.5}
+
+```{r, results='asis', echo = FALSE, message = FALSE, warning = FALSE}
+load("/cloud/project/table_dev.RData")
+load("/cloud/project/captions.RData")
+get_ktable(tableno = "Table A3")
+```
+
+\renewcommand{\arraystretch}{1}
+
+\elandscape
+\newpage
+
+
+\newpage
+\blandscape
+
+## Table A4: Models of Middle Class Regime Scores
+
+\renewcommand{\baselinestretch}{0.5}\selectfont
+\renewcommand{\arraystretch}{1.5}
+
+```{r, results='asis', echo = FALSE, message = FALSE, warning = FALSE}
+load("/cloud/project/table_mid.RData")
+load("/cloud/project/captions.RData")
+get_ktable(tableno = "Table A4")
+```
+
+\renewcommand{\arraystretch}{1}
+
+\elandscape

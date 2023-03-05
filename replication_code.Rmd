@@ -1,0 +1,3628 @@
+---
+title: "Measuring Urban Regimes in Japan through Spending Priorities"
+subtitle: "Replication Code"
+author: "Timothy Fraser"
+date: "December 29, 2020"
+output: html_notebook
+---
+
+This document details replication code necessary to reproduce indices measuring each city in Japan in terms of the prevalence and influence of several types of urban regimes. The urban regime, coined by Clarence Stone in his study of Atlanta, describes a constellation of actors and interests which shape its governance.
+
+Stone and likeminded scholars sorted American cities into four types of urban regimes, including caretaker, developmental, progressive, and opportunist regimes. Over time, Stone himself came to advocate for a more nuanced perspective on political change in cities, arguing that "there is little reason to expect a stable and cohesive governing coalition in today's cities." For this reason, we might now expect considerable variation in urban regimes among cities, especially over time.
+
+Japan has its own adjacent literature on urban politics.
+
+# 0. Packages
+
+```{r packages, message = FALSE, warning = FALSE}
+library(tidyverse)
+library(viridis)
+```
+
+# 1. Gather Data
+
+## 1.1 Source Tables
+
+```{r sources, include = FALSE}
+bind_rows(
+  data.frame(
+    code = "0000020101",
+    table = "A",
+    type = "人口・世帯"),
+  data.frame(
+    code = "0000020102",
+    table = "B",
+    type = "自然環境"),
+  data.frame(
+    code = "0000020103",
+    table = "C",
+    type = "経済基盤"),
+  data.frame(
+    code = "0000020104",
+    table = "D",
+    type = "行政基盤"),
+  data.frame(
+    code = "0000020105",
+    table = "E",
+    type = "教育"),
+  data.frame(
+    code = "0000020106",
+    table = "F",
+    type = "労働"),
+  data.frame(
+    code = "0000020107",
+    table = "G",
+    type = "文化・スポーツ"),
+  data.frame(
+    code = "0000020108",
+    table = "H",
+    type = "居住"),
+  data.frame(
+    code = "0000020109",
+    table = "I",
+    type = "健康・医療"),
+  data.frame(
+    code = "0000020110",
+    table = "J",
+    type = "福祉・社会保障"),
+  data.frame(
+    code = "0000020111",
+    table = "K",
+    type = "安全")
+) %>%
+  saveRDS("raw_data/sources.rds")
+
+read_rds("raw_data/sources.rds") %>% knitr::kable()
+```
+
+## 1.2 Identify Variables
+
+```{r varnames}
+bind_rows(
+  # All
+  data.frame(
+    code = "A1101",
+    type = "Total population (Both sexes)[person]",
+    name = "pop",
+    group = "pop"),
+  data.frame(
+    code = "A1231",
+    type = "Median Age",
+    name = "age_median",
+    group = "age"),  
+  data.frame(
+    code = "A1303",
+    type = "Total population age 65 and over [person]",
+    name = "age_elder",
+    group = "age"),
+  
+  data.frame(
+    code = "A1303",
+    type = "Population (0-17, total)[person]",
+    name = "age_youth",
+    group = "age"),
+  
+  data.frame(
+    code = "A5103", 
+    type = "Inmigrants[persons]",
+    name = "inmigrants",
+    group = "migration"),
+  data.frame(
+    code = "A5104", 
+    type = "Outmigrants[persons]",
+    name = "outmigrants",
+    group = "migration"),
+  
+  
+  data.frame(
+    code = "E9106",
+    type = "Population by last school completed (University and graduate school)[persons]",
+    name = "full_college",
+    group = "college"),
+  data.frame(
+    code = "E9105",
+    type = "Population by last school completed (junior college and college of technology)[persons]",
+    name = "junior_college",
+    group = "college"),
+
+  data.frame(
+    code = "F1101",
+    type = "Population in labour force [persons]",
+    name = "labor_force",
+    group = "unemployed"),
+  data.frame(
+    code = "F1107",
+    type = "Number of unemployed persons [persons]",
+    name = "unemployed",
+    group = "unemployed"),
+  
+  
+  # Geography
+  data.frame(
+    code = "B1103",
+    type = "Total inhabitable area (ha)",
+    name = "inhabitable_area",
+    group = "area"),
+  # Income
+  data.frame(
+    code = "C120110",
+    type = "Taxable income [thousands of yen]", 
+    name = "income",
+    group = "income"),
+  data.frame(
+    code = "C120130",
+    type = "Taxpayers [persons]",
+    name = "taxpayers",
+    group = "income"),
+  # Employment
+  data.frame(
+    code = "C2207",
+    type = "Number of persons engaged (Economic Census for Business Frame) [persons]",
+    name = "employees",
+    group = "employment"),
+  data.frame(
+    code = "C2210",
+    type = "number of persons engaged in primary industry [persons]",
+    name = "employees_primary",
+    group = "employment"),
+  data.frame(
+    code = "C2211",
+    type = "number of persons engaged in secondary industry [persons]",
+    name = "employees_secondary",
+    group = "employment"),
+  data.frame(
+    code = "C2212",
+    type = "number of persons engaged in secondary industry [persons]",
+    name = "employees_tertiary",
+    group = "employment"),
+  # Economic Output
+  data.frame(
+    code = "C3101",
+    type = "Gross agricultural product (million yen)",
+    name = "output_agr",
+    group = "output"),
+  data.frame(
+    code = "C3401",
+    type = "value of manufactured goods shipments (million yen)",
+    name = "output_manuf",
+    group = "output"),
+  data.frame(
+    code = "C3501",
+    type = "Annual sales of commercial goods (wholesale and retail trade) [million yen]",
+    name = "output_com",
+    group = "output"),
+  # Revenue and Expenditures
+  data.frame(
+    code = "D2202",
+    type = "Real term balance of revenue to expenditure (%)", # 実質収支比率（市町村財政）
+    name = "rev_to_exp",
+    group = "rev"),
+  data.frame(
+    code = "D3201",
+    type = "Total Revenue from all sources (thousand yen)",
+    name = "rev",
+    group = "rev"),
+  data.frame(
+    code = "D3203",
+    type = "Settlement of total expenditure (municipalities)[thousand yen]",
+    name = "total_spending",
+    group = "total_spending"),
+  data.frame(
+    code = "D320113",
+    type = "National Disbursements (thousands of yen)",
+    name = "rev_nat",
+    group = "rev"),
+  data.frame(
+    code = "D320115",
+    type = "Prefectural Disbursements (thousands of yen)",
+    name = "rev_pref",
+    group = "rev"),
+  # Social Welfare Regime 
+  data.frame(
+    code = "D3203031",
+    type = "Social welfare expenditure (municipalities)[thousand yen]",
+    name = "welfare",
+    group = "welfare"),
+  data.frame(
+    code = "D3203032",
+    type = "Social welfare expenditure for the aged (municipalities)[thousand yen]",
+    name ="welfare_aged",
+    group = "welfare_aged"),
+  data.frame(
+    code = "D3203033",
+    type = "Welfare expenditure for children (municipalities)[thousand yen]",
+    name ="welfare_kids",
+    group = "welfare_kids"),
+  data.frame(
+    code = "D3203034",
+    type = "Expenditure for livelihood protection (municipalities)[thousand yen]",
+    name ="livelihood_protection",
+    group = "livelihood"),
+  
+  data.frame(
+    code = "D320305",
+    type = "(Expenditure) Labor expenditures (local public finance, municipalities)[thousand yen]",
+    name ="unemployment",
+    group = "unemployment"),
+  data.frame(
+    code = "D3203086",
+    type = "(Expenditure) Housing (local public finance, municipalities)[thousand yen]",
+    name ="housing",
+    group = "housing"),
+  data.frame(
+    code = "D320309",
+    type = "(Expenditure) Fire service (local public finance, municipalities)[thousand yen]",
+    name = "fire_service",
+    group = "emergency"),
+  # Code progressive variables
+  data.frame(
+    code = "D3203042",
+    type = "(Expenditure) Public health services  (local public finance, municipalities)[thousand yen]",
+    name = "public_health_services",
+    group = "health"),
+  data.frame(
+    code = "D3203043",
+    type = "(Expenditure) Public health centers (local public finance, municipalities)[thousand yen]",
+    name = "public_health_centers",
+    group = "health"),
+  data.frame(
+    code = "D3203044",
+    type = "(Expenditure)Waste disposal  (local public finance, municipalities)[thousand yen]",
+    name = "waste_disposal",
+    group = "waste"),
+  data.frame(
+    code = "D3203085",
+    type = "(Expenditure) City planning (local public finance, municipalities)[thousand yen]",
+    name = "city_planning",
+    group = "planning"),
+  data.frame(
+    code = "D3203102",
+    type = "Education expenditure for elementary schools (municipalities)[thousand yen]",
+    name = "edu_elementary",
+    group = "education"),
+  data.frame(
+    code = "D3203103",
+    type = "Education expenditure for junior high schools (municipalities)[thousand yen]",
+    name = "edu_junior_high",
+    group = "education"),
+  data.frame(
+    code = "D3203104",
+    type = "Education expenditure for senior high schools (municipalities)[thousand yen]",
+    name = "edu_senior_high",
+    group = "education"),
+  data.frame(
+    code = "D3203105",
+    type = "Expenditure for Schools for special needs education (municipalities)[thousand yen]",
+    name = "edu_special_needs",
+    group = "education"),
+  data.frame(
+    code = "D3203106",
+    type = "Education expenditure for kindergartens (municipalities)[thousand yen]",
+    name = "edu_kinder",
+    group = "education"),
+  data.frame(
+    code = "D3203107",
+    type = "Social education expenditure (municipalities)[thousand yen]",
+    name = "edu_social",
+    group = "edu_social"),
+  # Expenses for social education facilities established by local governments 
+  # by ordinance and under the jurisdiction of the Board of Education
+  # and expenses for social education activities conducted by the Board of Education
+  # (including physical education / cultural relations and protection of cultural properties)
+  # this is cultural affairs facilities, eg. libraries, community centers, etc.
+  # lifelong learning
+  # museums
+  # cultural parks
+  # library
+  data.frame(
+    code = "D3203108",
+    type = "(Expenditure) Health and physical education (local public finance, municipalities)[thousand yen]",
+    name = "edu_health_phys",
+    group = "education"),
+  # Developmental
+  data.frame(
+    code = "D320306",
+    type = "Agriculture, forestry and fishery expenditure (municipalities)[thousand yen]",
+    name = "agr",
+    group = "agr"),
+  data.frame(
+    code = "D320307",
+    type = "Commerce and manufacturing expenditure (municipalities)[thousand yen]",
+    name = "com_manuf",
+    group = "com_manuf"),
+  data.frame(
+    code = "D3203082",
+    type = "(Expenditure) Roads and bridges  (local public finance, municipalities)[thousand yen]",
+    name = "roads_bridges",
+    group = "roads_bridges"),
+  data.frame(
+    code = "D320406",
+    type = "(Expenditure) Ordinary construction works (local public finance, municipalities)[thousand yen]",
+    name = "construction",
+    group = "construction"),
+
+  # Confounding Variables: Disasters
+  # Let's also separate disaster variables in general, as this is an important
+  # intervening variable, not a direct trait of urban regimees
+
+  # Disaster Recovery (Specifically, as its own earmarked category)
+  data.frame(
+    code = "D320311", # Part of D320311 = its own category
+    # D320311_災害復旧費（市町村財政）
+    type = "Disaster Restoration expenditure (municipalities)[thousand yen]",
+    name ="dis_restoration",
+    group = "disaster"),
+  # Disaster Recovery Expenses, as part of the Social Welfare Budget
+  # D3203035_災害救助費（市町村財政）
+  data.frame(
+    code = "D3203035",# Part of D320303 = 民生費（Social Welfare)
+    type = "(Expenditure) Disaster relief costs (local public finance, municipalities)[thousand yen]",
+    name = "dis_relief", 
+    group = "disaster"),
+  # Disaster Recovery Program Administrative Expenses
+  # D320407_災害復旧事業費（市町村財政）
+  data.frame(
+    code = "D320407",
+    type = "(Expenditure) Disaster recovery (local public finance, municipalities)[thousand yen]",
+    name = "dis_admin",
+    group = "disaster")
+) %>%
+  mutate(regime = case_when(
+    name %in% c("welfare", "welfare_aged", "welfare_kids",
+                "livelihood_protection", "unemployment", "housing",
+                "fire_service") ~ "social_welfare",
+    name %in% c("public_health_services", "public_health_centers",
+                "waste_disposal", "city_planning",
+                "edu_kinder", "edu_elementary",
+                "edu_junior_high", "edu_senior_high",
+                "edu_special_needs", "edu_social", "edu_health_phys") ~ "middle_class",
+    name %in% c("agr", "com_manuf", "roads_bridges", "construction") ~ "developmental",
+    TRUE ~ NA_character_)) %>%
+  # Classify them into each table based on first letter
+  mutate(table = str_sub(code, 1, 1)) %>%
+  saveRDS("raw_data/varnames.rds")
+```
+
+## 1.3 E-Stat API Import
+
+Let's import indicators on our three types of urban regimes.
+
+### Functions
+
+```{r}
+library(tidyverse)
+library(jpstat)
+# Index of available stats
+# https://www.e-stat.go.jp/stat-search/database?page=1&layout=datalist&toukei=00200502&tstat=000001111376&cycle=8&tclass1=000001111379&tclass2val=0
+
+# Set up your own ESTAT Census API ID - it's free
+myid <- "f34fbd978b7295e3ad23596e1a34f6d46b3fb502"
+
+# Load in the table of social and demographic categories and their corresponding codes
+sources <- read_rds("raw_data/sources.rds")
+
+# Load in the names of the variables we want specifically
+varnames <- read_rds("raw_data/varnames.rds")
+
+# These are the tables we will need.
+varnames$table %>% unique()
+
+
+# Save that list with english names,
+paste("https://www.e-stat.go.jp/dbview?sid=",
+              filter(sources, table == "A")$code, sep = "") %>%
+  # Get census meta data
+  estat(appId = myid, statsDataId = ., lang = "E") %>%
+  # Constrain time range
+  activate("time") %>%
+  filter(str_detect(name, "20[0-9]{2}")) %>%
+  # Clarify Geography
+  activate("area")  %>%
+  filter(level %in% c(2, 3) | str_detect(name, "東京都")) %>%
+  # drop any totals for special ku
+  # Drop any merged sites, which contain the prefix "formerly"（旧）
+  #filter(!str_detect(name, "特別区部") & !str_detect(name, "（旧）")) %>%
+  activate("area") %>% as_tibble() %>% 
+  select(muni_code = code, muni = name, level) %>%
+  saveRDS("raw_data/muni_ku.rds")
+
+# Now get just the municipalities, removing the extra ku
+read_rds("raw_data/muni_ku.rds") %>%
+  # Filter to just 市区町村, not 区 (but keeping the tokyo special wards)
+  filter(level == 2  | str_detect(muni, "東京都")) %>%
+  filter(!str_detect(muni, "特別区部")) %>%
+  select(muni_code, muni) %>%
+  saveRDS("raw_data/muni_code.rds")  
+
+# Build a converter
+
+# There are 181 ku (not in Tokyo) that we need to build a translator for
+# That's six more than the old translator (175, below), because we're including all records 
+#read_csv("raw_data/wards_municipalities_conversion.csv") %>% dim()
+read_rds("raw_data/muni_ku.rds") %>% 
+  select(ward_code = muni_code, ward = muni, level) %>%
+  mutate(muni = str_extract(ward, pattern = ".*[-]shi ") %>% 
+           str_remove("[(]former[)] ") %>% str_trim(side = "right")) %>%
+  filter(level == 3 & !str_detect(ward, "Tokyo"))  %>% 
+  left_join(by = c("muni" = "muni"), 
+            y = read_rds("raw_data/muni_ku.rds") %>% 
+            filter(level == 2) %>% select(muni, muni_code)) %>%
+  select(ward_code, ward, muni, muni_code) %>%
+  saveRDS("raw_data/wards_municipalities_conversion.rds")
+
+
+
+
+
+# Now, Get the list of municipalities available, in Japanese
+muni <- paste("https://www.e-stat.go.jp/dbview?sid=",
+              filter(sources, table == "A")$code, sep = "") %>%
+  # Get census meta data
+  estat(appId = myid, statsDataId = .) %>%
+  # Constrain time range
+  activate("time") %>%
+  filter(str_detect(name, "20[0-9]{2}")) %>%
+  # Clarify Geography
+  activate("area")  %>%
+    # Filter to just 市区町村, not 区 (but keeping the tokyo special wards)
+  filter(level == 2 | str_detect(name, "東京都")) %>%
+  # drop any totals for special ku
+  filter(!str_detect(name, "特別区部")) %>%
+  # Drop any merged sites, which contain the prefix "formerly"（旧）
+  #filter(!str_detect(name, "特別区部") & !str_detect(name, "（旧）")) %>%
+  activate("area") %>% as_tibble() %>% select(code, name, parentCode)
+
+# Let's write a for-loop to gather results,
+# it works for 1741 municipalities over time
+get_stats = function(i, mydirectory, mydata){
+  print(i)
+  
+  # Filter to your prefecture's data
+  mypref <- mydata %>%
+      filter(str_sub(code, 1,2) %>% as.numeric() == i)
+
+  # Grab the municipality codes in that prefecture
+  somemuni <- muni %>%
+    filter(str_sub(code, 1,2) %>% as.numeric() == i)
+  
+  # Check how many municipalities are there in that prefecture
+  
+  # Divide that number by 100, then jump up to the next whole digit 
+  # to get the number of times we would need to run the algorithm to catch all cases.
+  nchunks <- ceiling(nrow(somemuni) / 100)
+  
+  # Assign each municipality to an equally sized chunk.
+  # If under 100, they'll all be in chunk 1. If 101-200, they'll be in 2 chunks; If 201 to 300, they'll be in 3 chunks.
+  somemuni <- somemuni %>%
+    mutate(chunk = ntile(1:n(), n = nchunks))
+  
+  # If just 1 chunk
+  if(nchunks == 1){
+    # Filter to the cases in chunk 1 (all of them)
+    mypref %>%
+      filter(code %in% filter(somemuni, chunk == 1)$code) %>%
+      collect() %>%
+      saveRDS(paste(mydirectory, "/", i, ".rds", sep = ""))
+  }
+  # If 2 chunks
+  if(nchunks == 2){
+    # Filter to the cases in chunk 1
+    h1 <- mypref %>%
+      filter(code %in% filter(somemuni, chunk == 1)$code) %>%
+      collect()
+    # Filter to the cases in chunk 2
+    h2 <- mypref %>%
+      filter(code %in% filter(somemuni, chunk == 2)$code) %>%
+      collect()
+    
+    # Bind and save together
+    bind_rows(h1,h2) %>%
+      saveRDS(paste(mydirectory, "/", i, ".rds", sep = ""))
+    remove(h1,h2)
+  }
+  # If 3 chunks
+  if(nchunks == 3){
+    # Filter to the cases in chunk 1
+    h1 <- mypref %>%
+      filter(code %in% filter(somemuni, chunk == 1)$code) %>%
+      collect()
+    # Filter to the cases in chunk 2
+    h2 <- mypref %>%
+      filter(code %in% filter(somemuni, chunk == 2)$code) %>%
+      collect()
+    # Filter to the cases in chunk 2
+    h3 <- mypref %>%
+      filter(code %in% filter(somemuni, chunk == 3)$code) %>%
+      collect()
+    
+    # Bind and save together
+    bind_rows(h1,h2,h3) %>%
+      saveRDS(paste(mydirectory, "/", i, ".rds", sep = ""))
+    remove(h1,h2,h3)
+  }
+  remove(mypref, somemuni, nchunks)
+}
+
+
+get_table = function(mytable){
+  
+  # Let's start with 
+  fulldata <-  paste("https://www.e-stat.go.jp/dbview?sid=",
+                     filter(sources, table == mytable)$code, sep = "") %>%
+    # Get census meta data
+    estat(appId = myid, statsDataId = .) %>%
+    # Clarify Geography
+    activate("area") %>%
+    filter(code %in% muni$code) %>%
+    # Let's get the metadata for the full dataset we want
+    # Clarify types of values; filter to observed values
+    activate("tab") %>%
+    filter(name == "観測値") %>%
+    select() %>%
+    # Zoom into select variables
+    activate("cat01") %>%
+    filter(code %in% filter(varnames, table == mytable)$code) %>%
+    select(code) %>%
+    # Clarify time period, from 2000 to 2018 (2019 not fully available)
+    activate("time") %>%
+    select(name) %>%
+    filter(str_detect(name, "200[0-9]{1}|201[0-8]{1}")) %>%
+    # Clarify geographic variables
+    activate("area") %>%
+    select(code)
+  
+  # Create a home for these files
+  mydir <- tempdir()
+  
+  c(1:47) %>%
+    map(~get_stats(i = ., mydir, mydata = fulldata))
+  
+  # Then bind together
+  dir(mydir, full.names = TRUE, pattern = "[0-9]+.rds") %>%
+    map_dfr(~read_rds(.)) %>%
+    saveRDS(paste("raw_data/", mytable, ".rds", sep = ""))
+  
+  # And get rid of temp
+  unlink(mydir, recursive = TRUE)
+
+}
+
+
+```
+
+
+
+
+
+### Download
+
+```{r, eval = FALSE}
+get_table(mytable = "A") # get simple demographic variables
+get_table(mytable = "B") # get area variables
+get_table(mytable = "C") # get socioeconomic variables
+get_table(mytable = "D") # get governance variables
+get_table(mytable = "E") # get education variables
+get_table(mytable = "F") # get labor variables
+
+
+```
+
+### Covariates
+
+Finally, we're going to download a dataset from a past study, which records key disaster data from 2011 for each municipality affected by the 3/11 distaster. This data is originally sourced from the work of Daniel P. Aldrich, and these variables were used in Tim Fraser's study of renewable energy in Japan We'll query that study's replication data using its DOI, which is available [by URL here.](https://doi.org/10.7910/DVN/GBRVWY) 
+
+```{r, eval = FALSE}
+# Let's load the dataverse package
+library("dataverse")
+# And tell dataverse where to look
+Sys.setenv("DATAVERSE_SERVER" = "dataverse.harvard.edu")
+
+# Query that replication dataset via its DOI
+get_dataset("doi:10.7910/DVN/GBRVWY")$files %>%
+  # Search its files for this specific excel file
+  filter(label == "Database_prefectural_analysis_R_relevant_variables.xlsx") %>%
+  # acquire the file's own DOI
+  with(persistentId) %>%
+  # Download data, using the file DOI, and read it in using the read_excel function
+  get_dataframe_by_doi(filedoi = ., .f = readxl::read_excel) %>%
+  # Then give the variables simple and intuitive names
+  select(code = Code, deaths = death11, damages = damaged11, 
+         tsunami = coast, exclusion_zone = Fukushima_Exclusion_Zone) %>%
+  # and save to file!
+  saveRDS("raw_data/disaster_data.rds")
+```
+
+
+Next, let's repeat that process and download [Tim Fraser's Social Capital Indices](https://doi.org/10.7910/DVN/PBBKBF), from 2000-2017.
+
+```{r}
+# Download data, using the file name, and read it in using the read_csv function
+get_dataframe_by_name(filename = "indices_V2_2020_10_28.tab",
+                        dataset = "10.7910/DVN/PBBKBF",
+                        original = FALSE,
+                        .f = read_tsv) %>%
+  select(muni_code, year, social_capital, bonding, bridging, linking, vulnerability) %>%
+  # and save to file!
+  saveRDS("raw_data/sci.rds")
+```
+
+
+### Voting
+
+#### Lower House Elections
+
+```{r, message = FALSE, warning = FALSE, echo = FALSE}
+# Import main municipality codes about which we seek data
+
+main = read_rds("raw_data/muni_ku.rds") %>%
+  select(ward_code = muni_code) %>%
+    # In a few cases, we have ward tallies instead of municipalities; 
+  # let's get the municipality in there too.
+  # Let's join in the correct municipality code for each ward
+  left_join(by = c("ward_code" = "ward_code"),
+             y = read_rds("raw_data/wards_municipalities_conversion.rds") %>%
+                     select(ward_code, muni_code)) %>%
+  # If the new municipality code is missing, it means it wasn't a ward; fill it in with its original municipality code. 
+  mutate(muni_code = if_else(is.na(muni_code), ward_code, muni_code)) %>%
+  inner_join(
+    # Using this unique identifier as an index to merge by,
+    by = c("ward_code" = "muni_code"),
+    # Import and join in our unique conversion file
+    y = read_csv("raw_data/reed_smith_key_municipalities.csv") %>% 
+      select(#muni = Municipality, 
+             muni_code = Code,
+             kuname_jp = 4,
+             kuname = 5) %>%
+      mutate(muni_code = str_pad(muni_code, width = 5, side = "left", pad = "0"))) %>%
+  select(muni_code, ward_code, kuname_jp, kuname)
+
+# Wowsers! Gains back about ~40 municipalities. WORTH IT.
+```
+
+First, we acquire party voteshare data.
+
+```{r, message=FALSE,warning=FALSE}
+# Create a data.frame listing which parties were in a government coalition
+winning_party = bind_rows(
+  data.frame(
+    party_en = "DPJ",
+    year = 2009:2011),
+  data.frame(
+    party_en = "JSP",
+    year = 1993:1995),
+  data.frame(
+    party_en = "SDP",
+    year = 1996:1999),
+  data.frame(
+    party_en = "Komeito",
+    year = c(2000:2008, 2012:2020)),
+  data.frame(
+    party_en = "Conservative",
+    year = 2000:2002),
+  data.frame(
+    party_en = "LDP",
+    year = c(1958:1992, 1994:2008, 2012:2020)),
+  data.frame(
+    party_en = "Sakigake",
+    year = 1994:1999)) %>%
+  mutate(winning_party = 1)
+
+
+party_vote = read_csv("raw_data/reed_smith_japan_house_of_reps_elections_candidates.csv") %>%
+  filter(year >= 2000) %>%
+  # Select only key variables
+  select(pid, year, kuname, kucode, 
+         ku_vote, ku_totvote, ku_electorate, party_en, result) %>%
+  filter(!is.na(ku_vote)) %>%
+  # Calculate percentage of votes won by candidate out of votes won by all candidates
+  mutate(voteshare = ku_vote / ku_totvote, 
+         # Calculate turnout out of electorate for their race
+         turnout = ku_totvote / ku_electorate) %>%
+  arrange(kuname, year) %>%
+  # Zoom into just who won the election. We're not going to worry about special cases for now.
+  # Just, sheer, who won?
+  filter(result == 1) %>%
+  # aggregate to party
+  group_by(year, kuname, party_en) %>%
+  summarize(voteshare = sum(voteshare, na.rm = TRUE),
+            turnout = unique(turnout, na.rm = TRUE)) %>%
+  ungroup() %>%
+    # Joining in data on which parties were in power during which years since 1958
+  left_join(by = c("party_en", "year"),
+            y = winning_party) %>%
+  mutate(winning_party = if_else(is.na(winning_party), 0, 1))
+
+vote_winner = main %>%
+  left_join(by = c("kuname"),
+            y = party_vote %>% 
+              filter(winning_party == 1) %>%
+              select(-party_en))
+
+vote_ldp = main %>%
+  left_join(by = c("kuname"),
+            y = party_vote %>% 
+              filter(party_en == "LDP") %>%
+              select(-party_en))
+
+vote_komeito = main %>%
+  left_join(by = c("kuname"),
+            y = party_vote %>% 
+              filter(party_en == "Komeito") %>%
+              select(-party_en))
+
+vote_turnout = main %>%
+  left_join(by = c("kuname"),
+            y = party_vote %>%
+              group_by(year, kuname) %>%
+              summarize(turnout = unique(turnout)) %>%
+              ungroup() )
+
+
+```
+
+Third, we merge this all together, and save it as the "vote_timeseries_data.csv", which records from 1958-2020 the district level electoral outcomes for Lower House Elections.
+
+```{r, message = FALSE, warning = FALSE}
+# Now create a complete list of municipality codes between 1958 and 2020
+expand_grid(muni_code = main$muni_code %>% unique(), 
+            year = 1958:2020) %>%
+  # Join in winning party voteshare
+  left_join(by = c("muni_code", "year"),
+            y = vote_winner %>% select(muni_code, year, voteshare_winner = voteshare)) %>%
+  # Join in LDP party voteshare
+  left_join(by = c("muni_code", "year"),
+            y = vote_ldp %>% select(muni_code, year, voteshare_LDP = voteshare)) %>%
+  # Join in Komeito party voteshare
+  left_join(by = c("muni_code", "year"),
+            y = vote_komeito %>% select(muni_code, year, voteshare_komeito = voteshare)) %>%
+  # Join in voter turnout
+  left_join(by = c("muni_code", "year"),
+            y = vote_turnout %>% select(muni_code, year, voter_turnout = turnout)) %>%
+  # Sort to get results like Tokyo 2020, Tokyo 2019, Tokyo 2018, Tokyo 2017...
+  arrange(muni_code, desc(year)) %>%
+  # Export to file
+  saveRDS("raw_data/vote_timeseries_data.rds")
+
+# Remove excess data
+remove(party_vote, vote_ldp, vote_turnout, vote_winner, main, winning_party)
+
+
+# Fill in data with most recent year's data
+lowerhouse = read_rds("raw_data/vote_timeseries_data.rds") %>%
+  # Keep just rows on or after 2000
+  filter(year >= 2000) %>%
+  arrange(muni_code, desc(year)) %>%
+  group_by(muni_code) %>%
+  # Fill in
+  fill(voteshare_winner:voter_turnout, .direction = "downup") %>%
+  # Specify that all this comes from the Lower House election
+  rename(voteshare_winner_house = voteshare_winner,
+         voteshare_LDP_house = voteshare_LDP,
+         voteshare_Komeito_house = voteshare_komeito,
+         voter_turnout_house = voter_turnout)  %>%
+  mutate(voteshare_LDP_Komeito_house = voteshare_LDP_house + voteshare_Komeito_house)
+```
+
+
+#### Prefectural Elections Data
+
+First, we import Ryota Natori's dataset of elections from 2003 to the present.
+
+
+```{r}
+pref <- c("raw_data/pref_elections/data2003.xlsx",
+  "raw_data/pref_elections/data2007.xlsx",
+  "raw_data/pref_elections/data2011.xlsx",
+  "raw_data/pref_elections/data2015.xlsx") %>%
+  map_dfr(~readxl::read_excel(., col_types = "text") %>%
+  select(
+      year = `選挙年`,
+      pref_code = `都道府県コード`,
+      muni_code = `市区町村コード`,
+      district = `郡名`,     
+      electoral_district = `県選挙区名`,
+      muni = `市町村名`,
+      eligible_voters = `有権者数`,
+      votes_cast = `投票者数`,
+      votes_cast_valid = `有効投票数`,
+      num_candidates = `候補者数`,
+      candidate_votes_here = `得票数`,
+      candidate_votes_total = `得票総数`,
+      name = `名前`,
+      age = `年齢`,
+      party = `党派`,
+      status = `現新`,
+      rank = `順位`)) %>%
+  # Code these variables as numeric
+  mutate_at(vars(year, eligible_voters, votes_cast, votes_cast_valid,
+                 num_candidates, candidate_votes_here, candidate_votes_total, age), 
+            as.numeric)  %>%
+  # Code these variables as character
+  mutate_at(vars(pref_code, muni_code, district, electoral_district, muni,
+                   name, party, status), as.character) %>%
+  # Turn numeric muni code into a five digit code
+  mutate(muni_code = muni_code %>% str_pad(width = 5, side = "left", pad = "0")) %>%
+  # Now fix municipality names
+  # If the muni has a KU but not SHI, add it
+  mutate(muni_name = case_when(
+    # If the municipality name has a WARD (区),     # But does not have a CITY (市),
+    # Please replace the municipality name with both the district and the muni values
+    str_detect(muni, "区") & str_detect(muni, "市", negate = TRUE) ~ paste(district, muni, sep = ""),
+    TRUE ~ muni)) %>%
+    # Now, some outcomes have been recorded for each municipal ward instead of municipality
+  # Let's join in the correct municipality code for each ward
+  left_join(by = c("muni_code" = "ward_code"),
+             y = read_rds("raw_data/wards_municipalities_conversion.rds") %>%
+                     select(ward_code, muni_code_new = muni_code)) %>%
+  # If the new municipality code is missing, it means it wasn't a ward; fill it in with its original municipality code. 
+  mutate(muni_code_new = if_else(is.na(muni_code_new), muni_code, muni_code_new))
+```
+
+Next, we collect voter turnout from 2000-2018 (the most recent year we got census data for.) Since election data is only collected every election cycle, we fill in in-between years with the most recent observations for that town. In the case of years 2000-2003, we fill this in with the value from 2003. This is a caveat to the data collection process, but we assume that voter turnout did not change so substantially in this period to dramatically change patterns.
+
+
+```{r, message = FALSE, warning = FALSE}
+# Create a complete grid of all municipality codes from 2000-2018
+voter_turnout_pref = expand_grid(read_rds("raw_data/muni_code.rds") %>% select(muni_code), 
+                                 year = as.numeric(2000:2018)) %>%
+  # Join in summarized election data by municipality code and year
+  left_join(by = c("muni_code" = "muni_code_new", "year"),
+            # Summarize election data
+            y = pref %>%
+              # Grabbing just the eligible voters and votes cast
+              select(year, muni_code_new, muni_code, eligible_voters, votes_cast) %>%
+              # Zooming into just distinct observations,
+              distinct() %>%
+              # For each year and town,
+              group_by(year, muni_code_new) %>%
+              # Calculating the total votes cast and eligible voters
+              # And then calculating the voter turnout based on that
+              summarize(votes_cast = sum(votes_cast, na.rm = TRUE),
+                        eligible_voters = sum(eligible_voters, na.rm = TRUE)) %>%
+              mutate(voter_turnout = votes_cast / eligible_voters)) %>%
+  ungroup() %>%
+  # Next, order them by town and by year, like Tokyo 2020, Tokyo 2019, Tokyo 2018
+  arrange(muni_code, desc(year)) %>%
+  group_by(muni_code) %>%
+  # Now take the most recent value for each town, fill in missing cases below it, and then fill up too.
+  # This means that we can easily catch voter turnout from elections held in different years
+  # It also means that we can approximate voter turnout in years not recorded.
+  # It also means that we can preserve towns which NEVER reported data, and then impute those missing data points later.
+  fill(voter_turnout, .direction = "downup") %>%
+  # rename
+  rename(voter_turnout_pref = voter_turnout)
+
+#voter_turnout_pref %>% summary()
+
+```
+
+Then, we collect votes for the winning party's coalition and for the Liberal Democratic Party, to represent voters' pull on their elected officials. We fill in missing data in prior years in the same way as above.
+
+```{r}
+voteshare_pref = expand_grid(read_rds("raw_data/muni_code.rds") %>% select(muni_code), 
+                             year = as.numeric(2000:2018)) %>%
+  # Join in summarized election data by municipality code and year
+  left_join(by = c("muni_code" = "muni_code_new", "year"),
+            y = pref %>%
+  # Zoom into the candidates who WON.
+  # How much did that town support them?
+  filter(rank == 1) %>%
+  select(year, muni_code_new, muni_code, votes_cast_valid, candidate_votes_here, party) %>%
+  group_by(year, muni_code_new, muni_code) %>%
+  # Now let's aggregate from the urban ward level to the municipality level
+  group_by(year, muni_code_new, party) %>%
+  summarize(votes_cast_valid = sum(votes_cast_valid, na.rm = TRUE),
+            candidate_votes_here = sum(candidate_votes_here, na.rm = TRUE)) %>%
+  # Finally, calculate voteshare directly for that candidate here.
+  mutate(voteshare = candidate_votes_here / votes_cast_valid) %>%
+  # recode party names into English
+  mutate(party = party %>% dplyr::recode(
+    "自" = "LDP", 
+    "公" = "Komeito", 
+    "民" = "DPJ")) %>%
+  filter(party %in% c("LDP", "Komeito", "DPJ")) %>%
+  # Pivot into a wider matrix
+  pivot_wider(
+    id_cols = c(year, muni_code_new),
+    names_from = party,
+    values_from = voteshare,
+    values_fill = list(voteshare = 0)) %>%
+  mutate(LDP_Komeito = LDP + Komeito) %>%
+  mutate(winning_party = case_when(
+    year >= 2000 & year <= 2008 & LDP_Komeito > 0 ~ LDP_Komeito,
+    year >= 2009 & year <= 2011 & DPJ > 0 ~ DPJ,
+    year >= 2012 & year <= 2018 & LDP_Komeito > 0 ~ LDP_Komeito,
+    TRUE ~ 0))) %>%
+  # arrange cities reverse chronologically, like Tokyo 2020, Tokyo 2019, Tokyo 2018...
+  arrange(muni_code, desc(year)) %>%
+  group_by(muni_code) %>%
+  fill(LDP:winning_party, .direction = "downup")  %>%
+  # Rename
+  rename(voteshare_LDP_pref = LDP,
+         voteshare_Komeito_pref = Komeito,
+         voteshare_DPJ_pref = DPJ,
+         voteshare_winner_pref = winning_party) 
+```
+
+
+```{r, message = FALSE, warning = FALSE}
+expand_grid(read_rds("raw_data/muni_code.rds") %>% select(muni_code), year = 2000:2018) %>%
+  # Join in prefectural voter turnout
+  left_join(by = c("muni_code", "year"),
+            y = voter_turnout_pref)  %>%
+  # Join in prefectural voteshare
+  left_join(by = c("muni_code", "year"),
+            y = voteshare_pref) %>%
+  # Join in Lower House data
+  left_join(by = c("muni_code", "year"),
+            y = lowerhouse) %>%
+   # Infinites mean NA
+  mutate_at(vars(voter_turnout_pref:voteshare_LDP_Komeito_house),
+            list(~if_else(is.infinite(.), NA_real_, as.numeric(.)))) %>%
+  # Fill in any voteshare NA with 0 if it had a vaild turnout cell,
+  # Because that just means that they did not support a winning candidate,
+  mutate_at(vars(voteshare_LDP_pref, voteshare_Komeito_pref,
+                 voteshare_DPJ_pref, voteshare_winner_pref),
+            list(~if_else(is.na(.) & !is.na(voter_turnout_pref), 0, .))) %>%
+  mutate_at(vars(voteshare_LDP_house, voteshare_Komeito_house,
+                 voteshare_LDP_Komeito_house, voteshare_winner_house),
+            list(~if_else(is.na(.) & !is.na(voter_turnout_house), 0, .))) %>%
+  select(-votes_cast, -eligible_voters) %>%
+  arrange(muni_code, desc(year) ) %>%
+  # Fill in most recent year with estimate
+  group_by(muni_code) %>%
+  fill(voter_turnout_pref:voteshare_LDP_Komeito_house, .direction = "downup")   %>%
+  ungroup() %>%
+  saveRDS("raw_data/voting_data.rds")
+
+
+# Remove extraneous data
+rm(list = ls())
+```
+
+
+### Mergers
+
+```{r}
+# Merger Crosswalk, 2000 to 2022
+# https://www.e-stat.go.jp/municipalities/cities/absorption-separation-of-municipalities
+dat <- read_csv("raw_data/merger_crosswalk.csv", 
+    locale = locale(encoding = "SHIFT-JIS",asciify = TRUE))  %>%
+  select(code = `標準地域コード`, change = `改正事由`, date = `廃置分合等施行年月日`) %>%
+  mutate(date = lubridate::ymd(date)) %>%
+  mutate(change = case_when(
+    # If a series of towns' numbers were changed to a new number, grab the "changed to a new number' portion
+    str_detect(change, "[(][0-9]{5}[)]に編入") ~ str_extract(change, "[(][0-9]{5}[)]に編入") %>% str_extract(., pattern = "[0-9]{5}"),
+    # If a single place got name changed to another, grab the new site's code
+    str_detect(change, "[(][0-9]{5}[)]に区域変更") ~ str_extract(change, "[(][0-9]{5}[)]に区域変更") %>% str_extract(., pattern = "[0-9]{5}"),
+    str_detect(change, "[(][0-9]{5}[)]に郡の区域変更") ~ str_extract(change, "[(][0-9]{5}[)]に郡の区域変更") %>% str_extract(., pattern = "[0-9]{5}"),
+    str_detect(change, "[(][0-9]{5}[)]に市制施行") ~ str_extract(change, "[(][0-9]{5}[)]に市制施行") %>% str_extract(., pattern = "[0-9]{5}"),
+    str_detect(change, "[(][0-9]{5}[)]に名称変更") ~ str_extract(change, "[(][0-9]{5}[)]に名称変更") %>% str_extract(., pattern = "[0-9]{5}"),
+    # If a series of towns were merged and a new city was created, list the code of the new city
+    str_detect(change, "[(][0-9]{5}[)]を新設") ~ str_extract(change, "[(][0-9]{5}[)]を新設") %>% str_extract(., pattern = "[0-9]{5}"),
+    # Sometimes, towns are merged, but the final town is not a newly made town, just a consolidated one.
+    # In this case, it will always be the first town listed.
+    # If they mention 新設 and 合併し, grab the first word
+    str_detect(change, "を新設") & str_detect(change, "が合併し") ~ 
+      str_extract(change, ".*[、]") %>% str_extract(., pattern = "[0-9]{5}"),
+    # If their designation was changed, just extract the number - there's only one number listed ever
+    str_detect(change, "中核市に移行|特例市に移行") ~ str_extract(change, "[0-9]{5}"),
+      TRUE ~ change))  %>%
+  mutate(year = str_sub(date, 1,4) %>% as.numeric()) %>% 
+  select(code, change, year)
+
+
+# Find codes where updated codes still include the original
+samecode <- dat %>%
+  filter(code == change) %>%
+  select(code) %>% distinct() %>% unlist()
+
+# Ignore code updates when the updated codes include the original;
+# eg. it's probably best to assign Kagoshima's value to Kagoshima, rather than another, even if a merge was involved.
+
+dat %>%
+  filter(!code %in% samecode) %>%
+  mutate(year = year - 1) %>% 
+  mutate(premerge = 1) %>% distinct() %>%
+  saveRDS("raw_data/merger_crosswalk_cleaned.rds")
+```
+
+
+
+### Inflation
+
+Also, let's add in the inflation rate, compared to the previous year, for each year. Many calculators are available online, [like this one.](https://www.inflationtool.com/japanese-yen/2000-to-present-value?amount=1000). 
+
+Let's record the expected value of 1000 yen from year X in year 2020. Make the rate *per yen*, not per 1000 yen. Each measure is original measured in 1000s of yen.  It is useful to us to keep our measures in 1000s of yen, lest they become unnecessarily large or detailed, since we don't actually know anything about the 10s or 100s of yen. Since each tally was recorded in a specific year, we must first convert it to 2020 yen, where we multiple by the number of yen you'd get in 2020 based on having 1 yen in year X.
+
+```{r, message=FALSE, warning = FALSE, eval = FALSE}
+list("2000" = 1030.84, "2001" = 1035.01, "2002" = 1047.72, "2003" = 1050.95,
+     "2004" = 1055.29, "2005" = 1053.11, "2006" = 1057.47, "2007" = 1054.20,
+     "2008" = 1046.65, "2009" = 1042.39, "2010" = 1060.75, "2011" = 1064.06,
+     "2012" = 1066.28, "2013" = 1068.85, "2014" = 1050.95, "2015" = 1026.71,
+     "2016" = 1025.68, "2017" = 1022.60, "2018" = 1011.49, "2019" = 1008.50) %>%
+  as_tibble() %>%
+  pivot_longer(cols = -c(), names_to = "year", 
+               values_to = "inflation") %>%
+  mutate(year = as.numeric(year),
+         inflation = inflation / 1000) %>%
+  saveRDS("raw_data/inflation.rds")
+```
+
+### Format
+
+Next, we're going to take our indicators and format the dataset. I've done a couple of important things below, as labelled.
+
+1. Bind the dataframes into a tidy format of city-year-variables, for easy computation.
+
+2. Consolidate some spending indicators into more concise variables.  For example, we gathered many types of education spending; we're just going to consolidate that all into a single lump sum of education spending. (These aggregation categories are shown in the ```group``` variable. Note that for variables that weren't part of a specific urban regime and a specific indicator group (eg. education), we reclassified them to each have their own group, so that they do not get aggregated.)
+
+3. Pivot the data into a wide matrix, where each row is a city-year, with indicators as columns.
+
+4. Fill in variables available for just some years. While spending data is plentiful, some variables are recorded only every few years. I don't use all the variables below, but it's good to collect them. For missing years, I use ```fill`` to attach the most recent valid response for that municipality, first imputing any available data from the past, and then imputing with the most recent future data. For example: 
+
+- ```pop```: 2000, 2005, 2015, 2020
+- ```inhabitable_area```: 2000-2018
+- ```age_elder``` 2000, 2010, 2015, 2020
+- ```age_median```: 2010, 2015
+- ```output_manuf```: 2000-2018
+- ```output_com```: 2001, 2003, 2006, 2011, 2013, 2015
+- ```employees```: 2009, 2014
+- ```employees_primary```: 2009, 2014 
+- ```employees_secondary```: 2009, 2014
+- ```employees_tertiary```: 2009, 2014
+
+5. Adjust for inflation
+
+6. Normalize key variables by population, namely spending variables, to get rates of 1000 yen spent per capita.
+
+7. Omit municipalities in the Fukushima exclusion zone (years 2011 onwards); these communities have experienced very different trajectories from the rest of the country, including other disaster hit municipalities.
+
+8. Join in disaster data
+
+* Note: the code mentions a few parsing errors; this refers to some cells that just contain a "-" or a "--" to denote NAs. The ```parse_numeric()``` function appropriately classifies these as NA.
+
+```{r, message=FALSE, warning = FALSE, eval = FALSE}
+#########################
+# 1. Bind indicators
+#########################
+bind_rows(
+  read_rds("raw_data/A.rds"),
+  read_rds("raw_data/B.rds"),
+  read_rds("raw_data/C.rds"),
+  read_rds("raw_data/D.rds"),
+  read_rds("raw_data/E.rds"),
+  read_rds("raw_data/F.rds")) %>%
+  rename(code = cat01_code, muni_code = area_code, year = time_name, estimate = n) %>%
+  mutate(year = parse_number(year)) %>% 
+  mutate(estimate = parse_number(estimate)) %>% 
+  left_join(by = c("code"), 
+            y = read_rds("raw_data/varnames.rds") %>% select(code, name, group, regime)) %>%
+  #########################
+  # 2. Consolidate indicators
+  #########################
+  # Second, let's aggregate other variables,
+  # so that our index has a small, hopefully similar number of indicators for each concept.
+  # If it's a regime, give it the requiste groups for aggregation
+  # If it's not a regime indicator, just give it a unique name so it doesn't aggregate
+  mutate(group = if_else(is.na(regime), name, group)) %>%
+  group_by(year, muni_code, group) %>%
+  summarize(value = sum(estimate, na.rm = TRUE)) %>%
+  ungroup() %>%
+  #########################################
+  # 3. Make a wide dataframe of indicators
+  #########################################
+  pivot_wider(
+    id_cols = c(year, muni_code),
+    names_from = group,
+    values_from = value) %>%
+  ######################################################
+  # 4. Fill in variables available for just some years
+  ######################################################
+  # Fill in population with nearest year
+  arrange(muni_code, desc(year)) %>%
+  group_by(muni_code) %>%
+  # If it says it has an area of zero, it's full of baloney.
+  mutate(inhabitable_area = if_else(inhabitable_area == 0, NA_real_, inhabitable_area)) %>%
+  fill(pop, inhabitable_area, age_elder, age_youth, age_median, output_manuf, output_com, 
+       employees, employees_primary, employees_secondary, employees_tertiary,
+       full_college, junior_college, labor_force, unemployed, inmigrants, outmigrants,
+       .direction = "downup") %>%
+  ungroup() %>%
+  # Join in inflation rate and adjust spending measures for inflation
+  left_join(by = "year", y = read_rds("raw_data/inflation.rds")) %>%
+  select(year, muni_code, pop, inflation, 
+         # indicators
+         agr, com_manuf, construction, roads_bridges,
+         education, edu_social, health, planning, waste, 
+         welfare, welfare_aged, welfare_kids, livelihood, unemployment, emergency, housing,
+         # Disaster variables
+         contains("dis_"),
+         # spending controls
+         total_spending, rev, rev_to_exp, rev_nat, rev_pref, 
+         # Covariates
+         inhabitable_area, age_elder, age_youth, age_median, 
+         full_college, junior_college, inmigrants, outmigrants, #output_manuf, output_com, 
+         income, labor_force, unemployed, employees, 
+         employees_primary, employees_secondary, employees_tertiary) %>%
+  #############################
+  # 5. Adjust for Inflation
+  #############################
+  mutate_at(vars(agr:housing, contains("dis_"), rev, rev_nat, rev_pref, total_spending, income),
+            list(~.*inflation)) %>%
+  #################################################
+  # 6. Normalized Key Variables by Population
+  #################################################
+  # Normalize per capita
+  mutate_at(vars(agr:housing, contains("dis_"), rev, rev_nat, rev_pref, total_spending, income), 
+            funs(. / pop)) %>%
+  # Calculate percentages
+  mutate(
+    migration = (inmigrants + outmigrants) / pop, #total migration rate
+    age_elder = age_elder / pop,
+    adult = pop - age_youth, # adult population (eg. NOT 0-17)
+    age_youth = age_youth / pop, # % youth
+    college = (full_college + junior_college) / adult, # college educated adults
+    full_college = full_college / adult, # % some college 
+    junior_college = junior_college / adult, # junior college
+    unemployed = unemployed / labor_force,
+    employees_primary = employees_primary / employees, 
+    employees_secondary = employees_secondary / employees,
+    employees_tertiary = employees_tertiary / employees,
+    # What percentage of your revenue came from the prefecture of national government?
+    # (note, since all rates were normalized by population, population cancels out here, so it's fine)
+    rev_external = (rev_pref + rev_nat) / rev) %>%
+  # Two municipalities report impossibly high education rates (>100%)
+  # Rather than bound the variable at 1, it's better to treat these as random data errors, 
+  # and impute them later, since I don't truly believe the education rate could be accurate here. 
+  mutate_at(vars(college, full_college, junior_college),
+            list(~case_when(muni_code %in% c("01601", "09206") ~ NA_real_, TRUE ~ .))) %>%
+  ##################################################
+  # 7. Omit Fukushima Exclusion Zone municipalities
+  #     (not a very good comparison for other municipaliteis)
+  #################################################
+  # Identify Fukushima exclusion zone sites
+  mutate(fukushima = case_when(
+    year >= 2011 & muni_code %in% c(
+      "07564", #	Fukushima-ken Iitate-mura 
+      "07308", #	Fukushima-ken Kawamata-machi
+      "07211", #	Fukushima-ken Tamura-shi
+      "07541", #	Fukushima-ken Hirono-machi
+      "07542",  # Fukushima-ken Naraha-machi			
+      "07543",  # Fukushima-ken Tomioka-machi			
+      "07544",  # Fukushima-ken Kawauchi-mura			
+      "07545",  # Fukushima-ken Okuma-machi			
+      "07546",  # Fukushima-ken Futaba-machi			
+      "07547",  # Fukushima-ken Namie-machi			
+      "07548") ~ 1,  # Fukushima-ken Katsurao-mura
+    TRUE ~ 0)) %>%
+  # Filter these out, and any cities with a population of 0. 
+  # These are unusual places that should not be compared with the average city.
+  filter(fukushima == 0, pop > 0) %>%
+  select(-fukushima) %>%
+  ##################################################
+  # 8. Join in 2011 disaster outcome data for relevant cities in or after 2011
+  #################################################
+  # Join in the following variables
+  mutate(post = if_else(year >= 2011, 1, 0)) %>%
+  left_join(by = c("muni_code" = "code", "post"),
+            y = read_rds("raw_data/disaster_data.rds") %>% 
+              mutate(post = 1) %>% select(code, post, damages, deaths, tsunami)) %>%
+  select(-post) %>%
+  mutate_at(vars(damages, deaths, tsunami), list(~if_else(is.na(.), 0, as.numeric(.)))) %>%
+  mutate_at(vars(deaths, damages), list(~./pop*100000)) %>%
+  ##############################################################################
+  # 10. Drop former observations in their final year which lack spending data.
+  ##############################################################################
+  left_join(by = "muni_code", y = read_rds("raw_data/muni_code.rds")) %>%
+  group_by(muni_code) %>%
+    # If it's a former municipality in its last year of data,
+    # BUT it's missing data points across EACH of 3 different spending types,
+    # it's missing data across ALL spending types. 
+    # This is because it's their last year when they were reconsolidated.
+    # Some cities that reconsolidate have complete data (they probably merged at the end of the year)
+    # but these do not, and are not really 'complete' or even 'completable' or 'comparable'
+    # observations; they should be dropped to not be duplicative, 
+    # since their newer municipality now contains their spending data.
+  mutate(cutit = if_else(str_detect(muni, "(former)") & year == max(year) & 
+                           # And 
+                           is.na(agr) & is.na(welfare) & is.na(health), 1, 0)) %>%
+  ungroup() %>%
+  filter(cutit == 0) %>%
+  select(-cutit) %>%
+  ####################################################
+  # 9. Get post-merger municipality codes
+  ###################################################
+  # These are all ~40,000 muni_codes, coded by year
+  # Using the year of the change,
+  left_join(by = c("muni_code" = "code", "year"), 
+            # Join in the new municipality code,
+            # plus an indicator that a merge happened the next year
+            y = read_rds("raw_data/merger_crosswalk_cleaned.rds")) %>%
+  arrange(muni_code, desc(year)) %>%
+  # Later, let's also fill in all preceding values with that new municpality code,
+  # So that we can match that municipality to the town.
+  ungroup() %>%
+  group_by(muni_code) %>%
+  fill(change, .direction = "down") %>%
+  ungroup() %>%
+  mutate(change = if_else(!is.na(change), change, muni_code)) %>%
+  ####################################################
+  # 10. Join voting data
+  ###################################################
+  # CONFIRM
+  left_join(by = c("change", "year"),
+            y = read_rds("raw_data/voting_data.rds")) %>%
+  ####################################################
+  # 11. Join social capital data
+  ###################################################
+  mutate(yearjoin = if_else(year == 2018, 2017, year)) %>%  
+  # Join 2017's value to 2018, since we've just got from 2000 to 2017
+  left_join(by = c("change" = "muni_code", "yearjoin" = "year"),
+            y = read_rds("raw_data/sci.rds")) %>%
+  select(-yearjoin) %>%
+  select(-muni) %>%
+  saveRDS("raw_data/indicators.rds")
+
+
+# Finally, let's clear all data to get a clean environment
+rm(list = ls())
+
+
+```
+
+## 1.6 Indices
+
+### Function
+
+```{r}
+get_index = function(data){
+  data %>%
+  # Log transform all spending indicators, to account for strong right skew of rates;
+  # use a constant to ensure zeros don't get left out
+  mutate_at(vars(agr:housing), list(~log(. + 1))) %>%
+  # Clip indicators at 0.5th and 99.5th percentiles (making a 99% confidence interval)
+  mutate_at(vars(agr:housing), list(~case_when(
+    . < quantile(., probs = 0.005, na.rm = TRUE) ~ quantile(., probs = 0.005, na.rm = TRUE),
+    . > quantile(., probs = 0.995, na.rm = TRUE) ~ quantile(., probs = 0.995, na.rm = TRUE),
+    TRUE ~ .))) %>%
+  # Calculate standard deviations from the mean
+  mutate_at(vars(agr:housing), list(~scale(.))) %>%
+  # Average into basic indicators
+  mutate(regime_dev = matrixStats::rowMeans2(x = select(., agr, com_manuf, construction, roads_bridges) %>% 
+                                               as.matrix(), na.rm = TRUE),
+         regime_mid = matrixStats::rowMeans2(x = select(., education, edu_social, health, planning, waste) %>% 
+                                               as.matrix(), na.rm = TRUE),
+         regime_soc = matrixStats::rowMeans2(x = select(., welfare, welfare_aged, welfare_kids, unemployment, emergency, housing) %>% as.matrix(), na.rm = TRUE)) %>%
+  select(year, muni_code, regime_dev, regime_soc, regime_mid) %>%
+  return()
+}
+
+```
+
+
+### Make Index
+
+```{r, eval = FALSE}
+### Population controlled
+read_rds("raw_data/indicators.rds") %>%
+  get_index() %>% 
+  left_join(by = c("muni_code", "year"),
+            y = read_rds("raw_data/indicators.rds")) %>%
+  
+  left_join(by = "muni_code", y = read_rds("raw_data/muni_code.rds"))  %>%
+  mutate(pref = str_sub(muni_code, 1,2)) %>%
+  # Get rownames
+  mutate(id = paste(muni_code, year, sep = "-")) %>%
+#  select(id, change) %>%
+#  filter( duplicated(id))
+#  duplicated() %>% sum()
+#  tibble::remove_rownames() %>%
+  tibble::column_to_rownames("id") %>%
+  saveRDS("raw_data/indices.rds")
+```
+
+
+# 2. Descriptives
+
+## Correlations
+
+- Goal 1: Show that these indices have distinct profiles.
+- Goal 2: Show that these indices actually correlate with their components.
+
+```{r}
+# Let's create a "viz" folder for holding visualizations
+dir.create("viz")
+
+dat <- read_rds("raw_data/indices.rds")  %>% 
+  select(year, muni_code, 
+         regime_dev, agr, com_manuf, construction, roads_bridges,
+         regime_mid, education, edu_social, health, planning, waste,
+         regime_soc, welfare,welfare_aged, welfare_kids, unemployment, emergency, housing)
+  
+dat %>%
+  # Log transform the spending rates
+  #mutate_at(vars(agr, com_manuf, construction, roads_bridges,
+  #               education, edu_social, health, planning, waste, 
+  #               welfare,welfare_aged, welfare_kids, unemployment, emergency, housing), 
+  #          list(~log(. + 1))) %>%
+  pivot_longer(cols = c(contains("regime")), names_to = "regime", values_to = "y") %>%
+  pivot_longer(cols = -c(year, muni_code, regime, y), names_to = "covariate", values_to = "x") %>%
+  mutate(zoom = case_when(
+    regime == "regime_dev" & covariate %in% c("agr", "com_manuf", "construction", "roads_bridges") ~ 1,
+    regime == "regime_mid" & covariate %in% c("education", "edu_social", "health", "planning", "waste") ~ 1,
+    regime == "regime_soc" & covariate %in% c("welfare", "welfare_aged", "welfare_kids",  "unemployment", "emergency", "housing") ~ 1,
+    TRUE ~ 0)) %>%
+  filter(zoom == 1) %>%
+  group_by(regime, covariate) %>%
+  summarize(r = cor(x, y, use = "pairwise.complete.obs"),
+            label = round(r, 2)) %>%
+  saveRDS("raw_data/correlations.rds")
+
+read_rds("raw_data/correlations.rds") %>%
+  ggplot(mapping = aes(x = covariate, y = r)) +
+  facet_wrap(~regime, scales = "free_x") +
+  geom_col() +
+  geom_text(mapping = aes(label = round(r, 2)), vjust = 0)
+```
+
+```{r}
+get_cor = function(data, vars){
+  
+  x <- data %>%
+    select(any_of(vars)) %>%
+    cor(use = "pairwise.complete.obs")
+  
+  x[upper.tri(x, diag = FALSE)] <- NA
+  
+  x %>%
+    as_tibble(rownames = "from") %>%
+    pivot_longer(cols = -c(from), names_to = "to", values_to = "r") %>%
+    #filter(from != to) %>%
+    filter(!is.na(r)) %>%
+    return()
+}
+
+bind_rows(
+  get_cor(dat, vars = c("agr", "com_manuf", "construction", "roads_bridges")),
+  get_cor(dat, vars = c("education", "edu_social", "health", "planning", "waste")),
+  get_cor(dat, vars = c("welfare", "welfare_aged", "welfare_kids",  "unemployment", "emergency", "housing")), 
+  .id = "regime") %>%
+  mutate_at(vars(from,to), list(~factor(., levels = unique(.) %>% sort())) ) %>%
+  ggplot(mapping = aes(x = from, y = to, fill = r, label = round(r, 2))) +
+  geom_tile() +
+  geom_text() +
+  facet_wrap(~regime, scales = "free") +
+  scale_fill_gradient2(low = "#DC267F", mid = "white", high = "#648FFF", limits = c(-1, 1))
+```
+
+
+```{r}
+dat %>% 
+  select(regime_dev:roads_bridges) %>%
+  ltm::cronbach.alpha(na.rm = TRUE)
+# 0.621
+
+dat %>% 
+  select(agr:roads_bridges) %>%
+  mutate_all(list(~log(. + 1))) %>%
+  mutate_all(list(~ntile(., 100))) %>%
+  ltm::cronbach.alpha(na.rm = TRUE)
+
+dat %>% 
+  select(education:waste) %>%
+  mutate_all(list(~log(. + 1))) %>%
+  mutate_all(list(~ntile(., 100))) %>%
+  ltm::cronbach.alpha(na.rm = TRUE)
+# A little lower, but indeed 
+
+dat %>% 
+  select(welfare:housing) %>%
+  mutate_all(list(~log(. + 1))) %>%
+  mutate_all(list(~ntile(., 100))) %>%
+  ltm::cronbach.alpha(na.rm = TRUE)
+# Further, we broke the data into 100 equally sized percentiles, and calculated cronbach's alpha to test how reliably indicators scale together.
+
+# To be expected, the middle class regime has high variability, but others are excellent.
+```
+
+## Distributions
+
+```{r}
+# Some cities spend *much, much more*, but few cities spend much less
+g1 <- read_rds("raw_data/indices.rds")  %>%
+  select(year, muni_code, contains("regime")) %>%
+  pivot_longer(cols = contains("regime"), 
+               names_to = "type", values_to = "regime") %>%
+  mutate(type = type %>% recode_factor(
+    "regime_dev" = "Developmental",
+    "regime_mid" = "Middle Class",
+    "regime_soc" = "Social Welfare")) %>%
+  ggplot(mapping = aes(x = regime, y = type, color = type)) +
+  geom_jitter(alpha = 0.25) +
+  geom_violin(alpha = 0.75, color = "black") +
+  labs(x = "Index Score\n(Standard Deviations from the Mean)",
+       y = "", subtitle = "Distribution of Urban Regime Index Scores\namong Japanese Cities (2000-2018)") +
+  theme_classic(base_size = 14) +
+  theme(panel.border = element_rect(fill = NA, color = "black"),
+        plot.subtitle = element_text(hjust = 0.5)) +
+  scale_color_manual(values = c("#648FFF",  "#5C5A8D", "#FFB000")) +
+  guides(color = "none") 
+
+ggsave(g1, filename = "viz/distribution.png", width = 6, height = 3, dpi = 500)
+```
+
+## Bands
+
+```{r}
+# How much does spending per capita change over time?
+dat <- read_rds("raw_data/indices.rds")  %>%
+  select(year, muni_code, contains("regime")) %>%
+  pivot_longer(cols = contains("regime"), 
+               names_to = "type", values_to = "regime") %>%
+  mutate(type = type  %>% recode_factor(
+    "regime_soc" = "Social Welfare",
+    "regime_mid" = "Middle Class",
+    "regime_dev" = "Developmental"))
+
+mystats <- bind_rows(
+  dat %>%
+  group_by(year, type) %>%
+  summarize(
+    bands = "5-95%",
+    median = median(regime, na.rm = TRUE),
+    low = quantile(regime, probs = 0.95, na.rm = TRUE),
+    high = quantile(regime, probs = 0.05, na.rm = TRUE)),
+    dat %>%
+  group_by(year, type) %>%
+  summarize(
+    bands = "25-75%",
+    low = quantile(regime, probs = 0.25, na.rm = TRUE),
+    high = quantile(regime, probs = 0.75, na.rm = TRUE))) 
+
+library(ggtext)
+library(shadowtext)
+library(ggnewscale)
+
+mylabels <- mystats %>%
+  filter(year %in% c(2000, 2018) ) %>%
+  pivot_longer(cols = c(median, low, high), names_to = "stat", values_to = "value") %>%
+  mutate(label = round(value, 2)) %>%
+  mutate(color = paste(stat, bands),
+         color = case_when(
+           str_detect(color, "median") ~ "median",
+           str_detect(color, "25-75%") ~ "inner",
+           str_detect(color, "5-95%") ~ "outer"))
+
+g1 <- ggplot() +
+  geom_ribbon(data = mystats %>% filter(bands == "5-95%"),
+              mapping = aes(x = year, y = median, ymin = low, ymax = high, fill = bands)) +
+  geom_ribbon(data = mystats %>% filter(bands == "25-75%"), 
+              mapping = aes(x = year, y = median, ymin = low, ymax = high, fill = bands),
+              color = "white", size = 1.25) +
+  geom_line(data = mystats, mapping = aes(x = year, y = median, group = bands, color = "Median (50%)"), size = 0.75) +
+  facet_wrap(~type, ncol = 3) +
+  theme_classic(base_size = 14) +
+  theme(panel.border = element_rect(fill = NA, color = "black"),
+        panel.spacing = unit(0.5, "cm")) +
+  scale_fill_manual(
+    values = c("#DC267F", "#ADADC9"),
+    breaks = c("25-75%", "5-95%"),
+    labels = c("Most Common (25-75%", "General Span (5-95%)")
+) +
+  scale_color_manual(values = "black", guide = guide_legend(override.aes = list(size = 1.5))) +
+  scale_y_continuous(limits = c(-2, 2)) +
+  labs(x = "Year (2000-2018)", y = "Urban Regime Index Score",
+       fill = NULL, color = NULL) +
+  theme(legend.position = c(0.85, 0.1), 
+        strip.text.x = ggtext::element_markdown(size = 14, hjust = 0.5),
+        legend.background = element_rect(fill = NA), legend.margin = margin(0,0,0,0, "cm"), 
+        legend.spacing = unit(0, "cm"),
+        axis.ticks = element_blank(), axis.line = element_blank(),
+        panel.border = element_rect(color = "#373737", fill = NA),
+        strip.background = element_blank()) +
+  ggnewscale::new_scale("color") +
+  geom_shadowtext(data = mylabels %>% filter(year == 2000), 
+                  mapping = aes(x = year, y = value, label = label, group = bands, color = color),
+                  hjust = 0, vjust = 0, bg.r = 0.3, bg.color = "white") +
+  geom_shadowtext(data = mylabels %>% filter(year == 2018), 
+                  mapping = aes(x = year, y = value, label = label, group = bands, color = color),
+                  hjust = 1, vjust = 0, bg.r = 0.3, bg.color = "white") +
+  scale_color_manual(
+    values = c("black", "#B31C66", "#373737"), # 
+    breaks = c("median", "inner", "outer"), guide = "none")  
+
+ggsave(g1, filename = "viz/bands.png", width = 8, height = 6, dpi = 500)
+
+rm(list= ls())
+```
+
+
+## Multiple Regimes
+
+```{r}
+read_rds("raw_data/indices.rds")  %>%
+  select(year, muni_code,  contains("regime")) %>%
+  # Cut the 14 city-years where regime scores were not computed due to missing data
+  filter(!is.na(regime_dev)) %>%
+  pivot_longer(cols = contains("regime"), names_to = "type", values_to = "regime") %>%
+   mutate(type = type %>% str_remove("_pop") %>% recode_factor(
+    "regime_dev" = "Developmental", 
+    "regime_mid" = "Middle Class",
+    "regime_soc" = "Social Welfare")) %>%
+  group_by(type) %>%
+  mutate(class = (ntile(regime, 2) - 1)) %>%
+  ungroup() %>%
+  select(-regime) %>%
+  pivot_wider(
+    id_cols = c(year, muni_code),
+    names_from = type,
+    values_from = class) %>%
+  mutate(type = case_when(
+    Developmental == 1 & `Middle Class` == 1 & `Social Welfare` == 1 ~ "Social Welfare / Middle Class / Developmental",
+    Developmental == 0 & `Middle Class` == 1 & `Social Welfare` == 1 ~ "Social Welfare / Middle Class",
+    Developmental == 1 & `Middle Class` == 0 & `Social Welfare` == 1 ~ "Social Welfare / Developmental",
+    Developmental == 0 & `Middle Class` == 0 & `Social Welfare` == 1 ~ "Social Welfare",
+    Developmental == 1 & `Middle Class` == 1 & `Social Welfare` == 0 ~ "Middle Class / Developmental",
+    Developmental == 0 & `Middle Class` == 1 & `Social Welfare` == 0 ~ "Middle Class",
+    Developmental == 1 & `Middle Class` == 0 & `Social Welfare` == 0 ~ "Developmental",
+    Developmental == 0 & `Middle Class` == 0 & `Social Welfare` == 0 ~ "Caretaker")) %>%
+  mutate(type = factor(type, levels = c(
+    "Social Welfare", "Social Welfare / Middle Class", "Social Welfare / Developmental",
+    "Social Welfare / Middle Class / Developmental",
+    "Middle Class / Developmental", "Middle Class", "Developmental", "Caretaker") %>% rev()))  %>%
+   mutate(type = type %>% dplyr::recode(
+    "Caretaker" = "Caretaker (C)",
+    "Developmental" = "Developmental (D)",
+    "Middle Class" = "Middle Class (MC)",
+    "Middle Class / Developmental" = "Middle Class Hybrid (MC-D)",
+    "Social Welfare / Middle Class / Developmental" = "Hybrid (SW-MC-D)",
+    "Social Welfare / Developmental" = "Social Welfare Hybrid (SW-D)",
+    "Social Welfare / Middle Class" = "Social Welfare Hybrid (SW-MC)",
+    "Social Welfare" = "Social Welfare (SW)")) %>%
+  saveRDS("raw_data/datcat.rds")
+
+
+
+read_rds("raw_data/indices.rds")  %>%
+  select(year, muni_code,  contains("regime")) %>%
+  # Cut the 14 city-years where regime scores were not computed due to missing data
+  filter(!is.na(regime_dev)) %>%
+  pivot_longer(cols = contains("regime"), names_to = "type", values_to = "regime") %>%
+   mutate(type = type %>% str_remove("_pop") %>% recode_factor(
+    "regime_dev" = "Developmental", 
+    "regime_mid" = "Middle Class",
+    "regime_soc" = "Social Welfare")) %>%
+  group_by(type) %>%
+  mutate(class = if_else(regime > 0, 1, 0, missing = NA_real_)) %>%
+  ungroup() %>%
+  select(-regime) %>%
+  pivot_wider(
+    id_cols = c(year, muni_code),
+    names_from = type,
+    values_from = class) %>%
+  mutate(type = case_when(
+    Developmental == 1 & `Middle Class` == 1 & `Social Welfare` == 1 ~ "Social Welfare / Middle Class / Developmental",
+    Developmental == 0 & `Middle Class` == 1 & `Social Welfare` == 1 ~ "Social Welfare / Middle Class",
+    Developmental == 1 & `Middle Class` == 0 & `Social Welfare` == 1 ~ "Social Welfare / Developmental",
+    Developmental == 0 & `Middle Class` == 0 & `Social Welfare` == 1 ~ "Social Welfare",
+    Developmental == 1 & `Middle Class` == 1 & `Social Welfare` == 0 ~ "Middle Class / Developmental",
+    Developmental == 0 & `Middle Class` == 1 & `Social Welfare` == 0 ~ "Middle Class",
+    Developmental == 1 & `Middle Class` == 0 & `Social Welfare` == 0 ~ "Developmental",
+    Developmental == 0 & `Middle Class` == 0 & `Social Welfare` == 0 ~ "Caretaker")) %>%
+  mutate(type = factor(type, levels = c(
+    "Social Welfare", "Social Welfare / Middle Class", "Social Welfare / Developmental",
+    "Social Welfare / Middle Class / Developmental",
+    "Middle Class / Developmental", "Middle Class", "Developmental", "Caretaker") %>% rev()))  %>%
+   mutate(type = type %>% dplyr::recode(
+    "Caretaker" = "Caretaker (C)",
+    "Developmental" = "Developmental (D)",
+    "Middle Class" = "Middle Class (MC)",
+    "Middle Class / Developmental" = "Middle Class Hybrid (MC-D)",
+    "Social Welfare / Middle Class / Developmental" = "Hybrid (SW-MC-D)",
+    "Social Welfare / Developmental" = "Social Welfare Hybrid (SW-D)",
+    "Social Welfare / Middle Class" = "Social Welfare Hybrid (SW-MC)",
+    "Social Welfare" = "Social Welfare (SW)")) %>%
+  saveRDS("raw_data/datcat2.rds")
+```
+
+
+```{r, message=FALSE, warning = FALSE}
+tally <- read_rds("raw_data/datcat.rds") %>%
+  group_by(type, year) %>%
+  summarize(count = n()) %>%
+  ungroup() %>%
+  group_by(year) %>%
+  mutate(percent = count / sum(count))
+
+g3 <- tally %>% 
+  ggplot(mapping = aes(x = year, y = percent, fill = type)) +
+  geom_col(position = "fill", color = "white", size = 0.5) +
+  labs(y = "% of Cities by Urban Regime", x = "Year", fill = "Regime Score") +
+  theme_classic(base_size = 14) +
+  theme(panel.border = element_rect(fill = NA, color = "black"),
+        panel.spacing = unit(0.5, "cm"),
+        legend.position = "right") +
+  scale_fill_manual(values = c(
+    "#696880",  #"#D2F3D1", # Caretaker
+    "#ADADC9", #"#98D4F1", # Developmental
+    "#648FFF", # Middle Class
+    "#001FA2", # MC-D
+    "#5542AD", # SW-MC-D
+    "#DC267F", # SW-MC
+    "#ff683b", # SW-D
+    "#ffb000" # Social Welfare
+  )) +
+  scale_y_continuous(breaks = c(0, .25, .5, .75, 1), 
+                     labels = c(0, 25, 50, 75, 100))
+
+ggsave(g3, filename = "viz/percent_bar.png", width = 7, height = 4, dpi = 500)
+
+
+mylabels <- tally %>% 
+  group_by(year) %>%
+  arrange(desc(type)) %>%
+  mutate(percent = cumsum(percent)) %>%
+  ungroup() %>%
+
+  filter(str_detect(type, "SW")) %>%
+  filter(year %in% seq(from = 2000, to = 2018, by = 2)) %>%
+  mutate(label = round(percent, 2)*100)
+
+g4 <- tally %>% 
+  ggplot(mapping = aes(x = year, y = percent, fill = type)) +
+  geom_area(color = "darkgrey", size = 0.1) +
+  geom_area(data = . %>% filter(str_detect(type, "SW")), color = "white", size = 0.75) +
+  labs(y = "% of Cities by Urban Regime", x = "Year", fill = "Urban Regime") +
+  theme_classic(base_size = 14) +
+  theme(panel.border = element_rect(fill = NA, color = "#373737"),
+        axis.line = element_blank(),
+        axis.ticks = element_line(color = "#373737"),
+        panel.spacing = unit(0.5, "cm"),
+        legend.position = "right") +
+  scale_fill_manual(values = c(
+    "#696880", "#ADADC9", "#648FFF", "#001FA2", 
+    "#5542AD", "#DC267F", "#ff683b", "#ffb000"), 
+    guide = guide_legend(override.aes = list(color = NA))) +
+  scale_color_manual(
+    breaks = c("Social Welfare (SW)", "Social Welfare Hybrid (SW-MC)",
+               "Social Welfare Hybrid (SW-D)", "Hybrid (SW-MC-D)"),
+    values = c("#4B3A96", "#A0195B", "#AD4526", "#BD8900") %>% rev(), 
+    guide = "none") +
+  scale_y_continuous(breaks = c(0, .25, .5, .75, 1), 
+                     labels = c(0, 25, 50, 75, 100), limits = c(0,1), expand = expansion(0)) +
+  scale_x_continuous(limits = c(2000, 2018), expand = expansion(0))  +
+  shadowtext::geom_shadowtext(data = mylabels %>% filter(year != 2000),
+                              mapping = aes(x = year, y = percent, color = type, label = label),
+                              bg.r = 0.15, bg.color = "white", size = 3.25, vjust = 0, hjust = 1) +
+  shadowtext::geom_shadowtext(data = mylabels %>% filter(year == 2000) %>%
+                                filter(type != "Social Welfare Hybrid (SW-MC)"),
+                              mapping = aes(x = year, y = percent, color = type, label = label),
+                              bg.r = 0.15, bg.color = "white", size = 3.25, vjust = 0, hjust = 0)
+
+ggsave(g4, filename = "viz/percent_area.png", width = 7, height = 4, dpi = 500)
+
+rm(list = ls())
+```
+
+
+
+```{r, message=FALSE, warning = FALSE}
+tally <- read_rds("raw_data/datcat2.rds") %>%
+  group_by(type, year) %>%
+  summarize(count = n()) %>%
+  ungroup() %>%
+  group_by(year) %>%
+  mutate(percent = count / sum(count))
+
+g3 <- tally %>% 
+  ggplot(mapping = aes(x = year, y = percent, fill = type)) +
+  geom_col(position = "fill", color = "white", size = 0.5) +
+  labs(y = "% of Cities by Urban Regime", x = "Year", fill = "Regime Score") +
+  theme_classic(base_size = 14) +
+  theme(panel.border = element_rect(fill = NA, color = "black"),
+        panel.spacing = unit(0.5, "cm"),
+        legend.position = "right") +
+  scale_fill_manual(values = c(
+    "#696880",  #"#D2F3D1", # Caretaker
+    "#ADADC9", #"#98D4F1", # Developmental
+    "#648FFF", # Middle Class
+    "#001FA2", # MC-D
+    "#5542AD", # SW-MC-D
+    "#DC267F", # SW-MC
+    "#ff683b", # SW-D
+    "#ffb000" # Social Welfare
+  )) +
+  scale_y_continuous(breaks = c(0, .25, .5, .75, 1), 
+                     labels = c(0, 25, 50, 75, 100))
+
+mylabels <- tally %>% 
+  group_by(year) %>%
+  arrange(desc(type)) %>%
+  mutate(percent = cumsum(percent)) %>%
+  ungroup() %>%
+
+  filter(str_detect(type, "SW")) %>%
+  filter(year %in% seq(from = 2000, to = 2018, by = 2)) %>%
+  mutate(label = round(percent, 2)*100)
+
+g4 <- tally %>% 
+  ggplot(mapping = aes(x = year, y = percent, fill = type)) +
+  geom_area(color = "darkgrey", size = 0.1) +
+  geom_area(data = . %>% filter(str_detect(type, "SW")), color = "white", size = 0.75) +
+  labs(y = "% of Cities by Urban Regime", x = "Year", fill = "Urban Regime") +
+  theme_classic(base_size = 14) +
+  theme(panel.border = element_rect(fill = NA, color = "#373737"),
+        axis.line = element_blank(),
+        axis.ticks = element_line(color = "#373737"),
+        panel.spacing = unit(0.5, "cm"),
+        legend.position = "right") +
+  scale_fill_manual(values = c(
+    "#696880", "#ADADC9", "#648FFF", "#001FA2", 
+    "#5542AD", "#DC267F", "#ff683b", "#ffb000"), 
+    guide = guide_legend(override.aes = list(color = NA))) +
+  scale_color_manual(
+    breaks = c("Social Welfare (SW)", "Social Welfare Hybrid (SW-MC)",
+               "Social Welfare Hybrid (SW-D)", "Hybrid (SW-MC-D)"),
+    values = c("#4B3A96", "#A0195B", "#AD4526", "#BD8900") %>% rev(), 
+    guide = "none") +
+  scale_y_continuous(breaks = c(0, .25, .5, .75, 1), 
+                     labels = c(0, 25, 50, 75, 100), limits = c(0,1), expand = expansion(0)) +
+  scale_x_continuous(limits = c(2000, 2018), expand = expansion(0))  +
+  shadowtext::geom_shadowtext(data = mylabels %>% filter(year != 2000),
+                              mapping = aes(x = year, y = percent, color = type, label = label),
+                              bg.r = 0.15, bg.color = "white", size = 3.25, vjust = 0, hjust = 1) +
+  shadowtext::geom_shadowtext(data = mylabels %>% filter(year == 2000) %>%
+                                filter(type != "Social Welfare Hybrid (SW-MC)"),
+                              mapping = aes(x = year, y = percent, color = type, label = label),
+                              bg.r = 0.15, bg.color = "white", size = 3.25, vjust = 0, hjust = 0)
+
+ggsave(g4, filename = "viz/percent_area2.png", width = 7, height = 4, dpi = 500)
+
+rm(list = ls())
+```
+
+
+## Build Mapping Files
+
+Let's map these indices! To do so, we use a shapefile of municipal political boundaries from the Ministry of Land, Infrastructure, and Transportation. Then, using an East Asian Albers Equal Area Conic projection, we map them. 
+
+Let's create a shapefile of municipalities.
+
+```{r,  warning = FALSE, message = FALSE, eval = FALSE}
+library(tidyverse)
+library(sf)
+library(rgdal)
+
+# This data uses the North East Asia Albers Equal Distance Conic Projection
+eqdc = "+proj=eqdc +lat_0=0 +lon_0=0 +lat_1=15 +lat_2=65 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
+
+# and also the North East Asia Albers Equal Area Conic Project
+eqac = "+proj=aea +lat_1=15 +lat_2=65 +lat_0=30 +lon_0=95 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
+
+
+# First, let's read in our shapefile of municipal political boundaries
+read_sf("raw_data/shapes/polbnda_jpn.shp") %>%
+  # Transform to Asia North Albers Equal Area Conic projection
+  # Obtained here: https://spatialreference.org/ref/esri/102025/
+  st_transform(CRS(eqac)) %>%
+  # Let's make one row/shape per municipality code
+  group_by(muni_code = adm_code) %>%
+  summarize(geometry = st_union(geometry)) %>%
+  ungroup() %>%
+  # Transform to an Azimuthal Equidistant Projection, 
+  # rotated 180 degrees to allow easy visualization (to make Japan sideways)
+  st_transform(crs = CRS(paste0("+proj=aeqd +ellps=sphere +lat_0=90 +lon_0=", 180)))  %>%
+  saveRDS("raw_data/muni_shapes.rds")
+
+
+# Now generate prefectural boundaries
+read_rds("raw_data/muni_shapes.rds") %>%
+  group_by(pref_code = str_sub(muni_code, 1,2)) %>%
+  summarize(geometry = st_union(geometry)) %>%
+  ungroup() %>%
+  saveRDS("raw_data/pref_shapes.rds")
+```
+
+## Maps over Time
+
+```{r, message = FALSE, warning = FALSE}
+box <- read_rds("raw_data/muni_shapes.rds") %>% 
+  st_bbox() %>% c() %>%
+  data.frame(area = .) %>%
+  tibble::rownames_to_column(var = "type") %>%
+  mutate(area = if_else(type == "xmin", area - area / 5.4, area),
+         area = if_else(type == "xmax", area + area / 7.3, area),
+         area = if_else(type == "ymin", area - area / 3.5, area),
+         area = if_else(type == "ymax", area + area / 80, area)) %>%
+  pivot_wider( names_from = type, values_from = area) %>%
+  unlist() %>%
+  st_bbox()
+
+shapes <- read_rds("raw_data/muni_shapes.rds") %>%
+  # Join in urban regime categories
+  left_join(by = "muni_code", 
+            y = read_rds("raw_data/datcat.rds")) %>%
+# Let's take a moment and calculate the ideal projection for Japan, horizontally
+# (excluding Okinawa, which I can't fit. Sorry!)
+# and then crop the projection to a better extent
+  st_crop(y = box) 
+
+shapes %>%  with(levels(type))
+
+prefs <- read_rds("raw_data/pref_shapes.rds") %>%
+  st_crop(y = box)
+
+country <- prefs %>% summarize(geometry = st_union(geometry))
+
+# Now calculate prefectural boundaries
+g1 <- ggplot() +
+  geom_sf(data = prefs, color = "#9090C0", size = 2, fill = "grey") +
+  geom_sf(data = shapes %>%
+            filter(year == 2018), 
+          mapping = aes(fill = type), color = "darkgrey", size = 0.01) +
+  # Overlay prefectural boundaires
+  geom_sf(data = country, color = "black", size = 0.2, fill = NA) +
+  geom_sf(data = prefs, color = "black", size = 0.1, fill = NA) +
+  geom_sf(data = shapes %>%
+            filter(year == 2018) %>%
+            filter(str_detect(type, "Social Welfare")), 
+          mapping = aes(fill = type), color = "white", size = 0.07) +
+  scale_fill_manual(values = c(
+    "#696880", "#ADADC9", "#648FFF", "#001FA2", 
+    "#5542AD", "#DC267F", "#ff683b", "#ffb000"
+    )) +
+  labs(y = NULL, x = NULL, fill = "Urban Regimes", title = "2018") +
+  theme_void(base_size = 13) +
+  theme(plot.margin = margin(0,0,0,0, "cm"), 
+        legend.margin = margin(0,0,0,0,"cm"),
+        legend.box.margin = margin(0,0,0,0,"cm"),
+        #panel.border = element_rect(color = "#373737", fill = NA),
+        plot.title = element_text(hjust = 0.5,vjust = -15.5),
+        legend.position = "right") +
+  coord_sf(xlim = c(box["xmin"]+(1e4*8), box["xmax"]-(1e4*8)),
+           ylim = c(box["ymin"]+(1e4*2), box["ymax"]-(1e4*2)))
+
+ggsave(g1, filename = "viz/map_2017.png", dpi = 500, width = 8, height = 2.5)
+
+
+
+# Now calculate prefectural boundaries
+g2 <- ggplot() +
+  geom_sf(data = prefs, color = "#9090C0", size = 2, fill = "grey") +
+  geom_sf(data = shapes %>%
+            filter(year == 2010), 
+          mapping = aes(fill = type), color = "darkgrey", size = 0.01) +
+  # Overlay prefectural boundaires
+  geom_sf(data = country, color = "black", size = 0.2, fill = NA) +
+  geom_sf(data = prefs, color = "black", size = 0.1, fill = NA) +
+  geom_sf(data = shapes %>%
+            filter(year == 2010) %>%
+            filter(str_detect(type, "Social Welfare")), 
+          mapping = aes(fill = type), color = "white", size = 0.07) +
+  scale_fill_manual(values = c(
+    "#696880", "#ADADC9", "#648FFF", "#001FA2", 
+    "#5542AD", "#DC267F", "#ff683b", "#ffb000"
+    )) +
+  labs(y = NULL, x = NULL, fill = "Urban Regimes", title = "2010") +
+  theme_void(base_size = 13) +
+  theme(plot.margin = margin(0,0,0,0, "cm"), 
+        legend.margin = margin(0,0,0,0,"cm"),
+        legend.box.margin = margin(0,0,0,0,"cm"),
+        #panel.border = element_rect(color = "#373737", fill = NA),
+        plot.title = element_text(hjust = 0.5,vjust = -15.5),
+        legend.position = "right") +
+  coord_sf(xlim = c(box["xmin"]+(1e4*8), box["xmax"]-(1e4*8)),
+           ylim = c(box["ymin"]+(1e4*2), box["ymax"]-(1e4*2)))
+
+# Now calculate prefectural boundaries
+g3 <- ggplot() +
+  geom_sf(data = prefs, color = "#9090C0", size = 2, fill = "grey") +
+  geom_sf(data = shapes %>%
+            filter(year == 2000), 
+          mapping = aes(fill = type), color = "darkgrey", size = 0.01) +
+  # Overlay prefectural boundaires
+  geom_sf(data = country, color = "black", size = 0.2, fill = NA) +
+  geom_sf(data = prefs, color = "black", size = 0.1, fill = NA) +
+  geom_sf(data = shapes %>%
+            filter(year == 2000) %>%
+            filter(str_detect(type, "Social Welfare")), 
+          mapping = aes(fill = type), color = "white", size = 0.07) +
+  scale_fill_manual(values = c(
+    "#696880", "#ADADC9", "#648FFF", "#001FA2", 
+    "#5542AD", "#DC267F", "#ff683b", "#ffb000"
+    )) +
+  labs(y = NULL, x = NULL, fill = "Urban Regimes", title = "2000") +
+  theme_void(base_size = 13) +
+  theme(plot.margin = margin(0,0,0,0, "cm"), 
+        legend.margin = margin(0,0,0,0,"cm"),
+        legend.box.margin = margin(0,0,0,0,"cm"),
+        #panel.border = element_rect(color = "#373737", fill = NA),
+        plot.title = element_text(hjust = 0.5,vjust = -15.5),
+        legend.position = "right") +
+  coord_sf(xlim = c(box["xmin"]+(1e4*8), box["xmax"]-(1e4*8)),
+           ylim = c(box["ymin"]+(1e4*2), box["ymax"]-(1e4*2)))
+
+combo <- ggpubr::ggarrange(g1, NULL, g2, NULL, g3, 
+                           heights = c(1, -0.35, 1, -0.35, 1),
+                           ncol = 1, common.legend = TRUE, legend = "right") +
+   theme(
+     legend.box.margin = margin(0,0,0,l = 0.5,"cm"),
+     legend.margin = margin(0,0,0,l = 0.5,"cm"),
+     plot.subtitle = element_blank(),
+     panel.spacing = unit(0, "cm"),
+     panel.border = element_blank(),
+     plot.margin = margin(t = 0, r = 0, b = 0, l = 0, unit = "cm"))
+
+ggsave(combo, filename = "viz/map_categories_3.png", width = 7.5, height = 5, dpi = 500)
+# and also the North East Asia Albers Equal Area Conic Project
+
+# -6117697 ymin: -6567243 xmax: -2555485 ymax: -3842894
+#Azimuthal Equidistant Projection
+rm(list= ls())
+```
+
+## Regions
+
+```{r}
+dat <- read_rds("raw_data/datcat.rds") %>%
+  mutate(region = case_when(
+    str_sub(muni_code, 1,2) %in% str_pad(1, 2,"left","0") ~ "Hokkaido",
+    str_sub(muni_code, 1,2) %in% str_pad(2:7, 2,"left","0") ~ "Tohoku",
+    str_sub(muni_code, 1,2) %in% str_pad(8:14, 2,"left","0") ~ "Kanto",
+    str_sub(muni_code, 1,2) %in% str_pad(15:23, 2,"left","0") ~ "Chubu",
+    str_sub(muni_code, 1,2) %in% str_pad(24:30, 2,"left","0") ~ "Kansai",
+    str_sub(muni_code, 1,2) %in% str_pad(31:35, 2,"left","0") ~ "Chugoku",
+    str_sub(muni_code, 1,2) %in% str_pad(36:39, 2,"left","0") ~ "Shikoku",
+    str_sub(muni_code, 1,2) %in% str_pad(40:47, 2,"left","0") ~ "Kyushu")) %>%
+  mutate(abbr = str_extract(type, "[(].+[)]") %>% str_remove_all("[(]|[)]")) %>%
+  left_join(by = "muni_code", y = read_rds("raw_data/muni_code.rds")) %>%
+  mutate(pref = str_extract(muni, ".* ") %>% str_remove("-ken|-fu|-to"))
+```
+
+```{r}
+dat %>% 
+    group_by(year, region) %>%
+    summarize(
+      region_total = n(),
+      sw3 = sum(str_detect(abbr, "SW")),
+      sw2 = sum(str_detect(abbr, "SW") & str_detect(abbr, "SW-MC-D", negate = TRUE)),
+      sw1 = sum(abbr == "SW")) %>%
+    mutate_at(vars(contains("sw")), list(~round(./region_total*100, 1))) %>%
+    ungroup() %>% arrange(desc(sw3)) %>%
+  saveRDS("raw_data/map_regions.rds")
+```
+
+```{r}
+mypref <- bind_rows(
+  dat %>% filter(year == 2000) %>%
+    group_by(year, pref) %>%
+    summarize(sw3 = (sum(str_detect(abbr, "SW")) / nrow(.) ),
+              sw2 = (sum(str_detect(abbr, "SW") & str_detect(abbr, "SW-MC-D", negate = TRUE)) / nrow(.) ),
+              sw1 = (sum(abbr == "SW") / nrow(.) )) %>%
+    mutate_at(vars(contains("sw")), list(~round(.*100, 1))) %>%
+    ungroup() %>% arrange(desc(sw3)),
+  
+   dat %>% filter(year == 2010) %>%
+    group_by(year, pref) %>%
+    summarize(sw3 = (sum(str_detect(abbr, "SW")) / nrow(.) ),
+              sw2 = (sum(str_detect(abbr, "SW") & str_detect(abbr, "SW-MC-D", negate = TRUE)) / nrow(.) ),
+              sw1 = (sum(abbr == "SW") / nrow(.) )) %>%
+    mutate_at(vars(contains("sw")), list(~round(.*100, 1))) %>%
+    ungroup() %>% arrange(desc(sw3)),
+  
+  dat %>% filter(year == 2018) %>%
+    group_by(year, pref) %>%
+    summarize(sw3 = (sum(str_detect(abbr, "SW")) / nrow(.) ),
+              sw2 = (sum(str_detect(abbr, "SW") & str_detect(abbr, "SW-MC-D", negate = TRUE)) / nrow(.) ),
+              sw1 = (sum(abbr == "SW") / nrow(.) )) %>%
+    mutate_at(vars(contains("sw")), list(~round(.*100, 1))) %>%
+    ungroup() %>% arrange(desc(sw3))
+)
+remove(mypref)
+```
+
+## Sample Selection
+
+I ran a series of models, shown in later sections. Let's jump into the fully specified model, to identify any problem cases before we get in too deep. Problem cases means city-years that aren't very comparable to the rest of the country. This means, they have one or two attributes that are super funky, giving them tremendous leverage over our predictions. We generally want to keep those kinds of places out of the regression model, so that our predictions actually fit the rest of the 30,000+ city-years we are modeling.
+
+```{r}
+library(tidyverse)
+library(broom)
+library(lmtest)
+
+dat <- read_rds("raw_data/indices.rds")  %>%
+  mutate(LDP_Komeito_house = voteshare_LDP_house + voteshare_Komeito_house) %>%
+  select(year, muni_code, muni, pref, contains("regime"),
+         pop, inhabitable_area, rev, income, age_elder, contains("dis_"),
+         contains("rev"),total_spending, damages, deaths, tsunami,
+         migration, college, bonding, bridging, linking, 
+         #LDP_Komeito, voter_turnout_pref, 
+         voter_turnout_house, LDP_Komeito_house) %>%
+  # A few cases are missing. Omit them so you can do likelihood ratio tests
+  na.omit()
+
+# First, let's run the full specified model!
+m0 <- dat %>%
+  lm(formula = regime_soc ~ factor(year) +
+      log(pop + 1) + log(inhabitable_area) + log(rev) + log(income) + 
+       log(age_elder / (1 - age_elder)) + log(rev_external / (1 - rev_external)) + rev_to_exp +
+       log(deaths + 1) + log(damages + 1) + tsunami +
+       log(dis_restoration + 1) + log(dis_relief + 1) + pref +
+          regime_dev + regime_mid) %>% 
+  fortify()
+
+# Wowser! Something's happening there!
+m0 %>%
+  ggplot(mapping = aes(x = .cooksd, y = .stdresid)) +
+  geom_jitter()
+```
+```{r}
+# These are the high leverage sites
+m0 %>%
+  tibble::rownames_to_column(var = "id") %>%
+  filter(id %in% myoutliers)
+```
+
+[Yubari, Hokkaido](https://ja.wikipedia.org/wiki/%E5%A4%95%E5%BC%B5%E5%B8%82) (```muni_code = 01209```) has SUPER wacky revenue to expenditure rates, probably because it is known for experiencing intense depopulation and aging. But most have a rev_to_exp rate of 0 or above; only some have negative values. These three city-years have a rev_to_exp ratio of -700 or so, while no other city has one less than -40, and most are above 0. Let's cut Yubari's city-years as outliers; they really are weird and shouldn't be used as a source of comparison. Cutting them should drop our cook's distance down below 0.03.
+
+```{r}
+# Wowser! Something's happening there!
+m0 %>%
+  ggplot(mapping = aes(x = rev_to_exp, y = .cooksd)) +
+  geom_jitter() +
+  geom_line()
+```
+
+### Linking vs. LDP/Komeito Votes
+
+```{r}
+test <- read_rds("/cloud/project/raw_data/indices.rds")  %>%
+  mutate(LDP_Komeito_house = voteshare_LDP_house + voteshare_Komeito_house,
+         LDP_Komeito_pref = voteshare_LDP_pref + voteshare_Komeito_pref) %>%
+  select(muni_code, year,bonding, bridging, linking, LDP_Komeito_house, LDP_Komeito_pref, 
+         voteshare_winner_pref, voteshare_winner_house) %>%
+  filter(muni_code != "01209")  
+
+
+test %>% 
+  select(bonding, bridging, linking, LDP_Komeito_house, LDP_Komeito_pref) %>%
+  cor(use = "pairwise.complete.obs") %>% round(2)
+
+
+test %>% 
+  select(LDP_Komeito_house, LDP_Komeito_pref) %>%
+  cor(use = "pairwise.complete.obs") %>% round(2)
+
+# Not mission critical; since we don't use both directly in the model
+test %>% 
+  select(LDP_Komeito_house:voteshare_winner_house) %>%
+  cor(use = "pairwise.complete.obs") %>% round(2)
+
+
+
+```
+
+# 3. Models
+
+## Format Dataset
+
+```{r}
+library(tidyverse)
+library(broom)
+library(lmtest)
+
+read_rds("raw_data/indices.rds")  %>%
+  mutate(LDP_Komeito_house = voteshare_LDP_house + voteshare_Komeito_house,
+         LDP_Komeito_pref = voteshare_LDP_pref + voteshare_Komeito_pref) %>%
+  select(year, muni_code, pref, contains("regime"),
+         pop, inhabitable_area, rev, income, age_elder, dis_restoration, dis_relief, 
+         rev, rev_external, rev_to_exp,  damages, deaths, tsunami,
+         migration, college, unemployed, social_capital, bonding, bridging, linking, 
+         #LDP_Komeito_house, # too much missing data ~ 20%
+         LDP_Komeito_pref) %>%
+  mutate_at(vars(contains("regime")), list(~as.numeric(.))) %>%
+         #LDP_Komeito, voter_turnout_pref, 
+         #voter_turnout_house, ) %>%
+  # A few cases are missing. Omit them so you can do likelihood ratio tests
+  filter(muni_code != "01209") %>%
+  mutate(year = factor(year)) %>%
+  saveRDS("raw_data/dataset.rds") # Outlier control
+```
+
+```{r, eval = FALSE, message=FALSE, warning = FALSE}
+library(mice)
+read_rds("raw_data/dataset.rds") %>%
+  mice(data = ., m = 5, seed = 12345) %>%
+  saveRDS("raw_data/mi.rds")
+```
+
+
+
+### Table Functions
+
+```{r}
+library(tidyverse)
+library(broom)
+library(texreg)
+library(car)
+library(mice)
+library(gtools)
+
+# write a function to get a refined texreg object for each
+get_tex = function(mymodel){
+  require(tidyverse)
+  require(texreg)
+  require(mice)
+  # Presenting multiple imputation models and normal models together
+  # is hard, because texreg puts their goodness of fit stats on different rows.
+  # Let's clean it up below.
+  # If it's a multiple imputation object, 
+  if("mira" %in% class(mymodel)){
+    # Pool and extrac the results
+  mytab <- mymodel %>% mice::pool() %>% texreg::extract()
+    # cut the n, imputations, & (identical to R2 here)  
+  mytab@gof.names <- mytab@gof.names[-c(1:2, 4)]
+  mytab@gof.decimal <- mytab@gof.decimal[-c(1:2, 4)]
+  mytab@gof <- mytab@gof[-c(1:2, 4)]
+  return(mytab) 
+  }else{
+    # If it's a normal model, then just extract the results
+    mytab <- mymodel %>% texreg::extract()
+    # and cut the n & adj. R2 (identical to R2 here),
+  mytab@gof.names <- mytab@gof.names[-c(2,3)]
+  mytab@gof.decimal <- mytab@gof.decimal[-c(2,3)]
+  mytab@gof <- mytab@gof[-c(2,3)]
+  return(mytab) 
+  }
+}
+
+# Write an allpurpose VIF function
+get_vif = function(model){
+  require(tidyverse)
+  require(car)
+  require(mice)
+  # Get a function to calculate appropriate VIF
+  calculate = function(model){
+    if((length(model$model) - 1) == 1){
+      # If there's just one predictor in your model, 
+      # then just return a blank, since no VIF can be calculated.
+      return(" - ")
+    }else{
+      # If multiple predictors, then go for it!
+      vifscore <- car::vif(model)
+      # If model includes categorical variables,
+      # car package reports GVIF^(1/2) statistic.
+      # This needs to be **squared** in order to compare with standard VIF benchmarks.
+      if(is.matrix(vifscore)){
+        vifscore[,3]^2 %>% max() %>% round(2) %>% return()
+      }else{vifscore %>% max() %>% round(2) %>% return()}
+    }
+  }
+  # Last, if the model is multiple imputation
+  if("mira" %in% class(model)){
+    # Grab the worst (highest) VIF stat from among all imputations
+    model$analyses %>%
+        map(~calculate(.)) %>% unlist() %>% max() %>% return()
+  }else{
+    # Otherwise, just grab the one
+    calculate(model) %>% return()
+  }
+}
+
+# Write a function to get f-statistic, df, sigma, and N
+get_gof = function(model){
+  require(tidyverse)
+  require(broom)
+  require(mice)
+  # Here's a quick function for extracting main goodness of fit stats
+  gof = function(model){
+    model %>% broom::glance() %>%
+      select(statistic, p_value = p.value, df, sigma, nobs) %>%
+      mutate(stars = gtools::stars.pval(p_value)) %>%
+      mutate(f = paste(round(statistic, 1), stars, " (", df, ")", sep = ""),
+             sigma = round(sigma, 2)) %>%
+      select(statistic, f, p_value, sigma, nobs) %>%
+      return()
+  }
+  # If multiple imputed model, grab gof stats for LEAST significant model
+  if("mira" %in% class(model)){
+    model$analyses %>%
+      map_dfr(~gof(.)) %>% filter(statistic == min(statistic)) %>%
+      select(-statistic) %>% return()
+  }else{
+    # Otherwise, just do the one
+    gof(model) %>% select(-statistic) %>% return()
+  }
+}
+
+# Get a linear hypothesis test comparing model improvement
+get_lh = function(m){
+  require(tidyverse)
+  require(car)
+  require(broom)
+  require(gtools)
+  require(mice)
+  # Write a wrapper to run a linear hypothesis test
+  # comparing any model (m[[i+1]]) to a more limited previous specification (m[[i]])
+  lh = function(m = m, i = i){
+    # Write a short function to extract just one imputation, if imputed
+    just_one = function(mymodel){
+      # If it's a multiple imputation model,
+      # we're going to find the imputed model with the WORST deviance
+      if("mira" %in% class(mymodel)){
+        worst <- mymodel$analyses %>%
+          map_dfr(~broom::glance(.) %>% select(deviance), .id = "model") %>%
+          filter(deviance == max(deviance)) %>%
+          with(model) %>%
+          as.numeric()
+        # And return that one, to be conservative
+        mymodel$analyses[[worst]] %>% return()
+      }else{
+        # Otherwise, just return the original model
+        return(mymodel)
+      }
+    }
+    # Extract just the most conservative model, if imputed
+    model2 <- just_one(m[[i+1]])
+    
+    # Extract coefficients names from the new model
+    newcoef <- names(model2$coefficients)
+    # Extract coefficient names from the old model
+    oldcoef <- just_one(m[[i]])$coefficients %>% names()
+    
+    # Check: Are the predictors exactly same as the previous model? 
+    if(identical(newcoef, oldcoef)){
+      # As long as i is not the very first model,
+      if(i > 1){
+        # Notify user
+        paste("Model ", i+1, " uses the same coefficients as comparison model ", 
+              i, ". ", "Comparing against model ", i-1, ".", sep = "") %>% print()
+        # Extract coefficient names from a model 1 step earlier
+        oldcoef <- just_one(m[[ (i-1) ]])$coefficients %>% names()
+        
+        # Are they still identical? If so, stop and move on to the next model.
+        if(identical(newcoef, oldcoef)){ 
+          paste("ERROR: ",
+                "Can't compare Model ", i+1, " against models ", i, " or ", i-1, ". ",
+                "Predictors are identical.", sep = "") %>% print()
+          # Return Blank Value
+          return(" - ")  }
+      }else{
+        # If i is the very first model, then freeze the process and let them know
+        paste("ERROR: ",
+                "Can't compare Model ", i+1, " against model ", i, ". ",
+                "Predictors are identical. No other models to compare against.", sep = "") %>% print()
+          # Return Blank Value
+          return(" - ")}
+    }
+
+    # Identify the new variables added to the model
+    testcoef <- newcoef[!newcoef %in% oldcoef]
+    # Test whether adding these new variables improved the residual sum of squares
+    test <- car::linearHypothesis(model2, testcoef)
+    
+    # Grab the amount of improvement in the residual sum of squares, p-value, and df
+    data.frame(
+      stat = test[2, "RSS"] - test[1, "RSS"],
+      p_value = test$`Pr(>F)`[2],
+      df = test$Df[2]) %>%
+      # Get the sign for the change; negative is good; means we improved model fit
+      mutate(sign = case_when(
+        stat > 0 ~ "+",
+        stat == 0 ~ "",
+        stat < 0 ~ "-"),
+        stars = p_value %>% gtools::stars.pval(),
+        label = paste(sign, round(abs(stat), 1), stars, " (", df, ")", sep = "")) %>%
+      with(label) %>%
+      return()  
+      
+    }
+  
+  # calculate the number of models in list
+  k <- length(m) - 1
+  # create an object to hold the results
+  output = rep(" - ", k)
+  # Run a for-loop to go through all the models
+  for(i in 1:k){
+    output[i+1] <- lh(m = m, i = i)
+  }
+  # return the result! yay!
+  return(output)
+
+}
+
+
+get_missing = function(data, mymodel, units){
+  require(tidyverse)
+  require(mice)
+  # If your object is a multiply imputed dataset,
+  if("mira" %in% class(mymodel)){
+    # Just grab the first one. It doesn't matter which, since it will have complete data.
+    mymodel <- mymodel$analyses[[1]]
+    # And assign the corresponding rownames from the original dataset to the imputed full dataset
+    rownames(mymodel$model) <- rownames(data)
+    
+  }
+  
+  # Get number of variables (outcome + predictors)
+  k <- mymodel$model %>% length()
+  # Get the variables (leaving out the weird ".", which is the k+1th entry)
+  myvars <- all.vars(mymodel$call)[1:k]
+  
+  data %>% 
+    select(units, myvars) %>%
+    summarize(
+      # How many cases in total?
+      ncomplete = nrow(.),
+      # How many data points in total?
+      total = ncomplete * k,
+      # How many data points are missing?
+      missing = select(., myvars) %>% is.na() %>% sum(),
+      # How many valid observations in this model?
+      nobs = nobs(mymodel),
+      # How many observations did we lose to missing data?
+      obs_lost = ncomplete - nobs,
+      # How many unique cities left over?
+      cities = mymodel$model %>% rownames() %>% str_remove("[-][0-9]{4}") %>% unique() %>% length(),
+      # How many unique cities left over?
+      years = mymodel$model %>% rownames() %>% str_remove("[0-9]{5}[-]") %>% unique() %>% length()
+    ) %>%
+    mutate(obs_cities_years = paste(cities, " | ", years, sep = ""),
+           missing_rows_values =  paste(round(obs_lost / nobs*100, 1),   " | ",   
+                                                   round(missing / total*100, 1), sep = "")) %>%
+    return()
+}
+
+# Write a funciton to run any general linear hypothesis test!
+get_glh = function(model, term){
+  require(tidyverse)
+  require(broom)
+  require(mice)
+  # Write a subfunction to calculate and extract the linear hypothesis test result
+  get_test = function(model, term = ...){
+    multcomp::glht(model = model, linfct = term) %>%
+      broom::tidy() %>%
+      magrittr::set_colnames(value = names(.) %>% str_replace_all("[.]", "_") %>% str_remove("adj_")) %>%
+      mutate(contrast = paste(term, collapse = "; "),
+             stars = gtools::stars.pval(p_value)) %>%
+      select(contrast, estimate, std_error, statistic, p_value, stars) %>%
+      return()
+  }
+  
+  if(!"mira" %in% class(model)){
+    # If your model is NOT a multiple imputation model, then just return the result.
+    get_test(model = model, term = term) %>% return()
+  }else{
+    # Get number of imputations
+    m <- length(model$analyses)
+    # Get size of full sample
+    n = model$analyses[[1]]$model %>% nrow()
+    # Get degrees of freedom (same across all imputations)
+    df = glance(model$analyses[[1]])$df %>% unname()
+    k = 1 # set number of parameters we're going to create (usually just 1)
+    
+    model$analyses %>%
+      # For each imputed model, run the linear hypothesis test
+      map_dfr(~get_test(model = ., term = term)) %>%
+      # Now attach sample size,  number of imputations, and variance (se^2)
+      mutate(variance = std_error^2) %>%
+      with(mice::pool.scalar(Q = .$estimate, U = .$variance, n = n - df, k = k, rule = "rubin1987")) %>%
+      with(data.frame(estimate = qbar, std_error = sqrt(t), df = df)) %>%
+      mutate(statistic = estimate / std_error,
+             p_value = 2*pt(-abs(statistic), df = df, lower.tail = TRUE),
+             contrast = paste(term, collapse = "; "),
+             stars = gtools::stars.pval(p_value)) %>%
+      select(contrast, estimate, std_error, statistic, p_value, stars, df) %>%
+      return()
+  }
+}
+
+save(get_tex, get_gof, get_vif, get_lh, get_missing, get_glh, file = "table_functions.RData")
+
+rm(list = ls())
+```
+
+
+### Social Welfare
+
+```{r, eval = FALSE}
+# Lag all continuous predictors
+mi <- read_rds("raw_data/mi.rds")
+
+m1 <- mi %>%
+  with(lm(formula = regime_soc ~ year))
+
+m2 <- mi %>%
+  with(lm(formula = regime_soc ~ year +
+      pop + inhabitable_area + income + rev + age_elder  + rev_external + rev_to_exp))
+m3 <- mi %>%
+  with(lm(formula = regime_soc ~ year +
+      pop + inhabitable_area + income + rev + age_elder  + rev_external + rev_to_exp +
+       deaths + damages + tsunami + dis_restoration + dis_relief))
+m4 <- mi %>%
+  with(lm(formula = regime_soc ~ year +
+      pop + inhabitable_area + income + rev + age_elder  + rev_external + rev_to_exp +
+       deaths + damages + tsunami + dis_restoration + dis_relief + 
+       regime_dev + regime_mid))
+m5 <- mi %>%
+  with(lm(formula = regime_soc ~ year +
+      pop + inhabitable_area + income + rev + age_elder  + rev_external + rev_to_exp +
+       deaths + damages + tsunami + dis_restoration + dis_relief + 
+       regime_dev + regime_mid + 
+       college + migration + LDP_Komeito_house + LDP_Komeito_pref +
+       bonding + ntile(bridging, 4) + linking))
+m6 <- mi %>%
+  with(lm(formula = regime_soc ~ year +
+      pop + inhabitable_area + income + rev + age_elder  + rev_external + rev_to_exp +
+       deaths + damages + tsunami + dis_restoration + dis_relief + 
+       regime_dev + regime_mid + 
+       college + unemployed + migration + LDP_Komeito_house + LDP_Komeito_pref +
+       bonding + ntile(bridging, 4) + linking + pref))
+
+# Add lag for just dependent variable
+m7 <- read_rds("raw_data/mi.rds") %>% 
+  mice::complete(action = "long", include = TRUE) %>%
+  group_by(.imp, muni_code) %>% 
+  mutate(ylag = lead(regime_soc, 1)) %>% ungroup() %>% mice::as.mids() %>%
+  with(lm(formula = regime_soc ~ year +
+       pop + inhabitable_area + income + rev + age_elder  + rev_external + rev_to_exp +
+       deaths + damages + tsunami + dis_restoration + dis_relief + 
+       regime_dev + regime_mid + 
+       college + unemployed + migration + LDP_Komeito_house + LDP_Komeito_pref +
+       bonding + ntile(bridging, 4) + linking + pref + 
+       ylag))
+
+# Specify covariates to be lagged
+mylags = c("pop", "inhabitable_area", "income", "age_elder",
+           "rev", "rev_external", "rev_to_exp", 
+           "deaths", "damages", "tsunami", "dis_restoration", "dis_relief",
+           "college", "unemployed", "migration", "LDP_Komeito_house", "LDP_Komeito_pref", 
+           "bonding", "bridging", "linking")
+# Add lags for ALL covariates
+m8 <- read_rds("raw_data/mi.rds") %>% 
+  mice::complete(action = "long", include = TRUE) %>%
+  group_by(.imp, muni_code) %>%
+  mutate(ylag = lead(regime_soc, 1)) %>%
+  mutate_at(vars(contains("regime"), -regime_soc, mylags), list(~lead(., 1))) %>% 
+  ungroup() %>% mice::as.mids() %>%
+  with(lm(formula = regime_soc ~ year +
+       pop + inhabitable_area + income + rev + age_elder  + rev_external + rev_to_exp +
+       deaths + damages + tsunami + dis_restoration + dis_relief + 
+       regime_dev + regime_mid + 
+       college + unemployed + migration + LDP_Komeito_house + LDP_Komeito_pref +
+       bonding + ntile(bridging, 4) + linking + pref + 
+         ylag))
+
+# Add transformations
+m9 <- read_rds("raw_data/mi.rds") %>% 
+  mice::complete(action = "long", include = TRUE) %>%
+  group_by(.imp, muni_code) %>%
+  mutate(ylag = lead(regime_soc, 1)) %>%
+  mutate_at(vars(contains("regime"), -regime_soc, mylags), list(~lead(., 1))) %>% 
+  ungroup() %>% mice::as.mids() %>%
+  with(lm(formula = regime_soc ~ year +
+       I(pop^.1) + log(inhabitable_area) + sqrt(rev) + log(income) + 
+       log(age_elder / (1 - age_elder)) + log(rev_external / (1 - rev_external)) + rev_to_exp +
+       I(deaths^.1) + I(damages^.1) + tsunami +
+       I(dis_restoration^.1)  + I(dis_relief^.1) + pref +
+       regime_dev + regime_mid + 
+       log(college / (1 - college)) + log((unemployed+0.01) / (1 - (unemployed+0.01))) + log(migration) + 
+       log((LDP_Komeito_house + 0.01) / (1 - (LDP_Komeito_house + 0.01) )) + 
+       log((LDP_Komeito_pref + 0.01) / (1 - (LDP_Komeito_pref + 0.01) )) + 
+       log(bonding / (1 - bonding)) + ntile(bridging, 4) + log(linking / (1 - linking)) +
+         ylag) )
+
+
+### Social Welfare
+load("table_functions.RData")
+
+# Get VIF scores
+myvif <- list(m2,m3,m4,m5,m6,m7,m8,m9) %>%
+  map(~get_vif(.)) %>% unlist() 
+# Get Linear-Hypothesis test of added covariates
+mylh <- list(m2,m3,m4,m5,m6,m7,m8,m9) %>%
+  get_lh()
+# Get goodness of fit stats
+mygof <- list(m2,m3,m4,m5,m6,m7,m8,m9) %>%
+  map_dfr(~get_gof(.)) %>%
+  # Combine into one data.frame
+  mutate(vif = myvif, lh = mylh)
+goflist <- list("N (city-years)" = mygof$nobs, "Max VIF" = mygof$vif, "F-statistic (df)" = mygof$f,
+     "Change in Deviance (df)" = mygof$lh, "Sigma (Avg. Error)" = mygof$sigma)
+# Get texreg objects
+mytex <- list(m2,m3,m4,m5,m6,m7,m8,m9) %>% map(~get_tex(.))
+outcome = "Social Welfare"
+save(mytex, mygof, goflist, outcome, file = "table_soc.RData")
+
+# Save the best fit model at the end, because it's enormous.
+m9 %>% saveRDS("model_soc.RData")
+
+rm(list=ls())
+```
+
+### Developmental
+
+```{r, eval = FALSE}
+# Lag all continuous predictors
+mi <- read_rds("raw_data/mi.rds")
+
+m1 <- mi %>%
+  with(lm(formula = regime_dev ~ year))
+
+m2 <- mi %>%
+  with(lm(formula = regime_dev ~ year +
+      pop + inhabitable_area + income + rev + age_elder  + rev_external + rev_to_exp))
+m3 <- mi %>%
+  with(lm(formula = regime_dev ~ year +
+      pop + inhabitable_area + income + rev + age_elder  + rev_external + rev_to_exp +
+       deaths + damages + tsunami + dis_restoration + dis_relief))
+m4 <- mi %>%
+  with(lm(formula = regime_dev ~ year +
+      pop + inhabitable_area + income + rev + age_elder  + rev_external + rev_to_exp +
+       deaths + damages + tsunami + dis_restoration + dis_relief + 
+       regime_soc + regime_mid))
+m5 <- mi %>%
+  with(lm(formula = regime_dev ~ year +
+      pop + inhabitable_area + income + rev + age_elder  + rev_external + rev_to_exp +
+       deaths + damages + tsunami + dis_restoration + dis_relief + 
+       regime_soc + regime_mid + 
+       college + unemployed + migration + LDP_Komeito_house + LDP_Komeito_pref +
+       bonding + ntile(bridging, 4) + linking))
+m6 <- mi %>%
+  with(lm(formula = regime_dev ~ year +
+      pop + inhabitable_area + income + rev + age_elder  + rev_external + rev_to_exp +
+       deaths + damages + tsunami + dis_restoration + dis_relief + 
+       regime_soc + regime_mid + 
+       college + unemployed + migration + LDP_Komeito_house + LDP_Komeito_pref +
+       bonding + ntile(bridging, 4) + linking + pref))
+
+# Add lag for just dependent variable
+m7 <- read_rds("raw_data/mi.rds") %>% 
+  mice::complete(action = "long", include = TRUE) %>%
+  group_by(.imp, muni_code) %>% 
+  mutate(ylag = lead(regime_dev, 1)) %>% ungroup() %>% mice::as.mids() %>%
+  with(lm(formula = regime_dev ~ year +
+       pop + inhabitable_area + income + rev + age_elder  + rev_external + rev_to_exp +
+       deaths + damages + tsunami + dis_restoration + dis_relief + 
+       regime_soc + regime_mid + 
+       college + unemployed + migration + LDP_Komeito_house + LDP_Komeito_pref +
+       bonding + ntile(bridging, 4) + linking + pref + 
+       ylag))
+
+# Specify covariates to be lagged
+mylags = c("pop", "inhabitable_area", "income", "age_elder",
+           "rev", "rev_external", "rev_to_exp", 
+           "deaths", "damages", "tsunami", "dis_restoration", "dis_relief",
+           "college","unemployed", "migration", "LDP_Komeito_house", "LDP_Komeito_pref", 
+           "bonding", "bridging", "linking")
+# Add lags for ALL covariates
+m8 <- read_rds("raw_data/mi.rds") %>% 
+  mice::complete(action = "long", include = TRUE) %>%
+  group_by(.imp, muni_code) %>%
+  mutate(ylag = lead(regime_dev, 1)) %>%
+  mutate_at(vars(contains("regime"), -regime_dev, mylags), list(~lead(., 1))) %>% 
+  ungroup() %>% mice::as.mids() %>%
+  with(lm(formula = regime_dev ~ year +
+       pop + inhabitable_area + income + rev + age_elder  + rev_external + rev_to_exp +
+       deaths + damages + tsunami + dis_restoration + dis_relief + 
+       regime_soc + regime_mid + 
+       college + unemployed + migration + LDP_Komeito_house + LDP_Komeito_pref +
+       bonding + ntile(bridging, 4) + linking + pref + 
+         ylag))
+
+# Add transformations
+m9 <- read_rds("raw_data/mi.rds") %>% 
+  mice::complete(action = "long", include = TRUE) %>%
+  group_by(.imp, muni_code) %>%
+  mutate(ylag = lead(regime_dev, 1)) %>%
+  mutate_at(vars(contains("regime"), -regime_dev, mylags), list(~lead(., 1))) %>% 
+  ungroup() %>% mice::as.mids() %>%
+  with(lm(formula = regime_dev ~ year +
+       I(pop^.1) + log(inhabitable_area) + sqrt(rev) + log(income) + 
+       log(age_elder / (1 - age_elder)) + log(rev_external / (1 - rev_external)) + rev_to_exp +
+       I(deaths^.1) + I(damages^.1) + tsunami +
+       I(dis_restoration^.1)  + I(dis_relief^.1) + pref +
+       regime_soc + regime_mid + 
+       log(college / (1 - college)) + log((unemployed+0.01) / (1 - (unemployed+0.01))) + log(migration) + 
+       log((LDP_Komeito_house + 0.01) / (1 - (LDP_Komeito_house + 0.01) )) + 
+       log((LDP_Komeito_pref + 0.01) / (1 - (LDP_Komeito_pref + 0.01) )) + 
+       log(bonding / (1 - bonding)) + ntile(bridging, 4) + log(linking / (1 - linking)) +
+         ylag) )
+
+
+load("table_functions.RData")
+
+# Get VIF scores
+myvif <- list(m2,m3,m4,m5,m6,m7,m8,m9) %>%
+  map(~get_vif(.)) %>% unlist() 
+# Get Linear-Hypothesis test of added covariates
+mylh <- list(m2,m3,m4,m5,m6,m7,m8,m9) %>%
+  get_lh()
+# Get goodness of fit stats
+mygof <- list(m2,m3,m4,m5,m6,m7,m8,m9) %>%
+  map_dfr(~get_gof(.)) %>%
+  # Combine into one data.frame
+  mutate(vif = myvif, lh = mylh)
+goflist <- list("N (city-years)" = mygof$nobs, "Max VIF" = mygof$vif, "F-statistic (df)" = mygof$f,
+     "Change in Deviance (df)" = mygof$lh, "Sigma (Avg. Error)" = mygof$sigma)
+# Get texreg objects
+mytex <- list(m2,m3,m4,m5,m6,m7,m8,m9) %>% map(~get_tex(.))
+outcome = "Developmental"
+save(mytex, mygof, goflist, outcome, file = "table_dev.RData")
+
+# Save the best fit model at the end, because it's enormous.
+m9 %>% saveRDS("model_dev.RData")
+
+rm(list=ls())
+```
+
+
+### Middle-Class
+
+```{r, eval = FALSE}
+# Lag all continuous predictors
+mi <- read_rds("raw_data/mi.rds")
+
+m1 <- mi %>%
+  with(lm(formula = regime_mid ~ year))
+
+m2 <- mi %>%
+  with(lm(formula = regime_mid ~ year +
+      pop + inhabitable_area + income + rev + age_elder  + rev_external + rev_to_exp))
+m3 <- mi %>%
+  with(lm(formula = regime_mid ~ year +
+      pop + inhabitable_area + income + rev + age_elder  + rev_external + rev_to_exp +
+       deaths + damages + tsunami + dis_restoration + dis_relief))
+m4 <- mi %>%
+  with(lm(formula = regime_mid ~ year +
+      pop + inhabitable_area + income + rev + age_elder  + rev_external + rev_to_exp +
+       deaths + damages + tsunami + dis_restoration + dis_relief + 
+       regime_soc + regime_dev))
+m5 <- mi %>%
+  with(lm(formula = regime_mid ~ year +
+      pop + inhabitable_area + income + rev + age_elder  + rev_external + rev_to_exp +
+       deaths + damages + tsunami + dis_restoration + dis_relief + 
+       regime_soc + regime_dev + 
+       college + unemployed + migration + LDP_Komeito_house + LDP_Komeito_pref +
+       bonding + ntile(bridging, 4) + linking))
+m6 <- mi %>%
+  with(lm(formula = regime_mid ~ year +
+      pop + inhabitable_area + income + rev + age_elder  + rev_external + rev_to_exp +
+       deaths + damages + tsunami + dis_restoration + dis_relief + 
+       regime_soc + regime_dev + 
+       college + unemployed + migration + LDP_Komeito_house + LDP_Komeito_pref +
+       bonding + ntile(bridging, 4) + linking + pref))
+
+# Add lag for just dependent variable
+m7 <- read_rds("raw_data/mi.rds") %>% 
+  mice::complete(action = "long", include = TRUE) %>%
+  group_by(.imp, muni_code) %>% 
+  mutate(ylag = lead(regime_mid, 1)) %>% ungroup() %>% mice::as.mids() %>%
+  with(lm(formula = regime_mid ~ year +
+       pop + inhabitable_area + income + rev + age_elder  + rev_external + rev_to_exp +
+       deaths + damages + tsunami + dis_restoration + dis_relief + 
+       regime_soc + regime_dev + 
+       college + unemployed + migration + LDP_Komeito_house + LDP_Komeito_pref +
+       bonding + ntile(bridging, 4) + linking + pref + 
+       ylag))
+
+# Specify covariates to be lagged
+mylags = c("pop", "inhabitable_area", "income", "age_elder",
+           "rev", "rev_external", "rev_to_exp", 
+           "deaths", "damages", "tsunami", "dis_restoration", "dis_relief",
+           "college", "unemployed", "migration", "LDP_Komeito_house", "LDP_Komeito_pref", 
+           "bonding", "bridging", "linking")
+# Add lags for ALL covariates
+m8 <- read_rds("raw_data/mi.rds") %>% 
+  mice::complete(action = "long", include = TRUE) %>%
+  group_by(.imp, muni_code) %>%
+  mutate(ylag = lead(regime_mid, 1)) %>%
+  mutate_at(vars(contains("regime"), -regime_mid, mylags), list(~lead(., 1))) %>% 
+  ungroup() %>% mice::as.mids() %>%
+  with(lm(formula = regime_mid ~ year +
+       pop + inhabitable_area + income + rev + age_elder  + rev_external + rev_to_exp +
+       deaths + damages + tsunami + dis_restoration + dis_relief + 
+       regime_soc + regime_dev + 
+       college + unemployed + migration + LDP_Komeito_house + LDP_Komeito_pref +
+       bonding + ntile(bridging, 4) + linking + pref + 
+         ylag))
+
+# Add transformations
+m9 <- read_rds("raw_data/mi.rds") %>% 
+  mice::complete(action = "long", include = TRUE) %>%
+  group_by(.imp, muni_code) %>%
+  mutate(ylag = lead(regime_mid, 1)) %>%
+  mutate_at(vars(contains("regime"), -regime_mid, mylags), list(~lead(., 1))) %>% 
+  ungroup() %>% mice::as.mids() %>%
+  with(lm(formula = regime_mid ~ year +
+       I(pop^.1) + log(inhabitable_area) + sqrt(rev) + log(income) + 
+       log(age_elder / (1 - age_elder)) + log(rev_external / (1 - rev_external)) + rev_to_exp +
+       I(deaths^.1) + I(damages^.1) + tsunami +
+       I(dis_restoration^.1)  + I(dis_relief^.1) + pref +
+       regime_soc + regime_dev + 
+       log(college / (1 - college)) + log((unemployed+0.01) / (1 - (unemployed+0.01))) + log(migration) + 
+       log((LDP_Komeito_house + 0.01) / (1 - (LDP_Komeito_house + 0.01) )) + 
+       log((LDP_Komeito_pref + 0.01) / (1 - (LDP_Komeito_pref + 0.01) )) + 
+       log(bonding / (1 - bonding)) + ntile(bridging, 4) + log(linking / (1 - linking)) +
+         ylag) )
+
+
+load("table_functions.RData")
+
+# Get VIF scores
+myvif <- list(m2,m3,m4,m5,m6,m7,m8,m9) %>%
+  map(~get_vif(.)) %>% unlist() 
+# Get Linear-Hypothesis test of added covariates
+mylh <- list(m2,m3,m4,m5,m6,m7,m8,m9) %>%
+  get_lh()
+# Get goodness of fit stats
+mygof <- list(m2,m3,m4,m5,m6,m7,m8,m9) %>%
+  map_dfr(~get_gof(.)) %>%
+  # Combine into one data.frame
+  mutate(vif = myvif, lh = mylh)
+goflist <- list("N (city-years)" = mygof$nobs, "Max VIF" = mygof$vif, "F-statistic (df)" = mygof$f,
+     "Change in Deviance (df)" = mygof$lh, "Sigma (Avg. Error)" = mygof$sigma)
+# Get texreg objects
+mytex <- list(m2,m3,m4,m5,m6,m7,m8,m9) %>% map(~get_tex(.))
+outcome = "Middle Class"
+save(mytex, mygof, goflist, outcome, file = "table_mid.RData")
+
+# Save the best fit model at the end, because it's enormous.
+m9 %>% saveRDS("model_mid.RData")
+
+rm(list=ls())
+```
+
+
+
+## Captions
+
+```{r}
+
+mycoefnames = list(
+    "pop" = "Population",
+    "I(pop^0.1)" = "Population",
+    "inhabitable_area" = "Inhabitable Area (ha)",
+    "log(inhabitable_area)" = "Inhabitable Area (ha)",
+    "age_elder" = "% Over Age 65",
+    "log(age_elder/(1 - age_elder))" = "% Over Age 65",
+    "income" = "Income per capita (1000s of yen)",
+    "log(income)" = "Income per capita (1000s of yen)",
+    "rev" = "Revenue per capita (1000s of yen)",
+    "sqrt(rev)" = "Revenue per capita (1000s of yen)",
+    "rev_external" = "% National & Prefectural Funding",
+    "log(rev_external/(1 - rev_external))" = "% National & Prefectural Funding",
+    "rev_to_exp" = "Real Term Budget Balance (+/-)",
+    "deaths" = "Disaster Deaths (per 100,000)", 
+    "I(deaths^0.1)" = "Disaster Deaths (per 100,000)", 
+    "damages" = "Disaster Damage (per 100,000)", 
+    "I(damages^0.1)" = "Disaster Damage (per 100,000)",
+    "tsunami" = "Hit by 2011 tsunami (1/0)",
+    "dis_restoration" = "Disaster Recovery Spending Rate",
+    "I(dis_restoration^0.1)" = "Disaster Recovery Spending Rate",
+    "dis_relief" = "Disaster Relief Spending Rate",
+    "I(dis_relief^0.1)" = "Disaster Relief Spending Rate",
+    "regime_soc" = "Social Welfare Index",
+    "regime_mid" = "Middle Class Regime Index",
+    "regime_dev" = "Developmental Regime Index",
+    "LDP_Komeito_house" = "% LDP Coalition Votes: Lower House",
+    "log(LDP_Komeito_house + 0.01/(1 - LDP_Komeito_house + 0.01))" = "% LDP Coalition Votes: Lower House",
+    "LDP_Komeito_pref" = "% LDP Coalition Votes: Prefecture",
+    "log(LDP_Komeito_pref + 0.01/(1 - LDP_Komeito_pref + 0.01))" = "% LDP Coalition Votes: Prefecture",
+    "bonding" = "Bonding Social Capital (0-1)",
+    "log(bonding/(1 - bonding))" = "Bonding Social Capital (0-1)",
+    "bridging" = "Bridging Social Capital (Quartiles)",
+    "ntile(bridging, 4)" = "Bridging Social Capital (Quartiles)",
+    "linking" = "Linking Social Capital (0-1)",
+    "log(linking/(1 - linking))" = "Linking Social Capital (0-1)",
+    "college" = "% College Educated",
+    "log(college/(1 - college))" = "% College Educated",
+    "unemployed" = "% Unemployed",
+    "log((unemployed + 0.01)/(1 - (unemployed + 0.01)))" = "% Unemployed",
+    "migration" = "Total Migration (per capita)",
+    "log(migration)" = "Total Migration (per capita)",
+    "ylag" = "Lagged Outcome (1 year prior)",
+    "(Intercept)" = "Constant")
+
+mycolumns = c("Basic Controls", "Disaster Controls", 
+                "Other Regimes", "Collective Action", 
+                "Prefecture Effects<sup>1</sup>", "Lagged Outcome<sup>2</sup>", 
+                "Lagged Controls<sup>3</sup>", "Transformed<sup>4</sup>")
+
+
+get_ktable = function(tableno){
+  
+  # Write a function to take the contents of parentheses and put it at the end.
+  switch_order = function(data){
+    for(i in 2:9){
+      se = str_extract(data[,i] %>% unlist(), pattern = "[(].*[)] ")
+      beta = str_remove(data[,i] %>% unlist(), pattern = " [(].*[)] ")
+      label = if_else(!is.na(se), paste(beta, se, sep = " "), beta)
+      # Overwrite original  
+      data[,i] <- label
+    }
+    return(data)
+  }
+  
+  tab <- texreg::matrixreg(
+    #file = "/cloud/project/viz/table_soc.html", 
+    l = mytex, caption.above = TRUE, include.adjr = FALSE,  #custom.note = mynote, 
+    single.row = TRUE, bold = 0.10, stars = c(0.001, 0.01, 0.05, 0.10),
+    custom.model.names = mycolumns, custom.gof.rows = goflist,
+    custom.coef.map = mycoefnames) %>% #groups = mygroups
+    as_tibble() %>%
+    magrittr::set_colnames(value = slice(., 1)) %>%
+    .[-1,] %>%
+    switch_order()
+  
+  get_bold = function(data, column){
+    unlist(tab[1:23,column]) %>% str_detect("[*]+") %>% c(., rep(FALSE, 6)) %>%
+      return()
+  }
+  
+  tab[30,][1] <- "R2"
+  
+  tab %>%
+    kbl(format = "latex", booktabs = TRUE, longtable = TRUE, linesep = "\\addlinespace",
+        # You can write LaTEX in the caption, as long as you use \\, not \
+        caption = paste(tableno, ": \\textbf{OLS Models of ", outcome, " Regimes.}
+        \\newline \\normalsize
+        \\textit{Dependent Variable}: ", outcome, " Regime Index (Z-score). 
+        \\newline \\normalsize
+        \\textit{Unit of Observation}: ", mygof$nobs %>% max(), " Japanese municipality-years (2000-2018), with annual fixed effects.", sep = "")) %>%
+    kable_styling(latex_options = c("striped", "hold_position"), full_width = TRUE, font_size = 10) %>%
+    column_spec(column = 1, width = "6cm") %>%
+    column_spec(2, bold = get_bold(tab, 2), width = "1.6cm") %>%
+    column_spec(3, bold = get_bold(tab, 3), width = "1.6cm") %>%
+    column_spec(4, bold = get_bold(tab, 4), width = "1.6cm") %>%
+    column_spec(5, bold = get_bold(tab, 5), width = "1.6cm") %>%
+    column_spec(6, bold = get_bold(tab, 6), width = "1.6cm") %>%
+    column_spec(7, bold = get_bold(tab, 7), width = "1.6cm") %>%
+    column_spec(8, bold = get_bold(tab, 8), width = "1.6cm") %>%
+    column_spec(9, bold = get_bold(tab, 9), width = "1.6cm") %>%
+    pack_rows("\nDemographics", 1, 4) %>%
+    pack_rows("\nRevenue", 5, 7, hline_before = TRUE, latex_gap_space = "0.25cm") %>%
+    pack_rows("\nDisaster Conditions", 8, 10, hline_before = TRUE, latex_gap_space = "0.25cm") %>%
+    pack_rows("\nDisaster Spending", 11, 12, hline_before = TRUE, latex_gap_space = "0.25cm") %>%
+    pack_rows("\nOther Urban Regimes", 13, 14, hline_before = TRUE, latex_gap_space = "0.25cm") %>% 
+    pack_rows("\nPolitical Parties", 15, 16, hline_before = TRUE, latex_gap_space = "0.25cm") %>%
+    pack_rows("\nCollective Action", 17, 19, hline_before = TRUE, latex_gap_space = "0.25cm") %>%
+    pack_rows("\nExtra Controls", 20, 24, hline_before = TRUE, latex_gap_space = "0.25cm") %>%
+    pack_rows("\nModel Fit", 25, 30, hline_before = TRUE, latex_gap_space = "0.25cm") %>%
+    add_header_above(header = c(" ", "Model 1" = 1, "Model 2" = 1, "Model 3" = 1, "Model 4" = 1,
+                                "Model 5" = 1, "Model 6" = 1, "Model 7" = 1, "Model 8" = 1)) %>%
+    add_header_above(header = c(" " = 8, "Best Model")) %>%
+    footnote(
+      general = "Statistical Significance: *** p < 0.001, ** p < 0.01, * p < 0.05, . p < 0.10. All p-values and asterisks reflect two-tailed hypothesis tests. (F-statistic is one-tailed by default.)",
+      number = c(
+        "Annual Fixed Effects included in every model. Prefectural effects added starting in Model 5. Excluded from table to conserve space.",
+        "Lagged Outcome by 1 year in Models 6-8, to control for path dependence and any temporal correlation. Constrains final models to 2001-2018.",
+        "Lagged Controls: All other numeric predictors lagged by 1 year in Models 7-8 to avoid endogeneity bias. Despite the 1% drop in R<sup>2</sup>, lagging controls ensures more conservative estimates.",
+        "Transformations: In Model 8, predictors were log-, logit-, or root-transformed to fit their distribution and nonlinear trends, adding a small constant where necessary. These made statistically significant improvements in log-likelihood compared to Model 7 (p < 0.001). Area, income, and migration were logged. Revenue used the square root; the 10th root was used for Population (to avoid colinearity with spending), disaster deaths, damages, recovery spending, and relief spending (since the distributions have frequent, meaningful zeros). Age, voteshares, social capital, education, and unemployment were logit tranformed, since they are bounded at 0 and 1. Bridging social capital was split into quartiles, to avoid collinearity with regime indicators."),
+      threeparttable = TRUE) %>%
+    str_replace_all(c("<sup>" = "$^{",   "</sup>" = "}$",
+                      "R2" = "R$^{2}$", "<b>" = "\textbf{",  "</b>" = "}",
+                      "<sqrt>" = "$sqrt{", "</sqrt>" = "}$")) %>%
+    knitr::asis_output() %>%
+    return()
+}
+
+save(mycoefnames, mycolumns, get_ktable, file = "captions.RData")
+```
+
+## Table
+
+```{r}
+load("table_soc.RData")
+load("captions.RData")
+
+texreg::htmlreg(
+  file = "viz/table_soc.html", l = mytex, 
+  custom.note = mynote, caption.above = TRUE, include.adjr = FALSE,
+  single.row = TRUE, bold = 0.10, stars = c(0.001, 0.01, 0.05, 0.10),
+  custom.model.names = mycolumns, custom.gof.rows = goflist,
+  custom.coef.map = mycoefnames, groups = mygroups,
+  caption = paste("<b>OLS Models of ", outcome, " Regimes</b>:
+  <br><i>Dependent Variable</b>: ", outcome, " Regime Index (Z-score)
+  <br><i>Unit of Observation</i>: Japanese municipality governments over time (2000-2018), with annual fixed effects.", sep = ""))
+```
+```{r}
+load("table_dev.RData")
+load("captions.RData")
+
+texreg::htmlreg(
+  file = "viz/table_dev.html", l = mytex, 
+  custom.note = mynote, caption.above = TRUE, include.adjr = FALSE,
+  single.row = TRUE, bold = 0.10, stars = c(0.001, 0.01, 0.05, 0.10),
+  custom.model.names = mycolumns, custom.gof.rows = goflist,
+  custom.coef.map = mycoefnames, groups = mygroups,
+  caption = paste("<b>OLS Models of ", outcome, " Regimes</b>:
+  <br><i>Dependent Variable</b>: ", outcome, " Regime Index (Z-score)
+  <br><i>Unit of Observation</i>: Japanese municipality governments over time (2000-2018), with annual fixed effects.", sep = ""))
+```
+
+```{r}
+load("table_mid.RData")
+load("captions.RData")
+
+texreg::htmlreg(
+  file = "viz/table_soc.html", l = mytex, 
+  custom.note = mynote, caption.above = TRUE, include.adjr = FALSE,
+  single.row = TRUE, bold = 0.10, stars = c(0.001, 0.01, 0.05, 0.10),
+  custom.model.names = mycolumns, custom.gof.rows = goflist,
+  custom.coef.map = mycoefnames, groups = mygroups,
+  caption = paste("<b>OLS Models of ", outcome, " Regimes</b>:
+  <br><i>Dependent Variable</b>: ", outcome, " Regime Index (Z-score)
+  <br><i>Unit of Observation</i>: Japanese municipality governments over time (2000-2018), with annual fixed effects.", sep = ""))
+
+```
+
+
+
+
+
+
+
+## Time
+
+
+
+
+```{r}
+texreg::htmlreg(
+  l = list(m1,m2,m3,m4,m5,m6,m7, pool(m8)),
+  caption.above = TRUE,
+  caption = "<b>Annual Fixed Effects for OLS Models of Social Welfare Regimes</b>:
+  <br>
+  <i>Dependent Variable</b>: Social Welfare Regime Index (Z-score)
+  <br>
+  <i>Unit of Observation</i>: Japanese municipality governments over time (2000-2018), with annual fixed effects.",
+  single.row = TRUE, bold = 0.10, stars = c(0.001, 0.01, 0.05, 0.10),
+  custom.model.names = c("Model 1<br>Year", "Model 2<br>Basic Controls",
+                         "Model 3<br>Disaster Controls", "Model 4<br>Other Regimes",
+                         "Model 5<br>Collective Action", "Model 6<br>Prefectures<sup>1</sup>",
+                         "Model 7<br>Transformed<sup>2</sup>", "Model 8<br>Multiple Imputation"),
+  custom.gof.rows = list("Max VIF" = myvif),
+  custom.coef.map = list(
+    "year2001" = "2001",
+    "year2002" = "2002",
+    "year2003" = "2003",
+    "year2004" = "2004",
+    "year2005" = "2005",
+    "year2006" = "2006",
+    "year2007" = "2007",
+    "year2008" = "2008",
+    "year2009" = "2009",
+    "year2010" = "2010",
+    "year2011" = "2011",
+    "year2012" = "2012",
+    "year2013" = "2013",
+    "year2014" = "2014",
+    "year2015" = "2015",
+    "year2016" = "2016",
+    "year2017" = "2017",
+    "year2018" = "2018",
+    "(Intercept)" = "Constant"),
+  file = "viz/table_soc_fe.html"
+)
+```
+
+## GLH
+
+```{r}
+
+get_stat = function(x){
+bind_rows(
+  get_glh(x, c("year2002 = 0")) %>% mutate(type = "2002"),
+  get_glh(x, c("year2003 = 0")) %>% mutate(type = "2003"),
+  get_glh(x, c("year2004 = 0")) %>% mutate(type = "2004"),
+  get_glh(x, c("year2005 = 0")) %>% mutate(type = "2005"),
+  get_glh(x, c("year2006 = 0")) %>% mutate(type = "2006"),
+  get_glh(x, c("year2007 = 0")) %>% mutate(type = "2007"),
+  get_glh(x, c("year2008 = 0")) %>% mutate(type = "2008"),
+  get_glh(x, c("year2009 = 0")) %>% mutate(type = "2009"),
+  get_glh(x, c("year2010 = 0")) %>% mutate(type = "2010"),
+  # Average of pre-disaster period
+  get_glh(x, c("(year2010 + year2009 + year2008 + year2007 + year2005 + year2004 + year2003 + year2002) / 8 = 0")) %>% 
+    mutate(type = "Mean(2002:2010)"),
+  
+  get_glh(x, c("year2011 = 0"))%>% mutate(type = "2011"),
+  get_glh(x, c("year2012 = 0"))%>% mutate(type = "2012"),
+  get_glh(x, c("year2013 = 0"))%>% mutate(type = "2013"),
+  get_glh(x, c("year2014 = 0"))%>% mutate(type = "2014"),
+  get_glh(x, c("year2015 = 0"))%>% mutate(type = "2015"),
+  get_glh(x, c("year2016 = 0"))%>% mutate(type = "2016"),
+  get_glh(x, c("year2017 = 0"))%>% mutate(type = "2017"),
+  get_glh(x, c("year2018 = 0"))%>% mutate(type = "2018"),
+  # Average of Post Disaster Period
+  get_glh(x, c("(year2018 + year2017 + year2016 + year2015 + year2014 + year2013 + year2012 + year2011) / 8 = 0")) %>%
+    mutate(type = "Mean(2011:2018)"),
+  
+  # Comparison
+  get_glh(x, "(year2018 + year2017 + year2016 + year2015 + year2014 + year2013 + year2012 + year2011) / 8 - (year2010 + year2009 + year2008 + year2007 + year2005 + year2004 + year2003 + year2002) / 8 = 0") %>%
+    mutate(type = "Mean Post - Mean Pre"),
+  # Total Gains
+  get_glh(x, "year2018 - year2002 = 0") %>%
+    mutate(type = "2018 - 2002"),
+  # Gains since Fukushima
+  get_glh(x, "year2018 - year2017 = 0") %>%
+    mutate(type = "2018 - 2017"),
+  get_glh(x, "year2018 - year2016 = 0") %>%
+    mutate(type = "2018 - 2016"),
+  get_glh(x, "year2018 - year2015 = 0") %>%
+    mutate(type = "2018 - 2015"),
+  get_glh(x, "year2018 - year2014 = 0") %>%
+    mutate(type = "2018 - 2014"),
+  get_glh(x, "year2018 - year2013 = 0") %>%
+    mutate(type = "2018 - 2013"),
+  get_glh(x, "year2018 - year2012 = 0") %>%
+    mutate(type = "2018 - 2012"),
+  get_glh(x, "year2018 - year2011 = 0") %>%
+    mutate(type = "2018 - 2011"),
+  get_glh(x, "year2018 - year2010 = 0") %>%
+    mutate(type = "2018 - 2010")
+) %>%   
+  mutate(
+    sign = if_else(estimate > 0, "+", ""),
+    lower = estimate - std_error*1.96,
+    upper = estimate + std_error*1.96,
+    stars = gtools::stars.pval(p_value),
+    p_value = round(p_value, 3),
+    label = paste(sign, round(estimate, 2), stars, " (", round(std_error, 2), ")", sep = "")) %>%
+  select(type, label, p_value, estimate, lower, upper) %>%
+    return()
+}
+
+m9 <- read_rds("model_soc.RData")
+load("table_functions.RData")
+soc <- get_stat(m9)
+
+m9 <- read_rds("model_dev.RData")
+load("table_functions.RData")
+dev <- get_stat(m9)
+
+m9 <- read_rds("model_mid.RData")
+load("table_functions.RData")
+mid <- get_stat(m9)
+
+bind_rows(
+  soc %>% mutate(group = "Social Welfare"),
+  mid %>% mutate(group = "Middle Class"),
+  dev %>% mutate(group = "Developmental")
+) %>%
+  saveRDS("raw_data/effects.rds")
+
+rm(list = ls())
+#Frank Bretz, Torsten Hothorn and Peter Westfall (2010), Multiple Comparisons Using R, CRC Press, Boca Raton.
+#Torsten Hothorn, Frank Bretz and Peter Westfall (2008), Simultaneous Inference in General Parametric Models. Biometrical Journal, 50(3), 346--363; See vignette("generalsiminf", package = "multcomp").
+```
+
+## Simulation
+
+```{r, eval = FALSE}
+# Can we install Zelig from the CRAN archive? Let's find out.
+library(devtools)
+# Must install dependencies first
+install.packages(c("AER", "Amelia", "coda", "Formula", "geepack", "MatchIt", "maxLik", "MCMCpack", "survey", "VGAM"))
+install.packages("/cloud/project/raw_data/Zelig_5.1.7.tar.gz", 
+                 repos = NULL, type = "source")
+
+```
+
+```{r}
+library(Zelig)
+
+# Specify covariates to be lagged
+mylags = c("pop", "inhabitable_area", "income", "age_elder",
+           "rev", "rev_external", "rev_to_exp", 
+           "deaths", "damages", "tsunami", "dis_restoration", "dis_relief",
+           "college", "unemployed", "migration", "LDP_Komeito_house", "LDP_Komeito_pref", 
+           "bonding", "bridging", "linking")
+
+m9 <- read_rds("model_soc.RData")
+
+m9$analyses[[1]]
+# IF you're doing first differences, you could always...
+# take model imputation 1
+# get multivariate normal distribution for imp 1
+# get first differences for it
+# repeat for model imp 2
+```
+
+### Functions
+
+```{r}
+myconstants = list(
+  "regime_dev" = 0,
+  "regime_soc" = 0,
+  "regime_mid" = 0,
+  "ylag" = 0,
+  # Median
+  "I(pop^0.1)" = 24750^.1,
+  "log(inhabitable_area)" = log(4170),
+  "sqrt(rev)" = sqrt(503.74),
+  "log(income)" = log(1199.19),
+  "log(age_elder/(1 - age_elder))" = log(0.28/(1-0.28)),
+  "log(rev_external/(1 - rev_external))" = log(0.16/(1-0.16)),
+  "rev_to_exp" = 4.7,
+  # Assume not disasterhit
+  "I(deaths^0.1)" = 0^.1,
+  "I(damages^0.1)"= 0^.1,
+  "tsunami" = 0,
+  "I(dis_restoration^0.1)" = 0^.1,
+  "I(dis_relief^0.1)" = 0^.1,
+  # That's totally the median, BUT WHOA,CHECK THIS.
+  "log(college/(1 - college))" = log(0.09/(1 - 0.09)),
+  "log((unemployed + 0.01)/(1 - (unemployed + 0.01)))" = log((0.05 + 0.01) / (1 - (0.05 + 0.01) )),
+  "log(migration)" = log(0.06), 
+  
+  "log((LDP_Komeito_house + 0.01)/(1 - (LDP_Komeito_house + 0.01)))" = log((0.51 + 0.01) / (1 - (0.51 + 0.01) )),
+  "log((LDP_Komeito_pref + 0.01)/(1 - (LDP_Komeito_pref + 0.01)))" = log((0.32 + 0.01) / (1 - (0.32 + 0.01) )),
+  
+  
+  "log(bonding/(1 - bonding))" = log(0.71/(1 - 0.71)),
+  "ntile(bridging, 4)" = 2, # 0.32
+  "log(linking/(1 - linking))" = log(0.25/(1 - 0.25)),
+  
+  "year2001" = 0,
+  "year2002" = 0,
+  "year2003" = 0,
+  "year2004" = 0,
+  "year2005" = 0,
+  "year2006" = 0,
+  "year2007" = 0,
+  "year2008" = 0,
+  "year2009" = 0,
+  "year2010" = 0,
+  "year2011" = 0,
+  "year2012" = 0,
+  "year2013" = 0,
+  "year2014" = 0,
+  "year2015" = 0,
+  "year2016" = 0,
+  "year2017" = 0,
+  "year2018" = 0,
+  
+  
+  "pref01" = 0,
+  "pref02" = 0,
+  "pref03" = 0,
+  "pref04" = 0,
+  "pref05" = 0,
+  "pref06" = 0,
+  "pref07" = 0,
+  "pref08" = 0,
+  "pref09" = 0,
+  "pref10" = 0,
+  "pref11" = 0,
+  "pref12" = 0,
+  "pref13" = 0,
+  "pref14" = 0,
+  "pref15" = 0,
+  "pref16" = 0,
+  "pref17" = 0,
+  "pref18" = 0,
+  "pref19" = 0,
+  "pref20" = 0,
+  "pref21" = 0,
+  "pref22" = 0,
+  "pref23" = 0,
+  "pref24" = 0,
+  "pref25" = 0,
+  "pref26" = 0,
+  "pref27" = 0,
+  "pref28" = 0,
+  "pref29" = 0,
+  "pref30" = 0,
+  "pref31" = 0,
+  "pref32" = 0,
+  "pref33" = 0,
+  "pref34" = 0,
+  "pref35" = 0,
+  "pref36" = 0,
+  "pref37" = 0,
+  "pref38" = 0,
+  "pref39" = 0,
+  "pref40" = 0,
+  "pref41" = 0,
+  "pref42" = 0,
+  "pref43" = 0,
+  "pref44" = 0,
+  "pref45" = 0,
+  "pref46" = 0,
+  "pref47" = 0)
+#m9 <-read_rds("model_soc.RData")
+#m9$analyses[[1]]$model$`ntile(bridging, 4)` %>% summary()
+
+# Write a function to get a consistent multivariate normal distribution pertaining to each imputed dataset
+get_dist = function(m){
+  
+  mycoef <- m$coefficients %>%
+    bind_rows() %>%
+    rename(intercept = 1)
+  
+  mydist <- data.frame(
+    id = 1:200,  # Give each row a unique ID
+    MASS::mvrnorm(
+      n = 200, # get 100 simulations per imputation
+      mu = unlist(mycoef), # get vector of our coefficients 
+      Sigma = vcov(m)) # get variance/covariance of variables
+  ) %>%
+    # Rename columns to match mycoef
+    magrittr::set_colnames(value = c("id", names(mycoef)))
+    
+  
+  return(mydist)
+}
+
+
+
+get_sim = function(m, xmatrix = NULL, mydist, constants = NULL){
+  
+  require(dplyr)
+  require(moderndive)
+  
+  mycoef <- m$coefficients %>%
+    bind_rows() %>%
+    rename(intercept = 1)
+  
+  
+  get_mode = function(myvector){
+    myvector %>%
+      table() %>% 
+      sort(decreasing = TRUE) %>% 
+      names() %>% 
+      .[1] %>%
+      return()
+  }
+  
+  x <- model.matrix(m)[,-1] %>%
+    as_tibble() %>%
+    # Set our supplied predictor values (like setx() )
+    summarize(
+      # Now, let's set all other values to their means or modes
+      across(where(is.factor), ~get_mode(.x)),
+      across(where(is.character), ~get_mode(.x)),
+      across(where(is.numeric), ~if_else(length(unique(.x)) == 2,
+                                         true = get_mode(.x) %>% as.numeric(),
+                                         false = mean(.x, na.rm = TRUE))))
+  # If you want to set specific constants, do so here.
+  if(!is.null(constants)){
+    # In this case, just to be sure, we're going to set constants,
+    x <- x %>%
+      mutate(constants %>% as_tibble())
+  }
+    
+  # Last, let's choose a value for the independent variable
+  x <- x %>% 
+    mutate(xmatrix %>% as_tibble())
+  
+  sigma <- broom::glance(m)$sigma
+  
+  diysim <- mydist %>% 
+    # Use our simulated coefficients, 
+    # saved in mydist under each variable name
+    pivot_longer(cols = -c(id), names_to = "variable", values_to = "simbeta")  %>%
+    left_join(by = "variable", y = x %>% 
+                pivot_longer(cols = -c(), names_to = "variable", values_to = "fixedx")) %>%
+    # Fill in the intercept with 1
+    mutate(fixedx = if_else(variable == "intercept", 1, fixedx)) %>%
+    # Filter out the precision term, which is used at a different point in the model
+    #filter(variable != "(phi)") %>%
+    # Add together the intercept * 1 + the beta coefficient times each fixed value of x
+    group_by(id) %>%
+    # Multiply each by single value for variables in x
+    # In this case, theta just IS ysim, because there's just a 1-to-1 link function for OLS
+    summarize(ysim = sum(simbeta * fixedx) )
+  
+  diyresults <- diysim %>% 
+    # For each of our 1000 simulated outcomes,
+    # which already accounted for estimation uncertainty,
+    group_by(id) %>%
+    summarize(
+      # Record the value(s) we used to calculate everything (9%) 
+      xmatrix %>% as_tibble(),
+      # Calculate the predicted value by drawing 1 value
+      # from our normal distribution
+      # to represent fundamental uncertainty
+      pv = rnorm(n = 1, mean = ysim, sd = sigma),
+      # Calculate the expected value by drawing 1000 values for that imputation
+      # from our normal distribution
+      # and average them to eliminate fundamental uncertainty
+      ev = rnorm(n = 1000, mean = ysim, sd = sigma) %>% mean()) %>%
+    ungroup() %>%
+    magrittr::set_colnames(value = c("id", names(xmatrix), "pv", "ev"))
+  
+  return(diyresults)
+  
+}
+
+
+# Let's write a second wrapped function to simulate many models at once.
+get_simrange = function(m, xmatrix, constants = myconstants){ 
+  # Using 1 consistent multivariate normal distribution
+  mydist <- get_dist(m)
+  
+  # Please return 1000 simulations for each of these values
+  out <- xmatrix %>% as_tibble() %>%
+    mutate(row = 1:n()) %>%
+    split(.$row) %>%
+    map_dfr(~get_sim(m = m, xmatrix = select(., -row) %>% as.list(), 
+                     mydist = mydist, constants = constants), 
+            .id = "row")
+  print("simulated")
+  return(out)
+}
+
+get_simrange_mi = function(mymi, xmatrix, constants = myconstants){
+  mymi$analyses %>%
+    map_dfr(~get_simrange(m = .,
+                     xmatrix = xmatrix, 
+                     constants = constants), .id = "imp") %>%
+    mutate(id = id + (as.numeric(imp)-1)*200) %>%
+    return()
+}
+
+
+
+
+get_bands = function(data, var){
+  data %>%
+    rename(qi = var) %>%
+    summarize(estimate = quantile(qi, probs = 0.50),
+              lower_90 = quantile(qi, probs = 0.05),
+              lower_95 = quantile(qi, probs = 0.025),
+              lower_99 = quantile(qi, probs = 0.005),
+              lower_999 = quantile(qi, probs = 0.0005),
+              upper_90 = quantile(qi, probs = 0.950),
+              upper_95 = quantile(qi, probs = 0.975),
+              upper_99 = quantile(qi, probs = 0.995),
+              upper_999 = quantile(qi, probs = 0.9995)) %>%
+    pivot_longer(cols = c(lower_90:upper_999), names_to = "ci", values_to = "value") %>%
+    mutate(level = str_remove(ci, "lower_|upper_") %>% as.numeric(),
+           ci = str_extract(ci, "lower|upper")) %>%
+    pivot_wider(id_cols = c(estimate, level), names_from = ci, values_from = value) %>%
+    mutate(level = level %>% dplyr::recode_factor(
+      "90" = "90%", "95" = "95%", "99" = "99%", "999" = "99.9%")) %>%
+    return()
+}
+
+
+get_fd = function(data, setx1, setx){
+  
+  data %>%
+    select(imp, id, x = row, ev) %>%
+    filter(x %in% c(setx, setx1)) %>%
+    mutate(x = case_when(
+      x == setx ~ "0", 
+      x == setx1 ~ "1")) %>% 
+    pivot_wider(id_cols = c(id, imp), names_from = x, names_prefix = "x", values_from = ev) %>%
+    mutate(fd = x1 - x0) %>%
+    return()
+}
+
+get_stats = function(data){
+  data %>%
+    #group_by(variable) %>%
+    summarize(estimate = quantile(fd, probs = 0.50),
+              lower_ci = quantile(fd, probs = 0.025),
+              upper_ci = quantile(fd, probs = 0.975),
+              # Get the false positive rate
+              p_value = 1 - if_else(estimate > 0, sum(fd > 0), sum(fd < 0)) / n(),
+              stars = gtools::stars.pval(p_value),
+              estimate_label = round(estimate, 3),
+              estimate_label = if_else(estimate > 0, 
+                                       true = paste("+", estimate_label, sep = ""), 
+                                       false = paste(estimate_label)),
+              diff_label = paste(estimate_label, stars, sep = "")) %>%
+    return()
+}
+
+save(get_simrange_mi, get_simrange, get_sim, get_dist, myconstants,
+     get_fd, get_bands,get_stats,
+     file = "simulator.RData")
+```
+
+
+```{r}
+load("simulator.RData")
+m9 <- read_rds("model_soc.RData")
+
+mymatrix <- data.frame(year = as.character(2001:2018)) %>%
+  model.matrix(~year - 1, .) %>% as_tibble() %>% 
+  mutate(pref21 = 1) %>%
+  as.list()
+
+out <- get_simrange_mi(m9, xmatrix = mymatrix, constants = myconstants) 
+  saveRDS("viz/sim_year.rds")
+```
+
+```{r}
+out <- read_rds("viz/sim_year.rds") %>%
+   # relies on row variable
+  mutate(row = as.numeric(row) + 2000)
+
+effects <- bind_rows(
+  out %>% get_fd(setx1 = 2002, setx = 2001),
+  out %>% get_fd(setx1 = 2003, setx = 2001),
+  out %>% get_fd(setx1 = 2004, setx = 2001),
+  out %>% get_fd(setx1 = 2005, setx = 2001),
+  out %>% get_fd(setx1 = 2006, setx = 2001),
+  out %>% get_fd(setx1 = 2007, setx = 2001),
+  out %>% get_fd(setx1 = 2008, setx = 2001),
+  out %>% get_fd(setx1 = 2009, setx = 2001),
+  out %>% get_fd(setx1 = 2010, setx = 2001),
+  out %>% get_fd(setx1 = 2011, setx = 2001),
+  out %>% get_fd(setx1 = 2012, setx = 2001),
+  out %>% get_fd(setx1 = 2013, setx = 2001),
+  out %>% get_fd(setx1 = 2014, setx = 2001),
+  out %>% get_fd(setx1 = 2015, setx = 2001),
+  out %>% get_fd(setx1 = 2016, setx = 2001),
+  out %>% get_fd(setx1 = 2017, setx = 2001),
+  out %>% get_fd(setx1 = 2018, setx = 2001), 
+  .id = "group") %>%
+  mutate(group = paste(as.numeric(group) + 2001, " - 2001", sep = ""))
+
+# Get first differences with p-values results
+effects %>% 
+  group_by(group) %>%
+  get_stats()
+
+# Get confidence intervals
+effects %>%
+  split(.$group) %>%
+  map_dfr(~get_bands(., var = "fd"), .id = "group")
+
+effects %>%
+  group_by() %>%
+  get_stats() %>%
+  head()
+  mutate(x = str_remove(group, " - 2001") %>% as.numeric()) %>%
+  ggplot(mapping = aes(x = x, y = estimate, ymin = lower, ymax = upper, fill = level)) +
+  geom_crossbar(data = . %>% filter(level == "95%")) +
+  geom_ribbon(data = . %>% filter(level == "95%"), fill = "red", alpha = 0.5)
+```
+
+
+
+# Other
+### Comparisons
+
+```{r, eval = FALSE}
+### Population + Area controlled
+x1 <- read_rds("raw_data/indicators.rds") %>%
+  # Convert area from hectares to units of 10 square kilometers each
+  mutate_at(vars(agr:housing), list(~. / inhabitable_area * 1000)) %>%
+  get_index()
+
+
+### Population + Area + Revenue Rate controlled
+x2 <- read_rds("raw_data/indicators.rds") %>%
+  # Convert area from hectares to units of 10 square kilometers each
+  mutate_at(vars(agr:housing), list(~. / inhabitable_area * 1000)) %>%
+  mutate_at(vars(agr:housing), list(~. / rev * 1000)) %>% 
+  get_index()
+
+### Population + Area + Revenue Rate + Age controlled
+x3 <- read_rds("raw_data/indicators.rds") %>%
+  # Convert area from hectares to units of 10 square kilometers each
+  mutate_at(vars(agr:housing), list(~. / inhabitable_area * 1000)) %>%
+  mutate_at(vars(agr:housing), list(~. / rev * 1000)) %>% 
+  mutate_at(vars(agr:housing), list(~. / age_elder)) %>%
+  get_index()
+
+### Population + Area + Revenue Rate + Age + Income controlled
+x4 <- read_rds("raw_data/indicators.rds") %>%
+  # Convert area from hectares to units of 10 square kilometers each
+  mutate_at(vars(agr:housing), list(~. / inhabitable_area * 1000)) %>%
+  mutate_at(vars(agr:housing), list(~. / rev * 1000)) %>% 
+  mutate_at(vars(agr:housing), list(~. / age_elder)) %>%
+  mutate_at(vars(agr:housing), list(~. / income * 1000)) %>% 
+  get_index()
+
+bind_rows(x, x1, x2, x3, x4, .id = "controls") %>%
+  mutate(controls = controls %>% dplyr::recode_factor(
+    "1" = "pop",
+    "2" = "area",
+    "3" = "rev",
+    "4" = "elder",
+    "5" = "income")) %>%
+  pivot_wider(id_cols = c(muni_code, year), names_from = controls, 
+              values_from = c(regime_dev, regime_soc, regime_mid)) %>%
+  left_join(by = c("muni_code", "year"),
+            y = read_rds("raw_data/indicators.rds")) %>%
+  left_join(by = "muni_code", y = read_rds("raw_data/muni_code.rds"))  %>%
+  saveRDS("raw_data/indices_comparison.rds")
+
+remove(x,x1,x2,x3,x4)
+```
+
+We averaged the logged rate of:
+spending on TYPE,
+given a certain population
+given a certain area
+given a certain revenue rate
+given a certain income rate
+given a certain age rate
+
+```{r}
+test <- read_rds("raw_data/indices_comparison.rds")
+
+# used to be weakly correlated with area;
+# now it's super not correlated (r = -0.65)
+test %>%
+  select(contains("regime_dev"), inhabitable_area) %>%
+  cor(use = "pairwise.complete.obs") %>%
+  .[,"inhabitable_area"]
+
+# Used to be super correlated with revenue; now less so
+test %>%
+  select(contains("regime_dev"), rev) %>%
+  cor(use = "pairwise.complete.obs") %>%
+  .[,"rev"]
+
+# Used to be positively correlated; but not anymore.
+test %>%
+  select(contains("regime_dev"), age_elder) %>%
+  cor(use = "pairwise.complete.obs") %>%
+  .[,"age_elder"]
+
+# Meh. Not sure what changed.
+test %>%
+  select(contains("regime_dev"), income) %>%
+  cor(use = "pairwise.complete.obs") %>%
+  .[,"income"]
+
+rm(list= ls())
+```
+
+
+
+## 1.4 Tidy Dataset
+
+```{r}
+# Finally, let's convert the indices and indicators into a tidy dataset
+bind_rows(
+  read_rds("raw_data/indicators_rescaled.rds")  %>%
+    select(year, muni_code, regime = regime_dev, percent = percent_dev,
+           agr, com_manuf, infra) %>%
+    pivot_longer(cols = -c(year, muni_code, regime, percent),
+                 names_to = "measure", values_to = "value") %>%
+    mutate(type = "Developmental"),
+  read_rds("raw_data/indicators_rescaled.rds")  %>%
+    select(year, muni_code, regime = regime_prog, percent = percent_prog,
+           education, health, planning, waste) %>%
+    pivot_longer(cols = -c(year, muni_code, regime, percent),
+                 names_to = "measure", values_to = "value") %>%
+    mutate(type = "Progressive"),
+  read_rds("raw_data/indicators_rescaled.rds")  %>%
+    select(year, muni_code, regime = regime_opp, percent = percent_opp,
+           social_welfare, emergency, housing) %>%
+    pivot_longer(cols = -c(year, muni_code, regime, percent),
+                 names_to = "measure", values_to = "value") %>%
+    mutate(type = "Opportunist"))  %>%
+  # Relabel
+   mutate(measure = measure %>% recode_factor(
+    # Developmental 
+    "com_manuf" = "Commerce\n& Manufacturing",
+    "agr" = "Agriculture,\nForestry,\n& Fisheries",
+    "infra" = "Roads, Bridges,\nConstruction",
+    # Opportunist
+    "social_welfare" = "Social Welfare\n& Unemployment",
+    #"unemployment" = "Unemployment\nRelief\n& Livelihood\nProtection",
+    "housing" = "Housing",
+    #"disaster" = "Disaster\nRelief",
+    "emergency" = "Emergency\nServices",
+    # Progressive
+    "education" = "Education",
+    "health" = "Public\nHealth",
+    "planning" = "City\nPlanning",
+    "waste" = "Waste"))  %>%
+  filter(!is.na(regime)) %>%
+  saveRDS("raw_data/indicators_tidy.rds")
+```
+
+
+
+
