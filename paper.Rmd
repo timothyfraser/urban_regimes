@@ -352,7 +352,7 @@ nums <- tab %>%
 tab %>%
   kbl(format = "latex", booktabs = TRUE, longtable = TRUE, linesep = "\\addlinespace",escape = F,
       # You can write LaTEX in the caption, as long as you use \\, not \
-      caption = "Table \\ref{tab:regimeclass}\\label{tab:regimeclass}: \\textbf{Regime Classifications}") %>%
+      caption = "Table \\ref{tab:regimeclass}: \\textbf{Regime Classifications}") %>%
   kable_styling(latex_options = c("hold_position"), full_width = FALSE, font_size = 9) %>%
   # Note: full_width must = FALSE when using background and color in kableExtra latex
   # striped must also not be a latex_option
@@ -391,7 +391,7 @@ rm(list= ls())
 
 ## 3.4 Change over Time
 
-```{r bands, out.width = "100%", message=FALSE, warning = FALSE, echo = FALSE, fig.cap="Figure \\ref{fig:bands}\\label{fig:bands}: Indices Change Over Time", cache = TRUE}
+```{r bands, out.width = "100%", message=FALSE, warning = FALSE, echo = FALSE, fig.cap="Figure \\ref{fig:bands}: Indices Change Over Time", cache = TRUE}
 knitr::include_graphics("viz/bands.png", dpi = 100)
 ```
 
@@ -430,7 +430,7 @@ Next, I turn to statistical models to discern clearer estimates of the effect of
 
 ## 4.1 Basic Covariates
 
-I employ XX statistical controls to predict social welfare regime scores. In Model 1, I predicted social welfare regime scores using annual fixed effects plus basic demographic controls, including (1) population, (2) inhabitable area in hectares to account for city size, (3) the percentage of residents over age 65, to account for aging and policy preferences from elders vs. working-age adults, and (4) income per capita in 1000s of yen, to account for wealth. Further, I applied basic revenue controls: To represent cities' spending capacity, I controlled for (5) revenue per capita in 1000s of yen; (6) the percentage of revenue coming from national or prefectural government funding, to account for financial autonomy or lack thereof; and (7) each city's real term budget balance, so as not to overvalue the strength of a regime whose spending exceeds its means. 
+I employ 23 statistical controls with annual and prefectural fixed effects to predict social welfare regime scores. In Model 1, I predicted social welfare regime scores using annual fixed effects plus basic demographic controls, including (1) population, (2) inhabitable area in hectares to account for city size, (3) the percentage of residents over age 65, to account for aging and policy preferences from elders vs. working-age adults, and (4) income per capita in 1000s of yen, to account for wealth. Further, I applied basic revenue controls: To represent cities' spending capacity, I controlled for (5) revenue per capita in 1000s of yen; (6) the percentage of revenue coming from national or prefectural government funding, to account for financial autonomy or lack thereof; and (7) each city's real term budget balance, so as not to overvalue the strength of a regime whose spending exceeds its means. 
 
 In Model 2, I added 5 disaster controls. To account for disaster conditions, I controlled for (8) disaster deaths and (9) buildings damaged, each per 100,000 residents, as well as (10) whether each town was hit by the 2011 tsunami or not (1/0). Further, I controlled for disaster spending rates per 1,000 residents on (11) recovery, meaning in this context physical reconstruction, and (12) disaster relief. None of my urban regime indicators overlap with disaster spending, although we might expect that social welfare and developmental priorities might overlap with recovery and relief efforts, so they are important covariates.
 
@@ -454,20 +454,19 @@ These transformations made statistically significant improvements in log-likelih
 
 Compared to our first model, our final, fully specified, transformed model explains 92% of the variance in social welfare regimes, an extremely high amount. Further, the sigma statistic (residual standard error) in Table A2 shows that my final model predicts each city-year's social welfare regime score with an average error of just 0.18 points, and within a 95% confidence interval of 0.35 points. These are extremely favorable accuracy levels, considering that my outcome has a range of 5.12.
 
-I applied the same analyses to middle class and developmental indices in Tables A3 and A4, as alternative perspectives, but my main analysis focuses on social welfare regimes, to distinguish the drivers behind the rise of this regime over time. My best models (Model 8 in each table) explain extremely high shares of variation in social welfare (R2 = 92%, Table A2), middle class (R2 = 83%), and developmental regime scores (R2 = 93%).
-
+Then, I applied the same analyses to middle class and developmental indices, repeating Models 1-8 from \textbf{Table A2} as developmental models 9-16 in \textbf{Table A3} and middle-class regime Models 17-24 in \textbf{Tables A4}, as alternative perspectives. However, my main analysis focuses on social welfare regimes, to distinguish the drivers behind the rise of this regime over time. My best models (Models 8, 16, and 24) explain extremely high shares of variation in social welfare (R2 = 92%, Table A2),  developmental (R2 = 93%, Table A3), and middle class regime scores (R2 = 83%, Table A4).
 
 ## 4.3 Hypothesis Testing
 
-Finally, having applied a large set of controls to account for alternative explanations, I formally test my hypotheses on my models using the following strategies. To test my first and second hypotheses, that (**H1**) regimes scores are changing over time and that (**H2**) social welfare regimes are changing more than other regimes, I used linear hypothesis tests. Linear hypothesis tests can compare two model coefficients within the same model to evaluate whether one coefficient is greater than the other, as well as whether that difference is *statistically significant*. 
+Finally, having applied a large set of controls to account for alternative explanations, I formally test my hypotheses on my models using the following strategies. To test my first and second hypotheses, that (**H1**) regimes scores are changing over time and that (**H2**) social welfare regimes are changing more than other regimes, I used linear hypothesis tests in \textbf{Table  \ref{tab:linearhyp}}. Linear hypothesis tests can compare two model coefficients within the same model to evaluate whether one coefficient is greater than the other, as well as whether that difference is *statistically significant*. 
 
-Using the annual fixed effects from the fully specified model 8 for each index, I evaluated whether, for example, the effect of 2002 was significantly different from the benchmark compared to the benchmark year of 2001 (ie. whether the coefficient was significantly different from zero). Then, I evaluated average annual effect across all years *before* the 2011 disaster (2002-2010), and the average annual effect *after* the 2011 disaster (2011-2018). This allowed me to compute the average treatment effect of the post-disaster period compared to the pre-disaster period. Should these effects be significant, it would indicate that urban regimes have, on average, changed greatly over time, even accounting for all other model covariates. 
+Using the annual fixed effects from the fully specified models for each index (Models 8, 16, & 24), I evaluated whether, for example, the effect of 2002 was significantly different from the benchmark compared to the benchmark year of 2001 (ie. whether the coefficient was significantly different from zero). Then, I evaluated average annual effect across all years *before* the 2011 disaster (2002-2010), and the average annual effect *after* the 2011 disaster (2011-2018). This allowed me to compute the average treatment effect of the post-disaster period compared to the pre-disaster period. Should these effects be significant, it would indicate that urban regimes have, on average, changed greatly over time, even accounting for all other model covariates. 
 
-Then, to test my second hypothesis, I compare average treatment effects across different regime types; if social welfare regimes saw a significant average treatment effect, but developmental and middle class regimes did not, this would indicate social welfare regimes were disproportionately impacted by this sea-change in urban regimes.
+Then, to test my second hypothesis, I compare average treatment effects across different regime types, also in \textbf{Table \ref{tab:linearhyp}}. If social welfare regimes saw a significant average treatment effect, but developmental and middle class regimes did not, this would indicate social welfare regimes were disproportionately impacted by this sea-change in urban regimes.
 
 ## 4.4 Simulating the Median City
 
-Finally, to test my third hypothesis, that collective action potential is associated with cities' transition to social welfare regimes, I investigated the effects bonding, bridging, and linking social capital on each regime index using effects simulated from Model 8. I simulated quantities of interest from these highly accurate models using 1000 statistical simulations in R. Simulation is a frequently used method for generating model predictions [@king_et_al_2001; @imai_et_al_2008; @choirat_et_al_2017], accounting for both estimation uncertainty (using a multivariate normal distribution) and fundamental uncertainty (by averaging over random draws), which allows us to estimate expected outcomes with precise confidence intervals based on 1000 simulations. My simulations calculate the expected outcome for a hypothetical average city-year by varying just one predictor while holding all other predictors constant at their medians (or for categorical variables, their modes).
+Finally, to test my third hypothesis, that collective action potential is associated with cities' transition to social welfare regimes, I investigated the effects bonding, bridging, and linking social capital on each regime index using effects simulated from my fully specified models (Models 8, 16, & 24). I simulated quantities of interest from these highly accurate models using 1000 statistical simulations in R. Simulation is a frequently used method for generating model predictions [@king_et_al_2000; @imai_et_al_2008; @choirat_et_al_2016], accounting for both estimation uncertainty (using a multivariate normal distribution) and fundamental uncertainty (by averaging over random draws), which allows us to estimate expected outcomes with precise confidence intervals based on 1000 simulations. My simulations calculate the expected outcome for a hypothetical average city-year by varying just one predictor while holding all other predictors constant at their medians (or for categorical variables, their modes).
 
 Unless stated otherwise, all simulations below use Model 8 in Table A2 to predict social welfare regime scores for the median city. This city has a population of 24,750 residents, spans 4,170 hectares of inhabitable land, hosts an income per capita of 1,199,190 yen per capita (~$9,183 USD), with 28% of residents over age 65. The median city in Japan during this period also has low rates of adults with some college education (25%), moderately high unemployment (4.6%), and shares of high total migration (6%). It received 503,740 yen per capita in revenue last year, 16% of which came from national or prefectural government, and has a real term budget balance of +4.7. The city voted for winning LDP/Komeito candidate in moderate-to-high rates, at 51% in Lower House elections and 32% in prefectural elections. Further, we assume median levels of bonding (0.71), bridging (0.32 ~ 2nd quartile), and linking social capital (0.25). Then, to ensure our estimates are unaffected by disaster or other regimes, we hold all disaster conditions and spending variables at 0, for a city unaffected by 3/11, and hold all regime scores from the preceding year at 0 (the natural mean of these Z-scores, very close to the median); to account for time and geography, simulations assume a context of Aichi prefecture in 2018, as an 'ordinary' prefecture with cities large and small.
 
@@ -476,11 +475,14 @@ Unless stated otherwise, all simulations below use Model 8 in Table A2 to predic
 
 ## 5.1 Testing Temporal Effects
 
+This study set out to examine (**H1**) *whether* urban regimes in Japanese have changed measurably in terms of spending priorities over the last 20 years, (**H2**) whether social welfare regime in particular have grown more common, after accounting for alternative explanations with statistical controls, and (**H3**) whether collective action potential is related to the hypothesized rise in social welfare regimes. Below, we outline our findings.
+
+\singlespacing
 \newpage
 \renewcommand{\baselinestretch}{0.5}\selectfont
 \renewcommand{\arraystretch}{1.5}
 
-```{r, echo = FALSE, message=FALSE, warning = FALSE}
+```{r linearhyp, echo = FALSE, message=FALSE, warning = FALSE, cache=TRUE}
 mystat <- read_rds("raw_data/effects.rds") %>%
   mutate(type = case_when(
     type == "Mean Post - Mean Pre" ~ "Post - Pre",
@@ -505,7 +507,7 @@ mystat %>%
           `Estimate  ` = label_Middle_Class, `SE  ` = se_Middle_Class, `95% CI  `) %>%
     kbl(format = "latex", booktabs = TRUE, longtable = TRUE, linesep = "\\addlinespace",
         # You can write LaTEX in the caption, as long as you use \\, not \
-        caption = paste("Table 4", ": \\textbf{Linear Hypothesis Tests of Temporal Effects}", sep = "")) %>%
+        caption = paste("Table \\ref{tab:linearhyp}", ": \\textbf{Linear Hypothesis Tests of Temporal Effects}", sep = "")) %>%
     kable_styling(latex_options = c("striped", "hold_position"), full_width = TRUE, font_size = 9) %>%
   column_spec(column = 1, width = "2.25cm") %>%
   # Social Welfare
@@ -533,7 +535,7 @@ mystat %>%
   row_spec(row = 21, bold = TRUE, background = "grey") %>%
   add_header_above(c(" ", "Social Welfare\nRegime" = 3, "Developmental\nRegime" = 3, "Middle Class\nRegime" = 3)) %>%
   footnote(
-    general = c("Statistical Significance: *** p < 0.001, ** p < 0.01, * p < 0.05, . p < 0.10. All p-values and asterisks reflect two-tailed hypothesis tests. Based on annual fixed effects from Model 8 in Tables 3, A1, and A2."),
+    general = c("Statistical Significance: *** p < 0.001, ** p < 0.01, * p < 0.05, . p < 0.10. All p-values and asterisks reflect two-tailed hypothesis tests. Based on annual fixed effects from Models 8, 16, & 24 in Tables A2, A3, & A4, respectively."),
     threeparttable = TRUE) %>%
     str_replace_all(c("<sup>" = "$^{",   "</sup>" = "}$",
                     "R2" = "R$^{2}$", "<b>" = "\textbf{",  "</b>" = "}",
@@ -543,17 +545,26 @@ mystat %>%
 ```
 
 \newpage
-
 \renewcommand{\arraystretch}{1}
-
 \doublespacing
+
+First, I hypothesized that (**H1**) urban regimes have changed measurably over the last 2 decades. Our linear hypothesis tests presented in \textbf{Table \ref{tab:linearhyp}} reveal consistent evidence that urban regime scores changed over time. After controlling for numerous alternative explanations listed in the Methods, time had a positive, statistically significant impact on social welfare scores: the annual impact in 2018 was +0.12 standard deviations greater than in 2002 (p < 0.01), and when comparing annual effects post-disaster to annual effects pre-disaster, cities saw their social welfare scores rise each year an average of +0.1 standard deviations more post-disaster than they did pre-disaster (p < 0.001). Indeed, each consecutive year from 2004 onwards yielded increases in social welfare regime scores. (14 years saw increases significant of at least the p < 0.05 level.) These findings also complement the descriptive evidence of considerable changes in social welfare regimes presented in Figures \ref{fig:bands} and \ref{fig:map}.
+
+Second, I hypothesized that (**H2**) social welfare regimes increased annually *moreso* than did other urban regimes. Indeed, my fully specified models project that, independent of other traits, between 2002 and 2018, a city's social welfare regime score was expected to increase +0.12 standard deviations (p < 0.01), while their developmental and middle-class regime scores were expected to decrease by -0.04 (p < 0.01) and -0.06 (p < 0.01) standard deviations, respectively. Further, comparing the pre- and post-disaster periods, an average year post-disaster saw a +0.1 standard deviation increase in their social welfare score (p < 0.001), but their developmental and middle-class regime scores saw no substantive or statistically insignificant changes.
 
 ## 5.2 Collective Action Effects
 
+Third, I hypothesized that (**H3**) cities with greater collective action potential, as measured by types of social capital, saw greater increases in their social welfare regime scores. Indeed, communities with greater bridging social capital indices saw higher social welfare index scores (+0.01, p < 0.01, Model 8, Table A2); this positive significant association was shared consistently across all in which models they were included (Models 4 to 8).
 
+Interestingly, social welfare-related spending tended to be negatively related to bonding social capital (-0.07, p < 0.001, Model 8) and linking social capital (-0.01, p < 0.10, Model 8), contrasting the positive relationship with bridging social capital. This divergence is not unexpected, and speaks towards the Janus-faced nature of social capital, where bonding (in-group) and linking (vertical ties) may help residents accomplish their political goals, but those goals might not be supporting a social welfare agenda [@aldrich_2012]. In contrast, the inter-group trust, reciprocity, and mutual aid that bridging social capital imparts in a community are extremely compatible with social-welfare policy; bridging social ties could plausibly help neighbors band together to confront equity issues by pressuring city hall to prioritize more social welfare spending.
 
+Is this association unique to social welfare regimes? In our models of developmental and middle-class regime scores, we see that greater bridging social capital is related to increases in development-related spending priorities (+0.01, p < 0.001, Model 16, Table A3), as well as middle-class spending priorities (+0.01, Model 24, Table A4). Bonding social capital tends to maintain a negative relationship with development (-0.04, p < 0.01, Model 16) and middle-class-regime scores as well (-0.03, p < 0.05, Model 24). Meanwhile, linking social capital has weaker, positive, but less significant associations (p > 0.10) with development and middle-class spending. 
+
+In other words, it appears that collective action potential is related to changes in urban regimes, but this impact is limited to bonding and bridging social capital. Bonding social capital appears to be negatively related to these spending indices, implying that strong in-group ties tend to draw cities closer to caretaker regimes. In contrast, bridging social capital appears to be positively related to each type of spending change, pushing cities further away from caretaker regimes; one possible explanation is that these bridging ties and the collective action they enable help residents push city officials in towards whichever style of regime these highly-networked residents support, but further study is needed to confirm these suspicions. What we can conclude from this analysis is that collective action potential, specifically bridging social capital, is positively related to the increase in each of our three archetypal urban regimes.
 
 # 6. Discussion
+
+\doublespacing
 
 This study measured cities' proclivities towards each of 4 types of urban regimes, commonly discussed in urban policy in the US or Japan [@stone_1989; @stoker_and_mossberger_1994; @bassett_1996; @hill_fujita_2000; @kilburn_2004; @ramirez_perez_et_al_2008; @sorensen_2011]. These included regimes that aim to maintain the (1) **status quo** in their city (rather undesirable for climate resilience initiatives); regimes that focus on promoting (2) **economic development** in their city (helpful for accelerating renewable energy booms, but perhaps not for ensuring equitable development with public support); regimes that focus on promoting (3) **progressive middle class interests** like health care, education, and environmentalism (helpful for renewable energy, but not as common in less prosperous communities); and regimes that focus on increasing (4) **opportunity through social welfare policies**.
 
@@ -580,159 +591,8 @@ Similarly, Kobe transitioned from a 2000-era focus on middle-class interests and
 \renewcommand{\baselinestretch}{0.5}\selectfont
 \renewcommand{\arraystretch}{1.5}
 
-```{r, eval = FALSE, include = FALSE}
-dat <- read_rds("raw_data/dataset.rds") %>%
-  left_join(by = "muni_code", y = read_rds("raw_data/muni_code.rds")) %>%
-  select(year, muni_code, muni, contains("regime")) %>%
-  pivot_longer(cols = c(contains("regime")), names_to = "regime", values_to = "value") %>%
-  left_join(by = c("year", "muni_code"), y = read_rds("raw_data/datcat.rds") %>%
-              select(year, muni_code, type) %>% mutate(year = factor(year))) %>%
-  mutate(percentile = ntile(value, 100)) %>%
-  select(year, muni_code, muni, regime, value, percentile, type)
 
-mysum <- bind_rows(
-  # Kyoto - Social Welfare Hybrid (SW-MC)
-  # dat %>%
-  #   filter(str_detect(muni, "Kyoto-shi")) %>%
-  #   filter(year %in% c(2000, 2018)),
-  # 
-  # Kobe - Middle Class Hybrid (MC-D) --> Social Welfare Hybrid (SW-MC)
-  dat %>%
-    filter(str_detect(muni, "Kobe-shi")) %>%
-    filter(year %in% c(2000, 2018)),
-  
-  # Fukuoka - Middle Class Hybrid (MC-D) --> Social Welfare Hybrid (SW-MC)
-  # dat %>%
-  #   filter(str_detect(muni, "Fukuoka-shi")) %>%
-  #   filter(year %in% c(2000, 2018)),
-  
-  # Sendai - Middle Class
-  dat %>%
-    filter(str_detect(muni, "Sendai-shi")) %>%
-    filter(year %in% c(2000, 2018)),
-
-  # Nagoya - Middle Class --> Social Welfare Hybrid (SW-MC)
-  # dat %>%
-  #   filter(str_detect(muni, "Nagoya-shi")) %>%
-  #   filter(year %in% c(2000, 2018)),
-  
-  # Iida - Developmental --> Social Welfare Hybrid (SW-D)
-  # dat %>%
-  #   filter(str_detect(muni, "Iida-shi")) %>%
-  #   filter(year %in% c(2000, 2018)),
-  
-  # Tomakomai - Social Welfare (SW-MC) --> Social Welfare (SW)
-  # dat %>%
-  #   filter(str_detect(muni, "Tomakomai-shi")) %>%
-  #   filter(year %in% c(2000, 2018)),
-  
-  # Osaka - Hybrid (SW-MC-D) --> Social Welfare Hybrid (SW-C)
-  # dat %>%
-  #   filter(str_detect(muni, "Osaka-shi")) %>%
-  #   filter(year %in% c(2000, 2018)),
-  
-  # Mitaka - Caretaker (WTF)
-  dat %>%
-    filter(str_detect(muni, "Mitaka-shi")) %>%
-    filter(year %in% c(2000, 2018)),
-  
-  
-  # Shinjuku - Middle Class (MC) --> Caretaker
-  # dat %>%
-  #   filter(str_detect(muni, "Shinjuku-ku")) %>%
-  #   filter(year %in% c(2000, 2018)),
-  
-  
-  # Kagoshima - Caretaker (C) --> Social Welfare (SW)
-  # dat %>%
-  #   filter(str_detect(muni, "Kagoshima-shi")) %>%
-  #   filter(year %in% c(2000, 2018)),
-  
-  
-  # Fukushima - Developmental (D) --> Caretaker (C)
-  dat %>%
-    filter(str_detect(muni, "Fukushima-shi")) %>%
-    filter(year %in% c(2000, 2018)),
-  
-  # Kitakyushu --> Hybrid (SW-MC-D) --> Social Welfare Hybrid (SW-MC)
-  # dat %>%
-  #   filter(str_detect(muni, "Kitakyushu-shi")) %>%
-  #   filter(year %in% c(2000, 2018)),
-  
-  # Muroran --> Social Welfare (SW) --> Social Welfare Hybrid (SW-MC)
-  dat %>%
-    filter(str_detect(muni, "Muroran-shi")) %>%
-    filter(year %in% c(2000, 2018)),
-  
-  # Yokohama - Middle Class --> Social Welfare Hybrid (SW-MC)
-  # dat %>%
-  #   filter(str_detect(muni, "Yokohama-shi")) %>%
-  #   filter(year %in% c(2000, 2018)),
-  
-  # Sapporo - Middle Class (MC) --> Social Welfare Hybrid (SW-MC)
-  # dat %>%
-  #   filter(str_detect(muni, "Sapporo-shi")) %>%
-  #   filter(year %in% c(2000, 2018)),
-  
-  # Ishinomaki - Middle Class (MC) --> Hybrid (SW-MC-D)
-  dat %>%
-    filter(str_detect(muni, "Ishinomaki-shi")) %>%
-    filter(year %in% c(2000, 2018)),
-  
-  # Minato-ku - Middle Class -> Social Welfare Hybrid (SW-MC)
-  # dat %>%
-  #   filter(str_detect(muni, "Minato-ku")) %>%
-  #   filter(year %in% c(2000, 2018)),
-  
-  # Mushashino - Middle Class (MC) - Social Welfare Hybrid (SW-MC)
-  # dat %>%
-  #   filter(str_detect(muni, "Musashino-shi")) %>%
-  #   filter(year %in% c(2000, 2018)),
-  
-  # Hiroshima Middle Class --> Middle Class Hybrid
-  # dat %>%
-  #   filter(str_detect(muni, "Hiroshima-shi")) %>%
-  #   filter(year %in% c(2000, 2018)),
-  
-  # Genkai - Developmental (D) --> Hybrid (SW-MC-D)
-  # dat %>%
-  #   filter(str_detect(muni, "Genkai-cho")) %>%
-  #   filter(year %in% c(2000, 2018)),
-  
-  # Fukui - Developmental (D) --> Social Welfare (SW)
-  # dat %>%
-  #   filter(str_detect(muni, "Fukui-shi")) %>%
-  #   filter(year %in% c(2000, 2018))
-)
-
-
-tab <- mysum %>% 
-  select(year, muni, regime, percentile, type) %>%
-  mutate(regime = regime %>% str_remove("regime_")) %>%
-  pivot_wider(id_cols = c(muni), names_from = c(regime, year), values_from = percentile) %>%
-  left_join(by = c("muni"),
-            y = mysum %>% select(year, muni, type) %>% distinct() %>%
-              pivot_wider(id_cols = c(muni), names_from = c(year),
-                names_prefix = "type_", values_from = type)) %>%
-  separate(col = muni, into = c("pref", "muni"), sep = " ") %>%
-  mutate(pref = str_remove(pref, "-fu|-ken|-to"),
-         muni = str_remove(muni, "-shi|-cho|-mura|-machi|-ku")) %>%
-  mutate_at(vars(type_2018, type_2000), list(~str_extract(., "[(].+[)]") %>% str_remove_all("[(]|[)]"))) %>%
-  mutate(Literature = muni %>% recode_factor(
-    "Kobe" = "Nunokawa 2007; Funck 2007; Edgington 2010", 
-    .default = "")) %>%
-  arrange(type_2000) %>%
-  select(Prefecture = pref, 
-         Municipality = muni,
-         Literature,
-         `Type` = type_2000, `SW` = soc_2000, `MC` = mid_2000, `D` = dev_2000, 
-         `Type ` = type_2018, `SW ` = soc_2018, `MC ` = mid_2018, `D ` = dev_2018) %>%
-  saveRDS("raw_data/table_cases.rds")
-
-rm(list= ls())
-```
-
-```{r keycities, echo=FALSE, warning = FALSE, message = FALSE, results = "asis"}
+```{r keycities, echo=FALSE, warning = FALSE, message = FALSE, results = "asis", cache = TRUE}
 
 tab <- read_rds("raw_data/table_cases.rds") %>%
   mutate(Literature = Municipality %>% recode_factor(
@@ -742,7 +602,8 @@ tab <- read_rds("raw_data/table_cases.rds") %>%
     "Kobe" = "Nunokawa 2007; Funck 2007; Yasui 2007; Edgington 2010; Aldrich 2012; Maly et al. 2012", 
     "Sendai" = "Morris 2012; Tsuji 2017",
     "Muroran" = "Edgington 2013", 
-    .default = ""))
+    .default = "")) %>%
+  filter(Municipality %in% c("Mitaka", "Fukushima", "Ishinomaki", "Kobe", "Sendai", "Muroran"))
 
 
 tab %>%
@@ -790,6 +651,7 @@ Neighborhood organizations, nonprofits, and labor movements can also motivate an
 <div id="refs"></div>
 
 
+\newpage
 
 # (APPENDIX) Appendix {-} 
 
@@ -798,9 +660,9 @@ Neighborhood organizations, nonprofits, and labor movements can also motivate an
 
 \newpage
 
-## Figure A1 {#figure_A1}
 
 ```{r figure_A1, out.width = "100%", echo = FALSE, message = FALSE, warning = FALSE, fig.cap= "Figure A1: Distributions of Urban Regime Indices", cache = TRUE}
+## Figure A1 {#figure_A1}
 knitr::include_graphics("viz/distribution.png", dpi = 100)
 ```
 
@@ -808,7 +670,6 @@ knitr::include_graphics("viz/distribution.png", dpi = 100)
 
 ## Table A1: Descriptives
 
-\newpage
 \blandscape
 
 \renewcommand{\baselinestretch}{0.5}\selectfont
@@ -899,7 +760,8 @@ read_rds("raw_data/dataset.rds") %>%
 
 ```
 
-```{r, message=FALSE, warning = FALSE, echo = FALSE, results='asis', eval = FALSE}
+```{r tablea1, message=FALSE, warning = FALSE, echo = FALSE, results='asis', cache = TRUE, eval = FALSE}
+
 myvalue <- read_rds("raw_data/datalist.rds") %>%
   with(split(value, term))
 
@@ -987,16 +849,16 @@ rm(list = ls())
 \newpage
 
 
-## Table A2: Models of Social Welfare Regime Scores
 
 \blandscape
 \renewcommand{\baselinestretch}{0.5}\selectfont
 \renewcommand{\arraystretch}{1.5}
 
-```{r, results='asis', echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE}
+```{r tablea2, results='asis', echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE}
+## Table A2: Models of Social Welfare Regime Scores
 load("table/table_soc.RData")
 load("table/captions.RData")
-get_ktable(tableno = "Table A2")
+get_ktable(tableno = "Table A2", multiplier = 1)
 ```
 
 \renewcommand{\arraystretch}{1}
@@ -1004,16 +866,16 @@ get_ktable(tableno = "Table A2")
 \elandscape
 \newpage
 
-## Table A3: Models of Developmental Regime Scores
 
 \blandscape
 \renewcommand{\baselinestretch}{0.5}\selectfont
 \renewcommand{\arraystretch}{1.5}
 
-```{r, results='asis', echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE}
+```{r tablea3, results='asis', echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE}
+## Table A3: Models of Developmental Regime Scores
 load("table/table_dev.RData")
 load("table/captions.RData")
-get_ktable(tableno = "Table A3")
+get_ktable(tableno = "Table A3", multiplier = 2)
 ```
 
 \renewcommand{\arraystretch}{1}
@@ -1025,15 +887,15 @@ get_ktable(tableno = "Table A3")
 \newpage
 \blandscape
 
-## Table A4: Models of Middle Class Regime Scores
 
 \renewcommand{\baselinestretch}{0.5}\selectfont
 \renewcommand{\arraystretch}{1.5}
 
-```{r, results='asis', echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE}
+```{r tablea4, results='asis', echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE}
+## Table A4: Models of Middle Class Regime Scores
 load("table/table_mid.RData")
 load("table/captions.RData")
-get_ktable(tableno = "Table A4")
+get_ktable(tableno = "Table A4", multiplier = 3)
 ```
 
 \renewcommand{\arraystretch}{1}
