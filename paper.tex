@@ -61,35 +61,6 @@ authoryear]{elsarticle} %review=doublespace preprint=single 5p=2 column
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
 
-% Pandoc citation processing
-\newlength{\cslhangindent}
-\setlength{\cslhangindent}{1.5em}
-\newlength{\csllabelwidth}
-\setlength{\csllabelwidth}{3em}
-\newlength{\cslentryspacingunit} % times entry-spacing
-\setlength{\cslentryspacingunit}{\parskip}
-% for Pandoc 2.8 to 2.10.1
-\newenvironment{cslreferences}%
-  {}%
-  {\par}
-% For Pandoc 2.11+
-\newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
- {% don't indent paragraphs
-  \setlength{\parindent}{0pt}
-  % turn on hanging indent if param 1 is 1
-  \ifodd #1
-  \let\oldpar\par
-  \def\par{\hangindent=\cslhangindent\oldpar}
-  \fi
-  % set entry spacing
-  \setlength{\parskip}{#2\cslentryspacingunit}
- }%
- {}
-\usepackage{calc}
-\newcommand{\CSLBlock}[1]{#1\hfill\break}
-\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
-\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
-\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 
 \usepackage{caption}
 \usepackage{setspace}\doublespacing
@@ -131,10 +102,36 @@ Fraser%
       \affiliation[Ezra Systems Postdoctoral Research Associate]{Systems
 Engineering, Cornell University}
     \cortext[cor1]{Corresponding author}
-    \fntext[1]{This is the first author footnote.}
+    \fntext[1]{Data Availability: Index data, models, and replication
+code will be made available at github.com/timothyfraser/urban\_regimes
+upon publication.}
   
   \begin{abstract}
-  This is the abstract. It consists of two paragraphs.
+  Facing hazards and migration from climatic change, many cities might
+  benefit from redistributive policies to aid vulnerable residents,
+  requiring changes to `urban regimes' - the powerbrokers and networks
+  governing city politics. However, to date, changes in urban regimes
+  have been difficult to detect systematically. This study aims to fill
+  that gap. I introduce a method for Large-N city samples, using
+  relative spending over time to measure cities' propensities towards
+  each of 4 common urban regime types \citeyearpar{stone_1993},
+  including (1) caretaker, (2) developmental, (3) middle-class, and (4)
+  social welfare regimes, developing 3 indices that approximate a city's
+  regime type. Using the case of Japan, an industrialized democracy and
+  the 3rd largest economy in the world, I evaluate change in urban
+  regimes over time, using a sample of 1471 Japanese municipalities from
+  2000 to 2018. Using mapping, visualization, and panel models over
+  time, this study finds that some cities' governing coalitions are
+  overcoming these collective action barriers and spending more on
+  redistributive policies than others; these social welfare regimes
+  increased in prevalence by 17\% from 2000 to 2018. Controlling for
+  alternative sociodemographic and political factors, models show that
+  social welfare regimes increased much more consistently than
+  alternative regime types; cities with stronger briding social capital
+  were more likely to transition away from caretaker regimes and towards
+  social welfare regimes, among others. By quantitatively measuring
+  urban regimes, this study aims to provide a resource for urban
+  studies, to identify and compare trends across Large-N city samples.
   \end{abstract}
     \begin{keyword}
     urban regime \sep cities \sep policy \sep social welfare \sep social
@@ -162,25 +159,26 @@ mayors
 \citep{ramirez_perez_et_al_2008, debenedictis_kessner_and_warshaw_2016, freier_and_thomasius_2016, einstein_and_glick_2018},
 and interest groups
 \citep{logan_and_rabrenovic_1990, mossberger_and_stoker_2001, cooper_et_al_2005, portney_and_berry_2016, anzia_2019}
-that govern city politics. Urban regime scholars argue that the
-powerbrokers together constitute an ``urban regime'' \citep{stone_1993},
-coined in Clarence Stone's \citeyearpar{stone_1989} study of Atlanta
-politics. ``Urban regime'' refers to elected officials and unelected
-powerbrokers alike, such as influential firms, NGOs, or citizens groups,
-who determine what policy actions a city can and cannot take
-\citep{mossberger_and_stoker_2001}. As cities experience more disasters,
-migration, and social change in the face of storms, floods, fires,
-hurricanes, and other disasters, we would naturally expect these urban
-regimes to change. But to date, these changes have been difficult to
-detect systematically, with most work on urban regimes focusing on
-single city case studies; to date, the largest samples of cities
-systematically classified by urban regime has been De Socio's
-\citeyearpar{de_socio_2007} 24-city sample and Kilburn's
+that govern city politics.
+
+Urban regime scholars argue that the powerbrokers together constitute an
+``urban regime'' \citep{stone_1993}, coined in Clarence Stone's
+\citeyearpar{stone_1989} study of Atlanta politics. ``Urban regime''
+refers to elected officials and unelected powerbrokers alike, such as
+influential firms, NGOs, or citizens groups, who determine what policy
+actions a city can and cannot take \citep{mossberger_and_stoker_2001}.
+As cities experience more disasters, migration, and social change in the
+face of storms, floods, fires, hurricanes, and other disasters, we would
+naturally expect these urban regimes to change. But to date, these
+changes have been difficult to detect systematically, with most work on
+urban regimes focusing on single city case studies; to date, the largest
+samples of cities systematically classified by urban regime has been De
+Socio's \citeyearpar{de_socio_2007} 24-city sample and Kilburn's
 \citeyearpar{kilburn_2004} 14-city sample, using Stone's
 \citeyearpar{stone_1993} 4 regime type classification.
 
 This study aims to fill that gap, introducing a framework for measuring
-city's propensity towards each of 4 common urban regime types, and
+cities' propensities towards each of 4 common urban regime types, and
 evaluating the change in frequencies of urban regimes over time. I
 employ Stone's \citeyearpar{stone_1993} 4-regime classification, which
 includes (1) caretaker, (2) developmental, (3) middle-class, and (4)
@@ -192,7 +190,7 @@ compared to regimes prioritizing business or middle-class interests? Or,
 have city politics stagnated with a rise in caretaker regimes that
 simply maintain the status quo? To answer these questions, I apply this
 framework to a Large-N sample of 1741 Japanese municipalities over 20
-years from 2000 to 2020. The Japan Statistical Bureau reports
+years from 2000 to 2018. The Japan Statistical Bureau reports
 considerable annual data for each municipality, allowing scholars to
 approximate the basic contours of cities' urban regimes by a simple,
 publicly available proxy of each cities' governance priorities:
@@ -212,10 +210,11 @@ population and inflation, city spending rates vary substantially over
 time, with certain urban regimes' spending priorities becoming more
 common with each passing year while others become less common. In
 particular, I document the 20-year rise of the social welfare regime as
-the most common type of urban regime, growing from just XX\% of cities
-in 2000 to YY\% of cities in 2020. I also detect geographic patterns,
-with coastal areas investing more heavily in social welfare regime
-priorities over time. These are exciting and heartening findings,
+a very common type of urban regime, growing from just 0\% of cities in
+2000 to 17\% of cities in 2018, and to 73\% of cities when including
+social welfare-\emph{related} regimes. I also detect geographic
+patterns, with coastal areas investing more heavily in social welfare
+regime priorities over time. These are exciting and heartening findings,
 because they indicate that while national-level governance on climate
 has made progress with starts and stops, our cities are not unilaterally
 gridlocked, stuck in caretaker, status quo regimes. Instead, many cities
@@ -374,14 +373,14 @@ years, scholars have created numerous other types of urban regimes,
 sometimes conflicting or concept stretching, as some have argued
 \citep{mossberger_and_stoker_2001}; however, these original 4 regime
 types are still arguably the main types at play today. I outline in
-Table \ref{tab:regimelit} a basic typology.
+\textbf{Table \ref{tab:regimelit}} a basic typology.
 
 \newpage
 \begin{landscape}
 
 \begin{table}
 
-\caption{Table \ref{tab:regimelit}\label{tab:regimelit}: Typology of Urban Regimes}
+\caption{\textbf{Table \ref{tab:regimelit}: \label{tab:regimelit}{Typology of Urban Regimes}}}
 \centering
 \begin{tabu} to \linewidth {>{\raggedright\arraybackslash}p{2cm}>{\raggedright}X>{\raggedright}X>{\raggedright}X>{\raggedright}X}
 \toprule
@@ -423,7 +422,7 @@ Middle-Class & promotes egalitarian policies in education, health, environment, 
                            
 
 \cellcolor{gray!6}{                           Iida (Fraser et al. 2020)}\\
-Social Welfare & improves conditions for working class, expands social safety net & Early Toronto (Mahon 2007 & Opportunist (Stone 1989)
+Social Welfare & improves conditions for working class, expands social safety net & Early Toronto (Mahon 2007) & Opportunist (Stone 1989)
                  
 
                  Activist (Clark 2001)
@@ -826,7 +825,8 @@ spending nationwide over time on a certain regime's issue areas, and
 higher/lower values denote more/less spending rates on that regime's
 issue areas, on average. -1 represents one standard deviation lower
 spending than average, and +1 represents one standard deviation higher
-than average. Their distributions are highlighted in Figure A1.
+than average. Their distributions are highlighted in
+\textbf{Figure \ref{fig:figure_A1}}.
 
 \hypertarget{classifying-cities-by-regime-type}{%
 \subsubsection{3.3.2 Classifying Cities by Regime
@@ -843,7 +843,7 @@ Type}\label{classifying-cities-by-regime-type}}
 \item[2] \% of cases, when using median as threshold; robustness check uses mean as threshold.
 \end{TableNotes}
 \begin{longtable}[t]{>{\raggedright\arraybackslash}p{3.9cm}>{\raggedright\arraybackslash}p{1.75cm}>{\raggedright\arraybackslash}p{1.5cm}>{\raggedright\arraybackslash}p{1.5cm}>{\raggedright\arraybackslash}p{1.75cm}>{\raggedleft\arraybackslash}p{1.25cm}>{\raggedleft\arraybackslash}p{1.25cm}}
-\caption{\label{tab:regimeclass}Table \ref{tab:regimeclass}: \textbf{Regime Classifications}}\\
+\caption{\label{tab:regimeclass}\textbf{Table \ref{tab:regimeclass}: \label{tab:regimeclass}{Regime Classifications}}}\\
 \toprule
 \multicolumn{2}{c}{ } & \multicolumn{3}{c}{Index Scores$^{1}$} & \multicolumn{2}{c}{\makecell[c]{Percentage of Cases\\by Threshold$^{2}$}} \\
 \cmidrule(l{3pt}r{3pt}){3-5} \cmidrule(l{3pt}r{3pt}){6-7}
@@ -876,12 +876,12 @@ Name & Code & Social Welfare & Middle Class & Developmental & Median & Mean\\
 Further, we use these indices to empirically classify cities into urban
 regime types, using our 3 indices' medians to demarcate 8
 classifications, to represent the general range of regimes a city can
-occupy, including our 4 primary urban regimes and 4 hybrids. Table
-\ref{tab:regimeclass} lists each combination. If just 1 index ranked
-above the median, I classified a city as that type of regime, including
-Social Welfare (SW = 8.1\%), Middle Class (MC = 7.8\%), and
-Developmental regimes (D = 5.9\%). If all 3 indices ranked below the
-median, I classified that as a Caretaker regime (C = 28.6\%).
+occupy, including our 4 primary urban regimes and 4 hybrids.
+\textbf{Table \ref{tab:regimeclass}} lists each combination. If just 1
+index ranked above the median, I classified a city as that type of
+regime, including Social Welfare (SW = 8.1\%), Middle Class (MC =
+7.8\%), and Developmental regimes (D = 5.9\%). If all 3 indices ranked
+below the median, I classified that as a Caretaker regime (C = 28.6\%).
 \textbf{Hybrids} describe cities prioritizes interests of 2 or more
 regimes. If 2 indices ranked above the median, I classified that as
 either a Social Welfare Hybrid Regime (SW-MC = 5.6\%, SW-D = 7.4\%) or a
@@ -896,7 +896,7 @@ each group.)
 \subsection{3.4 Change over Time}\label{change-over-time}}
 
 \begin{figure}
-\includegraphics[width=1\linewidth]{viz/bands} \caption{Figure \ref{fig:bands}: Indices Change Over Time}\label{fig:bands}
+\includegraphics[width=1\linewidth]{viz/bands} \caption{Figure \ref{fig:bands}: Urban Regime Indices Change Over Time}\label{fig:bands}
 \end{figure}
 
 \doublespacing
@@ -922,25 +922,25 @@ the years leading up to and after 2011.
 
 Second, to contextualize this, I measured the changing annual
 percentages of regimes based on their urban regime classifications from
-Table \ref{tab:regimeclass}; I stack the 4 types of regimes where social
-welfare regime indices were above the median. This highlights the
-sizable increase in social welfare spending. Social welfare regimes
-(yellow) increased from \textgreater1\% in 2000 to 13\% in 2018, with a
-max of 14\% in 2012. Including social welfare hybrid regimes that also
-focused on middle class (orange) or developmental spending (red), these
-increased from 5\% in 2000 to 32\% in 2018, surging 18\% between 2008 to
-2012 to 31\% in 2012. When we include hybrid regimes that spent above
-the median on social welfare, middle class, and developmental interests
-(purple), the total share spikes considerably. This combined total
-represents all cities that spent above the median on social welfare,
-regardless of their other regime scores. Starting at 23\% in 2000, the
-share of cities that spent above the median on social welfare share
-increased considerably between 2008 and 2012, jumping 33\% from 35\% to
-68\%, ending in 2018 at 70\% of the whole sample. During the same
-period, the frequency of solely middle class or developmental regimes
-declined greatly, from above 10\% each to below 5\% each, while
-caretaker regimes surged, then declined, starting and ending at about a
-quarter of cities.
+\textbf{Table \ref{tab:regimeclass}}; I stack the 4 types of regimes
+where social welfare regime indices were above the median. This
+highlights the sizable increase in social welfare spending. Social
+welfare regimes (yellow) increased from \textgreater1\% in 2000 to 13\%
+in 2018, with a max of 14\% in 2012. Including social welfare hybrid
+regimes that also focused on middle class (orange) or developmental
+spending (red), these increased from 5\% in 2000 to 32\% in 2018,
+surging 18\% between 2008 to 2012 to 31\% in 2012. When we include
+hybrid regimes that spent above the median on social welfare, middle
+class, and developmental interests (purple), the total share spikes
+considerably. This combined total represents all cities that spent above
+the median on social welfare, regardless of their other regime scores.
+Starting at 23\% in 2000, the share of cities that spent above the
+median on social welfare share increased considerably between 2008 and
+2012, jumping 33\% from 35\% to 68\%, ending in 2018 at 70\% of the
+whole sample. During the same period, the frequency of solely middle
+class or developmental regimes declined greatly, from above 10\% each to
+below 5\% each, while caretaker regimes surged, then declined, starting
+and ending at about a quarter of cities.
 
 \begin{figure}
 \includegraphics[width=1\linewidth]{viz/map_categories_3} \caption{Figure \ref{fig-map}\label{fig-map}: The Spread of Social Welfare Regimes Over Time}\label{fig:map}
@@ -984,12 +984,13 @@ welfare regime index as my dependent variable, I applied ordinary least
 squares models with annual fixed effects, the appropriate technique for
 a normally distributed outcome. Annual fixed effects account for
 temporal heterogeneity, the appropriate technique for capturing distinct
-effects each year. I generated 8 models (see Table A2), each with
-successively more statistical or design-based controls, to ensure our
-results are robust to model specification. (Then, for further
-validation, I repeated these models, predicting as my dependent variable
-the middle class regime index, in Table A3, and then the developmental
-regime index, in Table A4).
+effects each year. I generated 8 models (see
+\textbf{Table \ref{tab:tablea2}}), each with successively more
+statistical or design-based controls, to ensure our results are robust
+to model specification. (Then, for further validation, I repeated these
+models, predicting as my dependent variable the middle class regime
+index, in \textbf{Table \ref{tab:tablea3}}, and then the developmental
+regime index, in \textbf{Table \ref{tab:tablea4}}).
 
 \hypertarget{basic-covariates}{%
 \subsection{4.1 Basic Covariates}\label{basic-covariates}}
@@ -1107,9 +1108,8 @@ spending (since the distributions have frequent, meaningful zeros). Age,
 voteshares, social capital, education, and unemployment were logit
 transformed, since they are bounded at 0 and 1; the bridging index was
 left in quartiles to avoid collinearity with regime indicators.
-
 Descriptive statistics and exact transformation for all predictors are
-shown in Table A1.
+shown in \textbf{Table \ref{tab:tablea1}}.
 
 These transformations made statistically significant improvements in
 log-likelihood compared to Model 7 (p \textless{} 0.001); similarly, the
@@ -1129,21 +1129,23 @@ used to fill in missing data, representing less than 1\% of data points
 Compared to our first model, our final, fully specified, transformed
 model explains 92\% of the variance in social welfare regimes, an
 extremely high amount. Further, the sigma statistic (residual standard
-error) in Table A2 shows that my final model predicts each city-year's
-social welfare regime score with an average error of just 0.18 points,
-and within a 95\% confidence interval of 0.35 points. These are
-extremely favorable accuracy levels, considering that my outcome has a
-range of 5.12.
+error) in \textbf{Table \ref{tab:tablea2}} shows that my final model
+predicts each city-year's social welfare regime score with an average
+error of just 0.18 points, and within a 95\% confidence interval of 0.35
+points. These are extremely favorable accuracy levels, considering that
+my outcome has a range of 5.12.
 
 Then, I applied the same analyses to middle class and developmental
-indices, repeating Models 1-8 from \textbf{Table A2} as developmental
-models 9-16 in \textbf{Table A3} and middle-class regime Models 17-24 in
-\textbf{Tables A4}, as alternative perspectives. However, my main
-analysis focuses on social welfare regimes, to distinguish the drivers
-behind the rise of this regime over time. My best models (Models 8, 16,
-and 24) explain extremely high shares of variation in social welfare (R2
-= 92\%, Table A2), developmental (R2 = 93\%, Table A3), and middle class
-regime scores (R2 = 83\%, Table A4).
+indices, repeating Models 1-8 from \textbf{Table \ref{tab:tablea2}} as
+developmental models 9-16 in \textbf{Table \ref{tab:tablea3}} and
+middle-class regime Models 17-24 in \textbf{Tables A4}, as alternative
+perspectives. However, my main analysis focuses on social welfare
+regimes, to distinguish the drivers behind the rise of this regime over
+time. My best models (Models 8, 16, and 24) explain extremely high
+shares of variation in social welfare (R2 = 92\%,
+\textbf{Table \ref{tab:tablea2}}), developmental (R2 = 93\%,
+\textbf{Table \ref{tab:tablea3}}), and middle class regime scores (R2 =
+83\%, \textbf{Table \ref{tab:tablea4}}).
 
 \hypertarget{hypothesis-testing}{%
 \subsection{4.3 Hypothesis Testing}\label{hypothesis-testing}}
@@ -1154,10 +1156,11 @@ using the following strategies. To test my first and second hypotheses,
 that (\textbf{H1}) regimes scores are changing over time and that
 (\textbf{H2}) social welfare regimes are changing more than other
 regimes, I used linear hypothesis tests in
-\textbf{Table  \ref{tab:linearhyp}}. Linear hypothesis tests can compare
-two model coefficients within the same model to evaluate whether one
-coefficient is greater than the other, as well as whether that
-difference is \emph{statistically significant}.
+\textbf{Table  \ref{tab:linearhyp}}. Linear hypothesis tests
+\citep{hothorn_et_al_2008, bretz_et_al_2016} can compare two model
+coefficients within the same model to evaluate whether one coefficient
+is greater than the other, as well as whether that difference is
+\emph{statistically significant}.
 
 Using the annual fixed effects from the fully specified models for each
 index (Models 8, 16, \& 24), I evaluated whether, for example, the
@@ -1170,63 +1173,21 @@ This allowed me to compute the average treatment effect of the
 post-disaster period compared to the pre-disaster period. Should these
 effects be significant, it would indicate that urban regimes have, on
 average, changed greatly over time, even accounting for all other model
-covariates.
-
-Then, to test my second hypothesis, I compare average treatment effects
-across different regime types, also in
+covariates. Then, to test my second hypothesis, I compare average
+treatment effects across different regime types, also in
 \textbf{Table \ref{tab:linearhyp}}. If social welfare regimes saw a
 significant average treatment effect, but developmental and middle class
 regimes did not, this would indicate social welfare regimes were
 disproportionately impacted by this sea-change in urban regimes.
 
-\hypertarget{simulating-the-median-city}{%
-\subsection{4.4 Simulating the Median
-City}\label{simulating-the-median-city}}
-
 Finally, to test my third hypothesis, that collective action potential
 is associated with cities' transition to social welfare regimes, I
 investigated the effects bonding, bridging, and linking social capital
-on each regime index using effects simulated from my fully specified
-models (Models 8, 16, \& 24). I simulated quantities of interest from
-these highly accurate models using 1000 statistical simulations in R.
-Simulation is a frequently used method for generating model predictions
-\citep{king_et_al_2000, imai_et_al_2008, choirat_et_al_2016}, accounting
-for both estimation uncertainty (using a multivariate normal
-distribution) and fundamental uncertainty (by averaging over random
-draws), which allows us to estimate expected outcomes with precise
-confidence intervals based on 1000 simulations. My simulations calculate
-the expected outcome for a hypothetical average city-year by varying
-just one predictor while holding all other predictors constant at their
-medians (or for categorical variables, their modes).
-
-Unless stated otherwise, all simulations below use Model 8 in Table A2
-to predict social welfare regime scores for the median city. This city
-has a population of 24,750 residents, spans 4,170 hectares of
-inhabitable land, hosts an income per capita of 1,199,190 yen per capita
-(\textasciitilde\$9,183 USD), with 28\% of residents over age 65. The
-median city in Japan during this period also has low rates of adults
-with some college education (25\%), moderately high unemployment
-(4.6\%), and shares of high total migration (6\%). It received 503,740
-yen per capita in revenue last year, 16\% of which came from national or
-prefectural government, and has a real term budget balance of +4.7. The
-city voted for winning LDP/Komeito candidate in moderate-to-high rates,
-at 51\% in Lower House elections and 32\% in prefectural elections.
-Further, we assume median levels of bonding (0.71), bridging (0.32
-\textasciitilde{} 2nd quartile), and linking social capital (0.25).
-Then, to ensure our estimates are unaffected by disaster or other
-regimes, we hold all disaster conditions and spending variables at 0,
-for a city unaffected by 3/11, and hold all regime scores from the
-preceding year at 0 (the natural mean of these Z-scores, very close to
-the median); to account for time and geography, simulations assume a
-context of Aichi prefecture in 2018, as an `ordinary' prefecture with
-cities large and small.
+on each regime index, by interpreting the beta coefficients from my
+fully specified models (Models 8, 16, \& 24).
 
 \hypertarget{results}{%
 \section{5. Results}\label{results}}
-
-\hypertarget{testing-temporal-effects}{%
-\subsection{5.1 Testing Temporal
-Effects}\label{testing-temporal-effects}}
 
 This study set out to examine (\textbf{H1}) \emph{whether} urban regimes
 in Japanese have changed measurably in terms of spending priorities over
@@ -1234,22 +1195,37 @@ the last 20 years, (\textbf{H2}) whether social welfare regime in
 particular have grown more common, after accounting for alternative
 explanations with statistical controls, and (\textbf{H3}) whether
 collective action potential is related to the hypothesized rise in
-social welfare regimes. Below, we outline our findings.
+social welfare regimes. Below, I outline my findings, focusing
+especially on my fully specified Model 8.\footnote{In Model 8, the
+  median city-year evaluated has the following covariate traits: This
+  city has a population of 24,750 residents, spans 4,170 hectares of
+  inhabitable land, hosts an income per capita of 1,199,190 yen per
+  capita (\textasciitilde\$9,183 USD), with 28\% of residents over age
+  65. The median city in Japan during this period also has low rates of
+  adults with some college education (25\%), moderately high
+  unemployment (4.6\%), and shares of high total migration (6\%). It
+  received 503,740 yen per capita in revenue last year, 16\% of which
+  came from national or prefectural government, and has a real term
+  budget balance of +4.7. The city voted for winning LDP/Komeito
+  candidate in moderate-to-high rates, at 51\% in Lower House elections
+  and 32\% in prefectural elections. Further, we assume median levels of
+  bonding (0.71), bridging (0.32 \textasciitilde{} 2nd quartile), and
+  linking social capital (0.25).}
 
 \singlespacing
 \newpage
 \renewcommand{\baselinestretch}{0.5}\selectfont
 \renewcommand{\arraystretch}{1.5}
 
-\begingroup\fontsize{9}{11}\selectfont
+\begingroup\fontsize{8}{10}\selectfont
 
 \begin{ThreePartTable}
 \begin{TableNotes}
 \item \textit{Note: } 
 \item Statistical Significance: *** p < 0.001, ** p < 0.01, * p < 0.05, . p < 0.10. All p-values and asterisks reflect two-tailed hypothesis tests. Based on annual fixed effects from Models 8, 16, \& 24 in Tables A2, A3, \& A4, respectively.
 \end{TableNotes}
-\begin{longtabu} to \linewidth {>{\raggedright\arraybackslash}p{2.25cm}>{\raggedright\arraybackslash}p{1.35cm}>{\raggedright\arraybackslash}p{0.9cm}>{}l>{\raggedright\arraybackslash}p{1.35cm}>{\raggedright\arraybackslash}p{0.9cm}>{}l>{\raggedright\arraybackslash}p{1.35cm}>{\raggedright\arraybackslash}p{0.9cm}>{}l}
-\caption{\label{tab:linearhyp}Table \ref{tab:linearhyp}: \textbf{Linear Hypothesis Tests of Temporal Effects}}\\
+\begin{longtabu} to \linewidth {>{\raggedright\arraybackslash}p{2.25cm}>{\raggedright\arraybackslash}p{1.35cm}>{\raggedright\arraybackslash}p{0.5cm}>{}l>{\raggedright\arraybackslash}p{1.35cm}>{\raggedright\arraybackslash}p{0.5cm}>{}l>{\raggedright\arraybackslash}p{1.35cm}>{\raggedright\arraybackslash}p{0.5cm}>{}l}
+\caption{\label{tab:linearhyp}\textbf{Table \ref{tab:linearhyp}: Linear Hypothesis Tests of Temporal Effects}}\\
 \toprule
 \multicolumn{1}{c}{ } & \multicolumn{3}{c}{\makecell[c]{Social Welfare\\Regime}} & \multicolumn{3}{c}{\makecell[c]{Developmental\\Regime}} & \multicolumn{3}{c}{\makecell[c]{Middle Class\\Regime}} \\
 \cmidrule(l{3pt}r{3pt}){2-4} \cmidrule(l{3pt}r{3pt}){5-7} \cmidrule(l{3pt}r{3pt}){8-10}
@@ -1257,36 +1233,36 @@ Year & Estimate & SE & 95\% CI & Estimate  & SE  & 95\% CI  & Estimate   & SE   
 \midrule
 \addlinespace[0.3em]
 \multicolumn{10}{l}{\textbf{\makecell[l]{\\Pre-Disaster}}}\\
-\hspace{1em}\cellcolor{gray!6}{2002} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_5908336b5d9f.pdf} & \cellcolor{gray!6}{-0.04***} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_590872d01134.pdf} & \cellcolor{gray!6}{+0.01} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_590835d223e3.pdf}\\
-\hspace{1em}2003 & -0.02. & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_5908422148a.pdf} & -0.08*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_59083fc17458.pdf} & -0.07*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_59084f1e20d0.pdf}\\
-\hspace{1em}\cellcolor{gray!6}{2004} & \cellcolor{gray!6}{+0.03**} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_59084c4015cd.pdf} & \cellcolor{gray!6}{-0.06***} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_590860174b06.pdf} & \cellcolor{gray!6}{-0.02.} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_59089177fb3.pdf}\\
-\hspace{1em}2005 & +0.04*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_5908abe7d87.pdf} & -0.07*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_590864721fcc.pdf} & -0.01 & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_590831897064.pdf}\\
-\hspace{1em}\cellcolor{gray!6}{2006} & \cellcolor{gray!6}{+0.02*} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_59085e0cb00.pdf} & \cellcolor{gray!6}{-0.09***} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_590834db686e.pdf} & \cellcolor{gray!6}{-0.03***} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_59087edb382f.pdf}\\
-\hspace{1em}2007 & +0.03*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_59083cb35327.pdf} & -0.1*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_59085aa7994.pdf} & -0.06*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_590825371acd.pdf}\\
-\hspace{1em}\cellcolor{gray!6}{2008} & \cellcolor{gray!6}{+0.01} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_59082139773f.pdf} & \cellcolor{gray!6}{-0.07***} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_590813a662c1.pdf} & \cellcolor{gray!6}{-0.05***} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_590846ec4f93.pdf}\\
-\hspace{1em}2009 & +0.1*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_59082d4433d5.pdf} & +0.11*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_59086b6f4684.pdf} & +0.07*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_5908441056ea.pdf}\\
-\hspace{1em}\cellcolor{gray!6}{2010} & \cellcolor{gray!6}{+0.15***} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_59088035bf5.pdf} & \cellcolor{gray!6}{-0.04***} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_590840192f2.pdf} & \cellcolor{gray!6}{+0.02.} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_59082d6943ff.pdf}\\
-\cellcolor{grey}{\textbf{\hspace{1em}Mean Pre}} & \cellcolor{grey}{\textbf{+0.04***}} & \cellcolor{grey}{\textbf{0.01}} & \cellcolor{grey}{\textbf{\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_59087bca149d.pdf}}} & \cellcolor{grey}{\textbf{-0.05***}} & \cellcolor{grey}{\textbf{0.01}} & \cellcolor{grey}{\textbf{\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_5908151a3e53.pdf}}} & \cellcolor{grey}{\textbf{-0.01.}} & \cellcolor{grey}{\textbf{0.01}} & \cellcolor{grey}{\textbf{\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_59085e8e4ebc.pdf}}}\\
+\hspace{1em}\cellcolor{gray!6}{2002} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd83c5e7e02.pdf} & \cellcolor{gray!6}{-0.04***} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd85025af.pdf} & \cellcolor{gray!6}{+0.01} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd84e962300.pdf}\\
+\hspace{1em}2003 & -0.02. & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd8fdf2dbc.pdf} & -0.08*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd82f5822a5.pdf} & -0.07*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd81dff1f79.pdf}\\
+\hspace{1em}\cellcolor{gray!6}{2004} & \cellcolor{gray!6}{+0.03**} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd847112ae8.pdf} & \cellcolor{gray!6}{-0.06***} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd8d466605.pdf} & \cellcolor{gray!6}{-0.02.} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd84c822e75.pdf}\\
+\hspace{1em}2005 & +0.04*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd827af4ecc.pdf} & -0.07*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd84bda26fa.pdf} & -0.01 & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd823564368.pdf}\\
+\hspace{1em}\cellcolor{gray!6}{2006} & \cellcolor{gray!6}{+0.02*} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd87c02702a.pdf} & \cellcolor{gray!6}{-0.09***} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd82ab4257f.pdf} & \cellcolor{gray!6}{-0.03***} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd84e846528.pdf}\\
+\hspace{1em}2007 & +0.03*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd833555dc6.pdf} & -0.1*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd83db94f22.pdf} & -0.06*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd873e4f5.pdf}\\
+\hspace{1em}\cellcolor{gray!6}{2008} & \cellcolor{gray!6}{+0.01} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd866a96222.pdf} & \cellcolor{gray!6}{-0.07***} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd8770c4107.pdf} & \cellcolor{gray!6}{-0.05***} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd836486eb8.pdf}\\
+\hspace{1em}2009 & +0.1*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd815aa348c.pdf} & +0.11*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd8d3a2b2f.pdf} & +0.07*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd878f7a88.pdf}\\
+\hspace{1em}\cellcolor{gray!6}{2010} & \cellcolor{gray!6}{+0.15***} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd82fe17b5a.pdf} & \cellcolor{gray!6}{-0.04***} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd811b478fa.pdf} & \cellcolor{gray!6}{+0.02.} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd8775d772.pdf}\\
+\cellcolor[HTML]{D3D3D3}{\textbf{\hspace{1em}Mean Pre}} & \cellcolor[HTML]{D3D3D3}{\textbf{+0.04***}} & \cellcolor[HTML]{D3D3D3}{\textbf{0.01}} & \cellcolor[HTML]{D3D3D3}{\textbf{\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd83e2a4375.pdf}}} & \cellcolor[HTML]{D3D3D3}{\textbf{-0.05***}} & \cellcolor[HTML]{D3D3D3}{\textbf{0.01}} & \cellcolor[HTML]{D3D3D3}{\textbf{\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd84b8362eb.pdf}}} & \cellcolor[HTML]{D3D3D3}{\textbf{-0.01.}} & \cellcolor[HTML]{D3D3D3}{\textbf{0.01}} & \cellcolor[HTML]{D3D3D3}{\textbf{\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd85005f7a.pdf}}}\\
 \addlinespace[0.25cm]
 \hline
 \multicolumn{10}{l}{\textbf{\makecell[l]{\\Post-Disaster}}}\\
-\hspace{1em}\cellcolor{gray!6}{2011} & \cellcolor{gray!6}{+0.18***} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_590816fc6472.pdf} & \cellcolor{gray!6}{-0.06***} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_59083f662c1c.pdf} & \cellcolor{gray!6}{+0.04***} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_590834941f6.pdf}\\
-\hspace{1em}2012 & +0.13*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_5908542e6bb2.pdf} & -0.06*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_59081d81e1e.pdf} & -0.02. & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_5908c4019e8.pdf}\\
-\hspace{1em}\cellcolor{gray!6}{2013} & \cellcolor{gray!6}{+0.16***} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_5908d89586a.pdf} & \cellcolor{gray!6}{+0.03**} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_590848d435fc.pdf} & \cellcolor{gray!6}{+0.02.} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_590856d466e0.pdf}\\
-\hspace{1em}2014 & +0.18*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_59083f706ae9.pdf} & -0.03** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_5908492b4ae2.pdf} & +0 & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_5908c4a4838.pdf}\\
-\hspace{1em}\cellcolor{gray!6}{2015} & \cellcolor{gray!6}{+0.09***} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_59085e631e74.pdf} & \cellcolor{gray!6}{-0.02} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_590863e5774.pdf} & \cellcolor{gray!6}{-0.04***} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_59087c281388.pdf}\\
-\hspace{1em}2016 & +0.15*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_590844244a3b.pdf} & -0.09*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_5908367405.pdf} & -0.03** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_590875e27c1a.pdf}\\
-\hspace{1em}\cellcolor{gray!6}{2017} & \cellcolor{gray!6}{+0.13***} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_590878184e8c.pdf} & \cellcolor{gray!6}{-0.02*} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_59082494210a.pdf} & \cellcolor{gray!6}{-0.02} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_590865b64e9e.pdf}\\
-\hspace{1em}2018 & +0.12*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_590856ef2247.pdf} & -0.08*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_590823525ce.pdf} & -0.05*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_590838d5151f.pdf}\\
-\cellcolor{grey}{\textbf{\hspace{1em}\cellcolor{gray!6}{Mean Post}}} & \cellcolor{grey}{\textbf{\cellcolor{gray!6}{+0.14***}}} & \cellcolor{grey}{\textbf{\cellcolor{gray!6}{0.01}}} & \cellcolor{grey}{\textbf{\cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_59085d885492.pdf}}} & \cellcolor{grey}{\textbf{\cellcolor{gray!6}{-0.04***}}} & \cellcolor{grey}{\textbf{\cellcolor{gray!6}{0.01}}} & \cellcolor{grey}{\textbf{\cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_59083459767.pdf}}} & \cellcolor{grey}{\textbf{\cellcolor{gray!6}{-0.01}}} & \cellcolor{grey}{\textbf{\cellcolor{gray!6}{0.01}}} & \cellcolor{grey}{\textbf{\cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_59084cc33736.pdf}}}\\
+\hspace{1em}\cellcolor{gray!6}{2011} & \cellcolor{gray!6}{+0.18***} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd840691114.pdf} & \cellcolor{gray!6}{-0.06***} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd82a374dac.pdf} & \cellcolor{gray!6}{+0.04***} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd89b64dd.pdf}\\
+\hspace{1em}2012 & +0.13*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd813796dca.pdf} & -0.06*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd865201a52.pdf} & -0.02. & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd8e163899.pdf}\\
+\hspace{1em}\cellcolor{gray!6}{2013} & \cellcolor{gray!6}{+0.16***} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd8736517c3.pdf} & \cellcolor{gray!6}{+0.03**} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd81ac14be1.pdf} & \cellcolor{gray!6}{+0.02.} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd86c2c2a2f.pdf}\\
+\hspace{1em}2014 & +0.18*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd86ddb364b.pdf} & -0.03** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd84822613.pdf} & +0 & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd8787144a8.pdf}\\
+\hspace{1em}\cellcolor{gray!6}{2015} & \cellcolor{gray!6}{+0.09***} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd858dd378f.pdf} & \cellcolor{gray!6}{-0.02} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd812a52955.pdf} & \cellcolor{gray!6}{-0.04***} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd836f94cd6.pdf}\\
+\hspace{1em}2016 & +0.15*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd821ba3ba8.pdf} & -0.09*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd847b1013.pdf} & -0.03** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd870ef34dc.pdf}\\
+\hspace{1em}\cellcolor{gray!6}{2017} & \cellcolor{gray!6}{+0.13***} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd883d30d5.pdf} & \cellcolor{gray!6}{-0.02*} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd850d83135.pdf} & \cellcolor{gray!6}{-0.02} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd83e3f48f1.pdf}\\
+\hspace{1em}2018 & +0.12*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd81a24508.pdf} & -0.08*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd872c46bea.pdf} & -0.05*** & 0.01 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd857921960.pdf}\\
+\cellcolor[HTML]{D3D3D3}{\textbf{\hspace{1em}\cellcolor{gray!6}{Mean Post}}} & \cellcolor[HTML]{D3D3D3}{\textbf{\cellcolor{gray!6}{+0.14***}}} & \cellcolor[HTML]{D3D3D3}{\textbf{\cellcolor{gray!6}{0.01}}} & \cellcolor[HTML]{D3D3D3}{\textbf{\cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd82d310a5.pdf}}} & \cellcolor[HTML]{D3D3D3}{\textbf{\cellcolor{gray!6}{-0.04***}}} & \cellcolor[HTML]{D3D3D3}{\textbf{\cellcolor{gray!6}{0.01}}} & \cellcolor[HTML]{D3D3D3}{\textbf{\cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd86e73a4.pdf}}} & \cellcolor[HTML]{D3D3D3}{\textbf{\cellcolor{gray!6}{-0.01}}} & \cellcolor[HTML]{D3D3D3}{\textbf{\cellcolor{gray!6}{0.01}}} & \cellcolor[HTML]{D3D3D3}{\textbf{\cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd8447f45d3.pdf}}}\\
 \addlinespace[0.25cm]
 \hline
 \multicolumn{10}{l}{\textbf{\makecell[l]{\\Average Treatment Effect}}}\\
-\cellcolor{grey}{\textbf{\hspace{1em}Post - Pre}} & \cellcolor{grey}{\textbf{+0.1***}} & \cellcolor{grey}{\textbf{0}} & \cellcolor{grey}{\textbf{\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_59081b0e56cd.pdf}}} & \cellcolor{grey}{\textbf{+0}} & \cellcolor{grey}{\textbf{0}} & \cellcolor{grey}{\textbf{\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_590859137be8.pdf}}} & \cellcolor{grey}{\textbf{+0}} & \cellcolor{grey}{\textbf{0}} & \cellcolor{grey}{\textbf{\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_59086e006a7e.pdf}}}\\
+\cellcolor[HTML]{D3D3D3}{\textbf{\hspace{1em}Post - Pre}} & \cellcolor[HTML]{D3D3D3}{\textbf{+0.1***}} & \cellcolor[HTML]{D3D3D3}{\textbf{0}} & \cellcolor[HTML]{D3D3D3}{\textbf{\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd834a1e86.pdf}}} & \cellcolor[HTML]{D3D3D3}{\textbf{+0}} & \cellcolor[HTML]{D3D3D3}{\textbf{0}} & \cellcolor[HTML]{D3D3D3}{\textbf{\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd822787b64.pdf}}} & \cellcolor[HTML]{D3D3D3}{\textbf{+0}} & \cellcolor[HTML]{D3D3D3}{\textbf{0}} & \cellcolor[HTML]{D3D3D3}{\textbf{\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd839ffdd2.pdf}}}\\
 \addlinespace[0.25cm]
 \hline
 \multicolumn{10}{l}{\textbf{\makecell[l]{\\Net Gain over Time}}}\\
-\cellcolor{grey}{\textbf{\hspace{1em}\cellcolor{gray!6}{2018 - 2002}}} & \cellcolor{grey}{\textbf{\cellcolor{gray!6}{+0.12***}}} & \cellcolor{grey}{\textbf{\cellcolor{gray!6}{0.01}}} & \cellcolor{grey}{\textbf{\cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_5908e6822c9.pdf}}} & \cellcolor{grey}{\textbf{\cellcolor{gray!6}{-0.04***}}} & \cellcolor{grey}{\textbf{\cellcolor{gray!6}{0.01}}} & \cellcolor{grey}{\textbf{\cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_59085a237dd8.pdf}}} & \cellcolor{grey}{\textbf{\cellcolor{gray!6}{-0.06***}}} & \cellcolor{grey}{\textbf{\cellcolor{gray!6}{0.01}}} & \cellcolor{grey}{\textbf{\cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_590829e8747.pdf}}}\\
+\cellcolor[HTML]{D3D3D3}{\textbf{\hspace{1em}\cellcolor{gray!6}{2018 - 2002}}} & \cellcolor[HTML]{D3D3D3}{\textbf{\cellcolor{gray!6}{+0.12***}}} & \cellcolor[HTML]{D3D3D3}{\textbf{\cellcolor{gray!6}{0.01}}} & \cellcolor[HTML]{D3D3D3}{\textbf{\cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd826553542.pdf}}} & \cellcolor[HTML]{D3D3D3}{\textbf{\cellcolor{gray!6}{-0.04***}}} & \cellcolor[HTML]{D3D3D3}{\textbf{\cellcolor{gray!6}{0.01}}} & \cellcolor[HTML]{D3D3D3}{\textbf{\cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd839351337.pdf}}} & \cellcolor[HTML]{D3D3D3}{\textbf{\cellcolor{gray!6}{-0.06***}}} & \cellcolor[HTML]{D3D3D3}{\textbf{\cellcolor{gray!6}{0.01}}} & \cellcolor[HTML]{D3D3D3}{\textbf{\cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/pointrange_2fd83d224a87.pdf}}}\\
 \bottomrule
 \insertTableNotes
 \end{longtabu}
@@ -1296,6 +1272,10 @@ Year & Estimate & SE & 95\% CI & Estimate  & SE  & 95\% CI  & Estimate   & SE   
 \newpage
 \renewcommand{\arraystretch}{1}
 \doublespacing
+
+\hypertarget{testing-temporal-effects}{%
+\subsection{5.1 Testing Temporal
+Effects}\label{testing-temporal-effects}}
 
 First, I hypothesized that (\textbf{H1}) urban regimes have changed
 measurably over the last 2 decades. Our linear hypothesis tests
@@ -1327,13 +1307,58 @@ increase in their social welfare score (p \textless{} 0.001), but their
 developmental and middle-class regime scores saw no substantive or
 statistically insignificant changes.
 
-\hypertarget{collective-action-effects}{%
-\subsection{5.2 Collective Action
-Effects}\label{collective-action-effects}}
+\#\# 5.2 Collective Action Effects
 
 Third, I hypothesized that (\textbf{H3}) cities with greater collective
 action potential, as measured by types of social capital, saw greater
-increases in their social welfare regime scores. Indeed,
+increases in their social welfare regime scores. Indeed, communities
+with greater bridging social capital indices saw higher social welfare
+index scores (+0.01, p \textless{} 0.01, Model 8,
+\textbf{Table \ref{tab:tablea2}}); this positive significant association
+was shared consistently across all in which models they were included
+(Models 4 to 8).
+
+Interestingly, social welfare-related spending tended to be negatively
+related to bonding social capital (-0.07, p \textless{} 0.001, Model 8)
+and linking social capital (-0.01, p \textless{} 0.10, Model 8),
+contrasting the positive relationship with bridging social capital. This
+divergence is not unexpected, and speaks towards the Janus-faced nature
+of social capital, where bonding (in-group) and linking (vertical ties)
+may help residents accomplish their political goals, but those goals
+might not be supporting a social welfare agenda \citep{aldrich_2012}. In
+contrast, the inter-group trust, reciprocity, and mutual aid that
+bridging social capital imparts in a community are extremely compatible
+with social-welfare policy; bridging social ties could plausibly help
+neighbors band together to confront equity issues by pressuring city
+hall to prioritize more social welfare spending.
+
+Is this association unique to social welfare regimes? In our models of
+developmental and middle-class regime scores, we see that greater
+bridging social capital is related to increases in development-related
+spending priorities (+0.01, p \textless{} 0.001, Model 16,
+\textbf{Table \ref{tab:tablea3}}), as well as middle-class spending
+priorities (+0.01, Model 24, \textbf{Table \ref{tab:tablea4}}). Bonding
+social capital tends to maintain a negative relationship with
+development (-0.04, p \textless{} 0.01, Model 16) and
+middle-class-regime scores as well (-0.03, p \textless{} 0.05, Model
+24). Meanwhile, linking social capital has weaker, positive, but less
+significant associations (p \textgreater{} 0.10) with development and
+middle-class spending.
+
+In other words, it appears that collective action potential is related
+to changes in urban regimes, but this impact is limited to bonding and
+bridging social capital. Bonding social capital appears to be negatively
+related to these spending indices, implying that strong in-group ties
+tend to draw cities closer to caretaker regimes. In contrast, bridging
+social capital appears to be positively related to each type of spending
+change, pushing cities further away from caretaker regimes; one possible
+explanation is that these bridging ties and the collective action they
+enable help residents push city officials in towards whichever style of
+regime these highly-networked residents support, but further study is
+needed to confirm these suspicions. What we can conclude from this
+analysis is that collective action potential, specifically bridging
+social capital, is positively related to the increase in each of our
+three archetypal urban regimes.
 
 \hypertarget{discussion}{%
 \section{6. Discussion}\label{discussion}}
@@ -1352,12 +1377,34 @@ that focus on promoting (3) \textbf{progressive middle class interests}
 like health care, education, and environmentalism (helpful for renewable
 energy, but not as common in less prosperous communities); and regimes
 that focus on increasing (4) \textbf{opportunity through social welfare
-policies}.
+policies}. Below, I summarize several contributions this study makes to
+the literature on urban regimes, to expand our understanding of these 4
+regime archetypes.
 
-In the cases examined in Japan, cities with this last regime type
-(social welfare) tended to be deeply interested in disaster resilience,
-where city officials were deeply concerned with residents' vulnerability
-during crisis.
+This study made several contributions to the literature, in terms of (1)
+evaluating regime change over time in the case of Japan, (2) integrating
+social capital and urban regime theory, (3) Large-N methods for urban
+regime analysis, and (4) tools for updating case studies.
+
+\hypertarget{contributions-to-the-literature}{%
+\subsection{6.1 Contributions to the
+Literature}\label{contributions-to-the-literature}}
+
+\hypertarget{evaluating-urban-regime-change-in-japan}{%
+\subsubsection{6.1.1 Evaluating Urban Regime Change in
+Japan}\label{evaluating-urban-regime-change-in-japan}}
+
+First, this study extended a diverse literature on urban regimes and
+governance by formally measuring change over time, using the case of
+Japan. This builds on two decades of studies that highlight the depth
+and breath of grassroots activism and politics in Japanese urban policy
+\citep[eg.][]{leblanc_1999, funck_2007, leblanc_2009, avenell_2010, aldrich_and_fraser_2017},
+but formalizes it in the context of urban regime theory
+\citep{stone_1989}. In the cases examined in Japan, cities with
+social-welfare oriented regimes tended to be deeply interested in
+disaster resilience, where city officials were deeply concerned with
+residents' vulnerability during crisis
+\citep{maly_2012, aldrich_2012, dimmer_and_lindenberg_2014, matthews_2017, aldrich_2019, cheek_2020, ji_and_imai_2022, abeysinghe_2022}.
 
 Yet, as I show above in the results of this study, some cities'
 governing coalitions are overcoming these collective action barriers and
@@ -1367,19 +1414,105 @@ becoming increasingly common in Japan, and are often mid-size or rural
 communities where great changes in social welfare are not generally
 expected.
 
-\hypertarget{contributions-to-literature}{%
-\subsection{6.1 Contributions to
-Literature}\label{contributions-to-literature}}
+\hypertarget{integrated-analysis-of-urban-regimes-and-social-capital}{%
+\subsubsection{6.1.2 Integrated Analysis of Urban Regimes and Social
+Capital}\label{integrated-analysis-of-urban-regimes-and-social-capital}}
 
-This study's measures also provide a resource for scholars building new
-theories of urban politics. After a wealth of investigation of urban
-politics in Japan over the last 30 years, some case studies may no
-longer be representative of the current state of their city. Until now,
-the field has lacked a tool for systematically identifying \emph{which}
-cities need re-investigation. \textbf{Table \ref{tab:keycities}}
-demonstrates an example of how scholars can utilize these new indices to
-evaluate commonly cited case studies whose urban regime type may have
-since changed.
+Second, this study integrated two schools of thought, social capital
+\citep{putnam_2000, woolcock_2010, aldrich_2012, alcorta_et_al_2020, fraser_2021_IJDRR}
+and urban regime theory \citep{stone_1993, stoker_and_mossberger_1994},
+which, while extremely compatible as networked perspectives on
+governance, are only rarely examined together \citep{fraser_et_al_2020}.
+Specifically, this study analyzed how much cities' urban regimes relate
+to their social capital indicators after controlling for alternative
+sociodeomographic indicators.
+
+My models showed that residents' collective action potential, as
+measured by their bridging social ties, correlates consistently with
+cities' transition away from caretaker regimes and towards their desired
+alternative regime, while greater bonding, in-group social ties
+correlates with stagnation as a caretaker regime. This highlights that
+cities, specifically Japanese cities, can and do show feature of
+specific urban regimes, that these regimes are frequently transitioning
+towards social welfare policies, and that collective action potential is
+closely relates to cities' capacity to change their urban regime.
+
+\hypertarget{a-template-for-large-n-urban-regime-analysis}{%
+\subsubsection{6.1.3 A Template for Large-N Urban Regime
+Analysis}\label{a-template-for-large-n-urban-regime-analysis}}
+
+This study makes several contributions to the literature. First, it
+builds on decades of in-depth small-N
+\citep{munoz_and_henry_1986, stone_1989, whelan_et_al_1994, yeum_2002, gendron_and_domhoff_2018}
+and medium-N analyses of urban regimes
+\citep{kilburn_2004, thompson_2005, de_socio_2007} by providing a
+template for rigorous large-N approximations of urban regimes, meant to
+expand the scope of our comparisons much like recent large-N analyses of
+mayors
+\citep{ramirez_perez_et_al_2008, debenedictis_kessner_and_warshaw_2016, einstein_and_glick_2018, murphy_2019}.
+
+Naturally, approximating the complexity of an urban regime into a single
+number is fraught with potential missteps, but by deriving indices from
+cities' spending priorities, this study has aimed to at least begin to
+fill the existing gap in metrics for approximating urban regime types.
+Future scholars are encouraged to use, adapt, and improve these metrics,
+and I hope that spending-based metrics may be helpful for approximating
+urban regime shift in other industrialized democracies, like the US,
+Germany, South Korea, and Taiwan, among others.
+
+\singlespacing
+
+\renewcommand{\baselinestretch}{0.5}\selectfont
+\renewcommand{\arraystretch}{1.5}
+
+\begingroup\fontsize{9}{11}\selectfont
+
+\begin{ThreePartTable}
+\begin{TableNotes}
+\item[1] SW = Social Welfare. MC = Middle Class. D = Developental. C = Caretaker.
+\item[2] Numbers rank city-year as a percentile (0-100) compared to all other city-years.
+\end{TableNotes}
+\begin{longtabu} to \linewidth {>{\raggedright\arraybackslash}p{1.5cm}>{\raggedright\arraybackslash}p{1.5cm}>{\raggedright\arraybackslash}p{2.5cm}>{\raggedright\arraybackslash}p{1.7cm}>{\raggedleft\arraybackslash}p{0.3cm}>{\raggedleft\arraybackslash}p{0.3cm}>{\raggedleft\arraybackslash}p{0.3cm}>{\raggedright\arraybackslash}p{1.7cm}>{\raggedleft\arraybackslash}p{0.3cm}>{\raggedleft\arraybackslash}p{0.3cm}>{\raggedleft\arraybackslash}p{0.3cm}}
+\caption{\label{tab:keycities}Table \ref{tab:keycities}: \label{tab:keycities}{Regime Change in Past Case Studies}}\\
+\toprule
+\multicolumn{3}{c}{ } & \multicolumn{4}{c}{Regime in 2000} & \multicolumn{4}{c}{Regime in 2018} \\
+\cmidrule(l{3pt}r{3pt}){4-7} \cmidrule(l{3pt}r{3pt}){8-11}
+Prefecture & Municipality & Literature & Type & SW & MC & D & Type  & SW  & MC  & D \\
+\midrule
+\cellcolor{gray!6}{Tokyo} & \cellcolor{gray!6}{Mitaka} & \cellcolor{gray!6}{Steiner 1957; Fukushima \& Yamaguchi 1997; Ohashi \& Phelps 2021} & \cellcolor{gray!6}{C} & \cellcolor{gray!6}{25} & \cellcolor{gray!6}{26} & \cellcolor{gray!6}{2} & \cellcolor{gray!6}{C} & \cellcolor{gray!6}{51} & \cellcolor{gray!6}{10} & \cellcolor{gray!6}{2}\\
+\addlinespace
+Fukushima & Fukushima & Otsuki et al. 2016; Abeysinghe et al. 2022 & D & 8 & 27 & 53 & C & 44 & 36 & 35\\
+\addlinespace
+\cellcolor{gray!6}{Miyagi} & \cellcolor{gray!6}{Sendai} & \cellcolor{gray!6}{Morris 2012; Tsuji 2017} & \cellcolor{gray!6}{MC} & \cellcolor{gray!6}{14} & \cellcolor{gray!6}{68} & \cellcolor{gray!6}{48} & \cellcolor{gray!6}{MC} & \cellcolor{gray!6}{48} & \cellcolor{gray!6}{58} & \cellcolor{gray!6}{33}\\
+\addlinespace
+Miyagi & Ishinomaki & Dimmer \& Lindenberg 2014; Matthews 2017; Ji \& Imai 2022 & MC & 4 & 53 & 22 & SW-MC-D & 85 & 81 & 87\\
+\addlinespace
+\cellcolor{gray!6}{Hyogo} & \cellcolor{gray!6}{Kobe} & \cellcolor{gray!6}{Nunokawa 2007; Funck 2007; Yasui 2007; Edgington 2010; Aldrich 2012; Maly et al. 2012} & \cellcolor{gray!6}{MC-D} & \cellcolor{gray!6}{42} & \cellcolor{gray!6}{74} & \cellcolor{gray!6}{65} & \cellcolor{gray!6}{SW-MC} & \cellcolor{gray!6}{68} & \cellcolor{gray!6}{49} & \cellcolor{gray!6}{11}\\
+\addlinespace
+Hokkaido & Muroran & Edgington 2013 & SW & 54 & 46 & 37 & SW-MC & 70 & 64 & 38\\
+\bottomrule
+\insertTableNotes
+\end{longtabu}
+\end{ThreePartTable}
+\endgroup{}
+
+\renewcommand{\arraystretch}{1}
+
+\doublespacing
+
+\hypertarget{a-diagnostic-resource-for-updating-case-studies}{%
+\subsubsection{6.1.4 A Diagnostic Resource for Updating Case
+Studies}\label{a-diagnostic-resource-for-updating-case-studies}}
+
+Further, this study's measures also provide a resource for scholars
+building new theories of urban politics. After a wealth of investigation
+of urban politics in Japan over the last 30 years, some case studies may
+no longer be representative of the current state of their city. Until
+now, the field has lacked a tool for systematically identifying
+\emph{which} cities need re-investigation.
+\textbf{Table \ref{tab:keycities}} demonstrates an example of how
+scholars can utilize these new indices to evaluate commonly cited case
+studies whose urban regime type may have since changed.
 
 \textbf{Table \ref{tab:keycities}} lists several notable cities,
 selected for their relevance to the literature. For each city, columns
@@ -1430,58 +1563,18 @@ has changed in Kobe since their early-recovery period. The author hopes
 that this table might provide a spotlight for cities in need of further
 study.
 
-\singlespacing
-
-\renewcommand{\baselinestretch}{0.5}\selectfont
-\renewcommand{\arraystretch}{1.5}
-
-\begingroup\fontsize{9}{11}\selectfont
-
-\begin{ThreePartTable}
-\begin{TableNotes}
-\item[1] SW = Social Welfare. MC = Middle Class. D = Developental. C = Caretaker.
-\item[2] Numbers rank city-year as a percentile (0-100) compared to all other city-years.
-\end{TableNotes}
-\begin{longtabu} to \linewidth {>{\raggedright\arraybackslash}p{1.5cm}>{\raggedright\arraybackslash}p{1.5cm}>{\raggedright\arraybackslash}p{2.5cm}>{\raggedright\arraybackslash}p{1.7cm}>{\raggedleft\arraybackslash}p{0.3cm}>{\raggedleft\arraybackslash}p{0.3cm}>{\raggedleft\arraybackslash}p{0.3cm}>{\raggedright\arraybackslash}p{1.7cm}>{\raggedleft\arraybackslash}p{0.3cm}>{\raggedleft\arraybackslash}p{0.3cm}>{\raggedleft\arraybackslash}p{0.3cm}}
-\caption{\label{tab:keycities}Table \ref{tab:keycities}: \textbf{Urban Regime Change in Key Cities from Literature}}\\
-\toprule
-\multicolumn{3}{c}{ } & \multicolumn{4}{c}{Regime in 2000} & \multicolumn{4}{c}{Regime in 2018} \\
-\cmidrule(l{3pt}r{3pt}){4-7} \cmidrule(l{3pt}r{3pt}){8-11}
-Prefecture & Municipality & Literature & Type & SW & MC & D & Type  & SW  & MC  & D \\
-\midrule
-\cellcolor{gray!6}{Tokyo} & \cellcolor{gray!6}{Mitaka} & \cellcolor{gray!6}{Steiner 1957; Fukushima \& Yamaguchi 1997; Ohashi \& Phelps 2021} & \cellcolor{gray!6}{C} & \cellcolor{gray!6}{25} & \cellcolor{gray!6}{26} & \cellcolor{gray!6}{2} & \cellcolor{gray!6}{C} & \cellcolor{gray!6}{51} & \cellcolor{gray!6}{10} & \cellcolor{gray!6}{2}\\
-\addlinespace
-(former) & Kagoshima-ken &  & D & 27 & 41 & 55 & NA & NA & NA & NA\\
-\addlinespace
-\cellcolor{gray!6}{Fukushima} & \cellcolor{gray!6}{Fukushima} & \cellcolor{gray!6}{Otsuki et al. 2016; Abeysinghe et al. 2022} & \cellcolor{gray!6}{D} & \cellcolor{gray!6}{8} & \cellcolor{gray!6}{27} & \cellcolor{gray!6}{53} & \cellcolor{gray!6}{C} & \cellcolor{gray!6}{44} & \cellcolor{gray!6}{36} & \cellcolor{gray!6}{35}\\
-\addlinespace
-Miyagi & Sendai & Morris 2012; Tsuji 2017 & MC & 14 & 68 & 48 & MC & 48 & 58 & 33\\
-\addlinespace
-\cellcolor{gray!6}{Miyagi} & \cellcolor{gray!6}{Ishinomaki} & \cellcolor{gray!6}{Dimmer \& Lindenberg 2014; Matthews 2017; Ji \& Imai 2022} & \cellcolor{gray!6}{MC} & \cellcolor{gray!6}{4} & \cellcolor{gray!6}{53} & \cellcolor{gray!6}{22} & \cellcolor{gray!6}{SW-MC-D} & \cellcolor{gray!6}{85} & \cellcolor{gray!6}{81} & \cellcolor{gray!6}{87}\\
-\addlinespace
-Hyogo & Kobe & Nunokawa 2007; Funck 2007; Yasui 2007; Edgington 2010; Aldrich 2012; Maly et al. 2012 & MC-D & 42 & 74 & 65 & SW-MC & 68 & 49 & 11\\
-\addlinespace
-\cellcolor{gray!6}{Hokkaido} & \cellcolor{gray!6}{Muroran} & \cellcolor{gray!6}{Edgington 2013} & \cellcolor{gray!6}{SW} & \cellcolor{gray!6}{54} & \cellcolor{gray!6}{46} & \cellcolor{gray!6}{37} & \cellcolor{gray!6}{SW-MC} & \cellcolor{gray!6}{70} & \cellcolor{gray!6}{64} & \cellcolor{gray!6}{38}\\
-\bottomrule
-\insertTableNotes
-\end{longtabu}
-\end{ThreePartTable}
-\endgroup{}
-
-\renewcommand{\arraystretch}{1}
-
-\doublespacing
-
 \hypertarget{limitations}{%
 \subsection{6.2 Limitations}\label{limitations}}
 
 Finally, this study does come with several limitations. In addition to
 the aforementioned challenges of approximating urban regime shifts using
-spending as a proxy measure, recent scholarship has highlighted cases
-where urban regimes are more difficult to characterize. Depending on the
-country, urban governance and levels of local autonomy may vary due to
-institutional differences, laws, and tax structure.62-63 Some cities
-lack stable governing coalitions, dubbed 'non-regimes.'64 In practice,
+spending as a proxy measure, some scholarship has highlighted cases
+where urban regimes are more difficult to characterize
+\citep{deleon_1992, shin_et_al_2015, davies_and_blanco_2017, russo_and_scarnato_2018}.
+Depending on the country, urban governance and levels of local autonomy
+may vary due to institutional differences, laws, and tax structure
+\citep{sellers_2002, sorensen_2011}. Some cities lack stable governing
+coalitions, dubbed `non-regimes' \citep{mossberger_2009}. In practice,
 these either would not spend consistently on the same priorities, or
 would spend little on any new priorities, resembling a caretaker regime.
 
@@ -1499,45 +1592,133 @@ achieve that aim.
 
 \singlespacing
 
-\hypertarget{references}{%
-\section*{References}\label{references}}
-\addcontentsline{toc}{section}{References}
+\newpage
 
-\hypertarget{refs}{}
-\begin{CSLReferences}{0}{0}
-\end{CSLReferences}
+\hypertarget{appendix}{%
+\section*{Appendix}\label{appendix}}
+\addcontentsline{toc}{section}{Appendix}
+
+\large
+\doublespacing
+
+\textbf{Table of Contents}
+
+\large
+
+\begin{itemize}
+\item
+  Figure \ref{fig:figure_A1}: Distributions of Urban Regime Indices
+\item
+  Table \ref{tab:tablea1}: Descriptive Statistics
+\item
+  Table \ref{tab:tablea2}: OLS Models 1-8 (Outcome: Social Welfare
+  Regime Index)
+\item
+  Table \ref{tab:tablea3}: OLS Models 9-16 (Outcome: Developmental
+  Regime Index)
+\item
+  Table \ref{tab:tablea4}: OLS Models 17-24 (Outcome: Middle-Class
+  Regime Index)
+\end{itemize}
+
+\singlespacing
 
 \newpage
 
-\hypertarget{appendix-appendix}{%
-\section*{(APPENDIX) Appendix}\label{appendix-appendix}}
-\addcontentsline{toc}{section}{(APPENDIX) Appendix}
+\begin{landscape}
 
-\hypertarget{table-of-contents}{%
-\subsection{Table of Contents}\label{table-of-contents}}
-
-\newpage
+\setcounter{table}{0}
+\renewcommand{\thetable}{A\arabic{table}}
+\setcounter{figure}{0}
+\renewcommand{\thefigure}{A\arabic{figure}}
 
 \begin{figure}
-\includegraphics[width=1\linewidth]{viz/distribution} \caption{Figure A1: Distributions of Urban Regime Indices}\label{fig:figure_A1}
+\includegraphics[width=1\linewidth]{viz/distribution} \caption{Figure \ref{fig:figure_A1}: \label{fig:figure_A1}{Distributions of Urban Regime Indices}}\label{fig:figure_A1}
 \end{figure}
 
+\end{landscape}
+
 \newpage
-
-\hypertarget{table-a1-descriptives}{%
-\subsection{Table A1: Descriptives}\label{table-a1-descriptives}}
-
 \begin{landscape}
 
 \renewcommand{\baselinestretch}{0.5}\selectfont
 \renewcommand{\arraystretch}{1.5}
 
+\begingroup\fontsize{9}{11}\selectfont
+
+\begin{ThreePartTable}
+\begin{TableNotes}
+\item \textit{Note: } 
+\item Categorical Variables include Year$^{a}$, Prefecture$^{b}$, and Tsunami$^{c}$. Models use multiple imputation with 5 imputations to account for missing data.
+\item[a] Years range from 2000 (n = 1428 cities) to 2018 (n = 1727). Mode is 2010 (n = 1732). In models, baseline year is 2000. Some municipalities consolidated over time, while others split. Dataset omits outliers including Fukushima Exclusion Zone cities from 2011-2018 and Yubari 2000-2018.
+\item[b] 47 Prefectures. Modal prefecture is Hokkaido, with 178 cities (10\%, n = 1,738) and 3,327 city-years (10\%, n = 31,493). In models, the baseline prefecture is Hokkaido.
+\item[c] Tsunami hit 85 municipalities in 2011; cities labeled 2011-2018 as tsunami-affected (n = 680).
+\item[1] Spending measured in 1,000s of yen.
+\item[2] Disaster deaths and damages (\# of buildings damaged) measured per 100,000 persons.
+\item[3] Zeros from unaffected cities in disaster variable distributions omitted to show nonzero values clearly.
+\end{TableNotes}
+\begin{longtable}[t]{>{\raggedright\arraybackslash}p{4cm}lllllrr>{}l>{}ll}
+\caption{\label{tab:tablea1}\textbf{Table \ref{tab:tablea1}: \label{tab:tablea1}{Descriptive Statistics}} \newline \normalsize 40043 Japanese city-years (2000-2018)}\\
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{5}{c}{Statistics} & \multicolumn{2}{c}{Observations} \\
+\cmidrule(l{3pt}r{3pt}){2-6} \cmidrule(l{3pt}r{3pt}){7-8}
+Variable & Mean & SD & Min & Median & Max & N & \% Missing & Distribution$^{3}$ & Transformed$^{3}$ & Transformation\\
+\midrule
+\addlinespace[0.25cm]
+\hline
+\multicolumn{11}{l}{\textbf{\makecell[l]{\\Urban Regime Indices}}}\\
+\hspace{1em}\cellcolor{gray!6}{Social Welfare Regime} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{0.63} & \cellcolor{gray!6}{-2.04} & \cellcolor{gray!6}{-0.05} & \cellcolor{gray!6}{3.05} & \cellcolor{gray!6}{40029} & \cellcolor{gray!6}{0.0} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd821a97cd5.pdf} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd8267725d2.pdf} & \cellcolor{gray!6}{x}\\
+\hspace{1em}Middle Class Regime & 0 & 0.53 & -2.07 & -0.09 & 3.06 & 40029 & 0.0 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd833e06412.pdf} & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd872157433.pdf} & x\\
+\hspace{1em}\cellcolor{gray!6}{Developmental Regime} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{0.85} & \cellcolor{gray!6}{-2.11} & \cellcolor{gray!6}{-0.05} & \cellcolor{gray!6}{2.84} & \cellcolor{gray!6}{40029} & \cellcolor{gray!6}{0.0} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd8c726696.pdf} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd87c9a30c6.pdf} & \cellcolor{gray!6}{x}\\
+\addlinespace[0.25cm]
+\hline
+\multicolumn{11}{l}{\textbf{\makecell[l]{\\Demographics}}}\\
+\hspace{1em}Population & 60866 & 169234 & 178 & 17299 & 3724844 & 40043 & 0.0 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd8689e4f50.pdf} & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd818314282.pdf} & x$^{1/10}$\\
+\hspace{1em}\cellcolor{gray!6}{Inhabitable Area (ha)} & \cellcolor{gray!6}{5736.24} & \cellcolor{gray!6}{6716.1} & \cellcolor{gray!6}{74} & \cellcolor{gray!6}{3402} & \cellcolor{gray!6}{80524} & \cellcolor{gray!6}{40043} & \cellcolor{gray!6}{0.0} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd835a32586.pdf} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd8352c42a7.pdf} & \cellcolor{gray!6}{log(x)}\\
+\hspace{1em}\% Over Age 65 & 0.28 & 0.08 & 0.08 & 0.28 & 0.6 & 40043 & 0.0 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd864d56b77.pdf} & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd8615357a1.pdf} & logit(x)\\
+\hspace{1em}\cellcolor{gray!6}{Income per capita$^{1}$} & \cellcolor{gray!6}{1207.26} & \cellcolor{gray!6}{338.49} & \cellcolor{gray!6}{263.9} & \cellcolor{gray!6}{1174.82} & \cellcolor{gray!6}{9058.48} & \cellcolor{gray!6}{39773} & \cellcolor{gray!6}{0.7} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd845f0303f.pdf} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd8517b372f.pdf} & \cellcolor{gray!6}{log(x)}\\
+\addlinespace[0.25cm]
+\hline
+\multicolumn{11}{l}{\textbf{\makecell[l]{\\Revenue}}}\\
+\hspace{1em}Revenue per capita$^{1}$ & 696.22 & 570.52 & 120.52 & 521.21 & 14123.27 & 40029 & 0.0 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd85bac78fa.pdf} & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd8295b13c4.pdf} & sqrt(x)\\
+\hspace{1em}\cellcolor{gray!6}{\% National \& Prefectural Funding} & \cellcolor{gray!6}{0.16} & \cellcolor{gray!6}{0.07} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{0.15} & \cellcolor{gray!6}{0.84} & \cellcolor{gray!6}{40029} & \cellcolor{gray!6}{0.0} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd85e92452c.pdf} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd8759c792e.pdf} & \cellcolor{gray!6}{logit(x)}\\
+\hspace{1em}Real Term Budget Balance (+/-) & 5.38 & 4.45 & -50.7 & 4.7 & 113.4 & 40029 & 0.0 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd8620d3261.pdf} & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd8c2f5c75.pdf} & x\\
+\addlinespace[0.25cm]
+\hline
+\multicolumn{11}{l}{\textbf{\makecell[l]{\\Disaster Conditions}}}\\
+\hspace{1em}\cellcolor{gray!6}{Disaster Deaths$^{2}$} & \cellcolor{gray!6}{11.32} & \cellcolor{gray!6}{238.48} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{9077.99} & \cellcolor{gray!6}{40043} & \cellcolor{gray!6}{0.0} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd84fc4310.pdf} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd846e36306.pdf} & \cellcolor{gray!6}{x$^{1/10}$}\\
+\hspace{1em}Disaster Damage$^{2}$ & 187.91 & 1328.48 & 0 & 0 & 23774.73 & 40043 & 0.0 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd82d27cc5.pdf} & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd84c372510.pdf} & x$^{1/10}$\\
+\addlinespace[0.25cm]
+\hline
+\multicolumn{11}{l}{\textbf{\makecell[l]{\\Disaster Spending}}}\\
+\hspace{1em}\cellcolor{gray!6}{Disaster Recovery Spending Rate$^{1}$} & \cellcolor{gray!6}{8.74} & \cellcolor{gray!6}{44.65} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{0.44} & \cellcolor{gray!6}{3388.75} & \cellcolor{gray!6}{40029} & \cellcolor{gray!6}{0.0} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd85f48517f.pdf} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd85a6c6f2f.pdf} & \cellcolor{gray!6}{x$^{1/10}$}\\
+\hspace{1em}Disaster Relief Spending Rate$^{1}$ & 1.89 & 33.04 & 0 & 0 & 1910.01 & 40029 & 0.0 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd860ed4857.pdf} & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd848df4748.pdf} & x$^{1/10}$\\
+\addlinespace[0.25cm]
+\hline
+\multicolumn{11}{l}{\textbf{\makecell[l]{\\Political Parties}}}\\
+\hspace{1em}\cellcolor{gray!6}{\% LDP Coalition Votes: Prefecture} & \cellcolor{gray!6}{0.31} & \cellcolor{gray!6}{0.26} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{0.31} & \cellcolor{gray!6}{0.97} & \cellcolor{gray!6}{34964} & \cellcolor{gray!6}{12.7} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd81ee31963.pdf} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd8339638b4.pdf} & \cellcolor{gray!6}{logit(x + 0.01)}\\
+\hspace{1em}Bonding Social Capital & 0.7 & 0.05 & 0.39 & 0.71 & 0.81 & 35011 & 12.6 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd86e9550da.pdf} & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd85192ba0.pdf} & logit(x)\\
+\addlinespace[0.25cm]
+\hline
+\multicolumn{11}{l}{\textbf{\makecell[l]{\\Collective Action}}}\\
+\hspace{1em}\cellcolor{gray!6}{Bridging Social Capital} & \cellcolor{gray!6}{0.32} & \cellcolor{gray!6}{0.08} & \cellcolor{gray!6}{0.09} & \cellcolor{gray!6}{0.32} & \cellcolor{gray!6}{0.57} & \cellcolor{gray!6}{35011} & \cellcolor{gray!6}{12.6} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd852dd4d79.pdf} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd852834bb3.pdf} & \cellcolor{gray!6}{quartiles(x)}\\
+\hspace{1em}Linking Social Capital & 0.26 & 0.08 & 0.06 & 0.25 & 0.55 & 35011 & 12.6 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd83196e25.pdf} & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd83dd841f2.pdf} & logit(x)\\
+\hspace{1em}\cellcolor{gray!6}{\% Some College} & \cellcolor{gray!6}{0.24} & \cellcolor{gray!6}{0.08} & \cellcolor{gray!6}{0.05} & \cellcolor{gray!6}{0.23} & \cellcolor{gray!6}{0.88} & \cellcolor{gray!6}{39961} & \cellcolor{gray!6}{0.2} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd8688242d1.pdf} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd8529945e1.pdf} & \cellcolor{gray!6}{logit(x)}\\
+\addlinespace[0.25cm]
+\hline
+\multicolumn{11}{l}{\textbf{\makecell[l]{\\Extra Controls}}}\\
+\hspace{1em}\% Unemployed & 0.05 & 0.02 & 0 & 0.04 & 0.23 & 40043 & 0.0 & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd85b944a2.pdf} & \includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd8109649eb.pdf} & logit(x)\\
+\hspace{1em}\cellcolor{gray!6}{Total Migration per capita} & \cellcolor{gray!6}{0.07} & \cellcolor{gray!6}{0.04} & \cellcolor{gray!6}{0.01} & \cellcolor{gray!6}{0.06} & \cellcolor{gray!6}{0.62} & \cellcolor{gray!6}{31493} & \cellcolor{gray!6}{21.4} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd87ca35951.pdf} & \cellcolor{gray!6}{}\includegraphics[width=0.67in, height=0.17in]{C:/Users/tmf77/OneDrive - Cornell University/Documents/rstudio/urban_regimes/paper_files/figure-latex/hist_2fd819044704.pdf} & \cellcolor{gray!6}{log(x)}\\
+\bottomrule
+\insertTableNotes
+\end{longtable}
+\end{ThreePartTable}
+\endgroup{}
+
 \renewcommand{\arraystretch}{1}
 
-\end{landscape}
 \newpage
 
-\begin{landscape}
 \renewcommand{\baselinestretch}{0.5}\selectfont
 \renewcommand{\arraystretch}{1.5}
 
@@ -1553,10 +1734,9 @@ achieve that aim.
 \item[4] Transformations: In Model 8, predictors were log-, logit-, or root-transformed to fit their distribution and nonlinear trends, adding a small constant where necessary. These made statistically significant improvements in log-likelihood compared to Model 7 (p < 0.001). Area, income, and migration were logged. Revenue used the square root; the 10th root was used for Population (to avoid colinearity with spending), disaster deaths, damages, recovery spending, and relief spending (since the distributions have frequent, meaningful zeros). Age, voteshares, social capital, education, and unemployment were logit tranformed, since they are bounded at 0 and 1. Bridging social capital was split into quartiles, to avoid collinearity with regime indicators.
 \end{TableNotes}
 \begin{longtabu} to \linewidth {>{\raggedright\arraybackslash}p{6cm}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}p{1.6cm}}
-\caption{\label{tab:tablea2}Table A2: \textbf{OLS Models of Social Welfare Regimes.}
-        \newline \normalsize
+\caption{Table \ref{tab:tablea2}: \label{tab:tablea2}{\textbf{OLS Models of Social Welfare Regimes.}} \newline \normalsize 
         \textit{Dependent Variable}: Social Welfare Regime Index (Z-score). 
-        \newline \normalsize
+        \newline \normalsize 
         \textit{Unit of Observation}: 31493 Japanese municipality-years (2000-2018), with annual fixed effects.}\\
 \toprule
 \multicolumn{8}{c}{ } & \multicolumn{1}{c}{Best Model} \\
@@ -1611,16 +1791,16 @@ achieve that aim.
 \hspace{1em}\cellcolor{gray!6}{\% Unemployed} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \textbf{\cellcolor{gray!6}{2.03*** (0.14)}} & \textbf{\cellcolor{gray!6}{0.66*** (0.09)}} & \textbf{\cellcolor{gray!6}{-0.45*** (0.10)}} & \textbf{\cellcolor{gray!6}{-0.04*** (0.01)}}\\
 \hspace{1em}Total Migration (per capita) &  &  &  & \textbf{1.29*** (0.07)} & \textbf{0.44*** (0.07)} & 0.08.   (0.04) & \textbf{0.13**  (0.05)} & 0.00    (0.00)\\
 \hspace{1em}\cellcolor{gray!6}{Lagged Outcome (1 year prior)} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \textbf{\cellcolor{gray!6}{0.73*** (0.00)}} & \textbf{\cellcolor{gray!6}{0.79*** (0.00)}} & \textbf{\cellcolor{gray!6}{0.78*** (0.00)}}\\
-\hspace{1em}Constant & -1.47*** (0.02) & -1.54*** (0.02) & -1.21*** (0.02) & -0.81*** (0.04) & -0.37*** (0.07) & -0.09.   (0.05) & 0.12*   (0.05) & 0.52*** (0.07)\\
+\hspace{1em}Constant & \textbf{-1.47*** (0.02)} & \textbf{-1.54*** (0.02)} & \textbf{-1.21*** (0.02)} & \textbf{-0.81*** (0.04)} & \textbf{-0.37*** (0.07)} & -0.09.   (0.05) & \textbf{0.12*   (0.05)} & \textbf{0.52*** (0.07)}\\
 \addlinespace[0.25cm]
 \hline
 \multicolumn{9}{l}{\textbf{\makecell[l]{\\Model Fit}}}\\
 \hspace{1em}\cellcolor{gray!6}{N (city-years)} & \cellcolor{gray!6}{31493} & \cellcolor{gray!6}{31493} & \cellcolor{gray!6}{31493} & \cellcolor{gray!6}{31493} & \cellcolor{gray!6}{31493} & \cellcolor{gray!6}{29755} & \cellcolor{gray!6}{29755} & \cellcolor{gray!6}{29755}\\
 \hspace{1em}Max VIF & 2.30 & 2.33 & 4.36 & 5.16 & 8.12 & 8.16 & 8.06 & 8.40\\
-\hspace{1em}\cellcolor{gray!6}{F-statistic (df)} & \cellcolor{gray!6}{3011.7***    (25)} & \cellcolor{gray!6}{2619.8***    (30)} & \cellcolor{gray!6}{3182.5***    (32)} & \cellcolor{gray!6}{2769.3***    (39)} & \cellcolor{gray!6}{1590.6***    (86)} & \cellcolor{gray!6}{4105.5***    (86)} & \cellcolor{gray!6}{3803.8***    (86)} & \cellcolor{gray!6}{3834.3***    (86)}\\
-\hspace{1em}Change in Deviance (df) & - & -113.1***     (5) & -636.5***     (2) & -133.4***     (7) & -495.4***    (47) & -1298.9***     (1) & -1410.5***     (1) & -38.5***    (17)\\
+\hspace{1em}\cellcolor{gray!6}{F-statistic (df)} & \textbf{\cellcolor{gray!6}{3011.7***    (25)}} & \textbf{\cellcolor{gray!6}{2619.8***    (30)}} & \textbf{\cellcolor{gray!6}{3182.5***    (32)}} & \textbf{\cellcolor{gray!6}{2769.3***    (39)}} & \textbf{\cellcolor{gray!6}{1590.6***    (86)}} & \textbf{\cellcolor{gray!6}{4105.5***    (86)}} & \textbf{\cellcolor{gray!6}{3803.8***    (86)}} & \textbf{\cellcolor{gray!6}{3834.3***    (86)}}\\
+\hspace{1em}Change in Deviance (df) & - & \textbf{-113.1***     (5)} & \textbf{-636.5***     (2)} & \textbf{-133.4***     (7)} & \textbf{-495.4***    (47)} & \textbf{-1298.9***     (1)} & \textbf{-1410.5***     (1)} & \textbf{-38.5***    (17)}\\
 \hspace{1em}\cellcolor{gray!6}{Sigma (Avg. Error)} & \cellcolor{gray!6}{0.35} & \cellcolor{gray!6}{0.34} & \cellcolor{gray!6}{0.31} & \cellcolor{gray!6}{0.30} & \cellcolor{gray!6}{0.28} & \cellcolor{gray!6}{0.18} & \cellcolor{gray!6}{0.18} & \cellcolor{gray!6}{0.18}\\
-\hspace{1em}R$^{2}$ & \textbf{0.71} & \textbf{0.71} & \textbf{0.76} & \textbf{0.77} & \textbf{0.81} & 0.92 & 0.92 & \textbf{0.92}\\
+\hspace{1em}R$^{2}$ & 0.71 & 0.71 & 0.76 & 0.77 & 0.81 & 0.92 & 0.92 & 0.92\\
 \bottomrule
 \insertTableNotes
 \end{longtabu}
@@ -1629,10 +1809,7 @@ achieve that aim.
 
 \renewcommand{\arraystretch}{1}
 
-\end{landscape}
 \newpage
-
-\begin{landscape}
 \renewcommand{\baselinestretch}{0.5}\selectfont
 \renewcommand{\arraystretch}{1.5}
 
@@ -1648,10 +1825,9 @@ achieve that aim.
 \item[4] Transformations: In Model 16, predictors were log-, logit-, or root-transformed to fit their distribution and nonlinear trends, adding a small constant where necessary. These made statistically significant improvements in log-likelihood compared to Model 15 (p < 0.001). Area, income, and migration were logged. Revenue used the square root; the 10th root was used for Population (to avoid colinearity with spending), disaster deaths, damages, recovery spending, and relief spending (since the distributions have frequent, meaningful zeros). Age, voteshares, social capital, education, and unemployment were logit tranformed, since they are bounded at 0 and 1. Bridging social capital was split into quartiles, to avoid collinearity with regime indicators.
 \end{TableNotes}
 \begin{longtabu} to \linewidth {>{\raggedright\arraybackslash}p{6cm}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}p{1.6cm}}
-\caption{\label{tab:tablea3}Table A3: \textbf{OLS Models of Developmental Regimes.}
-        \newline \normalsize
+\caption{Table \ref{tab:tablea3}: \label{tab:tablea3}{\textbf{OLS Models of Developmental Regimes.}} \newline \normalsize 
         \textit{Dependent Variable}: Developmental Regime Index (Z-score). 
-        \newline \normalsize
+        \newline \normalsize 
         \textit{Unit of Observation}: 31493 Japanese municipality-years (2000-2018), with annual fixed effects.}\\
 \toprule
 \multicolumn{8}{c}{ } & \multicolumn{1}{c}{Best Model} \\
@@ -1706,16 +1882,16 @@ achieve that aim.
 \hspace{1em}\cellcolor{gray!6}{\% Unemployed} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \textbf{\cellcolor{gray!6}{-5.60*** (0.15)}} & \textbf{\cellcolor{gray!6}{-6.55*** (0.17)}} & \textbf{\cellcolor{gray!6}{-1.65*** (0.11)}} & \textbf{\cellcolor{gray!6}{-1.92*** (0.12)}} & \textbf{\cellcolor{gray!6}{-0.09*** (0.01)}}\\
 \hspace{1em}Total Migration (per capita) &  &  &  & \textbf{0.42*** (0.08)} & \textbf{0.19*   (0.08)} & -0.07    (0.05) & \textbf{0.31*** (0.06)} & \textbf{0.04*** (0.01)}\\
 \hspace{1em}\cellcolor{gray!6}{Lagged Outcome (1 year prior)} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \textbf{\cellcolor{gray!6}{0.72*** (0.00)}} & \textbf{\cellcolor{gray!6}{0.81*** (0.00)}} & \textbf{\cellcolor{gray!6}{0.77*** (0.00)}}\\
-\hspace{1em}Constant & -0.68*** (0.03) & -0.82*** (0.02) & 0.02    (0.02) & -0.26*** (0.06) & 0.05    (0.09) & 0.03    (0.06) & 0.13*   (0.06) & 0.31*** (0.08)\\
+\hspace{1em}Constant & \textbf{-0.68*** (0.03)} & \textbf{-0.82*** (0.02)} & 0.02    (0.02) & \textbf{-0.26*** (0.06)} & 0.05    (0.09) & 0.03    (0.06) & \textbf{0.13*   (0.06)} & \textbf{0.31*** (0.08)}\\
 \addlinespace[0.25cm]
 \hline
 \multicolumn{9}{l}{\textbf{\makecell[l]{\\Model Fit}}}\\
 \hspace{1em}\cellcolor{gray!6}{N (city-years)} & \cellcolor{gray!6}{31493} & \cellcolor{gray!6}{31493} & \cellcolor{gray!6}{31493} & \cellcolor{gray!6}{31493} & \cellcolor{gray!6}{31493} & \cellcolor{gray!6}{29755} & \cellcolor{gray!6}{29755} & \cellcolor{gray!6}{29755}\\
 \hspace{1em}Max VIF & 2.30 & 2.33 & 3.86 & 4.92 & 8.12 & 8.17 & 8.06 & 8.40\\
-\hspace{1em}\cellcolor{gray!6}{F-statistic (df)} & \cellcolor{gray!6}{3146.4***    (25)} & \cellcolor{gray!6}{2893.6***    (30)} & \cellcolor{gray!6}{3718.3***    (32)} & \cellcolor{gray!6}{3720.6***    (40)} & \cellcolor{gray!6}{2128.6***    (86)} & \cellcolor{gray!6}{5488***              (86)} & \cellcolor{gray!6}{4723.9***    (86)} & \cellcolor{gray!6}{4808.6***    (86)}\\
-\hspace{1em}Change in Deviance (df) & - & -458.6***     (5) & -1323.9***     (2) & -805.5***     (8) & -651.8***    (46) & -1923***              (1) & -2127***              (1) & -99.4***    (17)\\
+\hspace{1em}\cellcolor{gray!6}{F-statistic (df)} & \textbf{\cellcolor{gray!6}{3146.4***    (25)}} & \textbf{\cellcolor{gray!6}{2893.6***    (30)}} & \textbf{\cellcolor{gray!6}{3718.3***    (32)}} & \textbf{\cellcolor{gray!6}{3720.6***    (40)}} & \textbf{\cellcolor{gray!6}{2128.6***    (86)}} & \textbf{\cellcolor{gray!6}{5488***              (86)}} & \textbf{\cellcolor{gray!6}{4723.9***    (86)}} & \textbf{\cellcolor{gray!6}{4808.6***    (86)}}\\
+\hspace{1em}Change in Deviance (df) & - & \textbf{-458.6***     (5)} & \textbf{-1323.9***     (2)} & \textbf{-805.5***     (8)} & \textbf{-651.8***    (46)} & \textbf{-1923***              (1)} & \textbf{-2127***              (1)} & \textbf{-99.4***    (17)}\\
 \hspace{1em}\cellcolor{gray!6}{Sigma (Avg. Error)} & \cellcolor{gray!6}{0.46} & \cellcolor{gray!6}{0.44} & \cellcolor{gray!6}{0.39} & \cellcolor{gray!6}{0.36} & \cellcolor{gray!6}{0.33} & \cellcolor{gray!6}{0.21} & \cellcolor{gray!6}{0.22} & \cellcolor{gray!6}{0.22}\\
-\hspace{1em}R$^{2}$ & \textbf{0.71} & \textbf{0.73} & \textbf{0.79} & \textbf{0.83} & \textbf{0.85} & 0.94 & 0.93 & \textbf{0.93}\\
+\hspace{1em}R$^{2}$ & 0.71 & 0.73 & 0.79 & 0.83 & 0.85 & 0.94 & 0.93 & 0.93\\
 \bottomrule
 \insertTableNotes
 \end{longtabu}
@@ -1724,11 +1900,7 @@ achieve that aim.
 
 \renewcommand{\arraystretch}{1}
 
-\end{landscape}
 \newpage
-
-\newpage
-\begin{landscape}
 
 \renewcommand{\baselinestretch}{0.5}\selectfont
 \renewcommand{\arraystretch}{1.5}
@@ -1745,10 +1917,9 @@ achieve that aim.
 \item[4] Transformations: In Model 24, predictors were log-, logit-, or root-transformed to fit their distribution and nonlinear trends, adding a small constant where necessary. These made statistically significant improvements in log-likelihood compared to Model 23 (p < 0.001). Area, income, and migration were logged. Revenue used the square root; the 10th root was used for Population (to avoid colinearity with spending), disaster deaths, damages, recovery spending, and relief spending (since the distributions have frequent, meaningful zeros). Age, voteshares, social capital, education, and unemployment were logit tranformed, since they are bounded at 0 and 1. Bridging social capital was split into quartiles, to avoid collinearity with regime indicators.
 \end{TableNotes}
 \begin{longtabu} to \linewidth {>{\raggedright\arraybackslash}p{6cm}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}p{1.6cm}}
-\caption{\label{tab:tablea4}Table A4: \textbf{OLS Models of Middle Class Regimes.}
-        \newline \normalsize
+\caption{Table \ref{tab:tablea4}: \label{tab:tablea4}{\textbf{OLS Models of Middle Class Regimes.}} \newline \normalsize 
         \textit{Dependent Variable}: Middle Class Regime Index (Z-score). 
-        \newline \normalsize
+        \newline \normalsize 
         \textit{Unit of Observation}: 31493 Japanese municipality-years (2000-2018), with annual fixed effects.}\\
 \toprule
 \multicolumn{8}{c}{ } & \multicolumn{1}{c}{Best Model} \\
@@ -1803,16 +1974,16 @@ achieve that aim.
 \hspace{1em}\cellcolor{gray!6}{\% Unemployed} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \textbf{\cellcolor{gray!6}{-1.50*** (0.16)}} & \textbf{\cellcolor{gray!6}{-1.27*** (0.18)}} & \cellcolor{gray!6}{-0.01    (0.12)} & \textbf{\cellcolor{gray!6}{-1.18*** (0.12)}} & \textbf{\cellcolor{gray!6}{-0.07*** (0.01)}}\\
 \hspace{1em}Total Migration (per capita) &  &  &  & \textbf{1.02*** (0.08)} & \textbf{1.33*** (0.08)} & \textbf{0.21*** (0.06)} & \textbf{0.33*** (0.06)} & \textbf{0.02*** (0.01)}\\
 \hspace{1em}\cellcolor{gray!6}{Lagged Outcome (1 year prior)} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \cellcolor{gray!6}{} & \textbf{\cellcolor{gray!6}{0.75*** (0.00)}} & \textbf{\cellcolor{gray!6}{0.80*** (0.00)}} & \textbf{\cellcolor{gray!6}{0.80*** (0.00)}}\\
-\hspace{1em}Constant & -0.74*** (0.02) & -0.82*** (0.02) & -0.24*** (0.02) & 0.19**  (0.07) & -0.45*** (0.09) & -0.09    (0.06) & 0.13*   (0.06) & -0.01    (0.08)\\
+\hspace{1em}Constant & \textbf{-0.74*** (0.02)} & \textbf{-0.82*** (0.02)} & \textbf{-0.24*** (0.02)} & \textbf{0.19**  (0.07)} & \textbf{-0.45*** (0.09)} & -0.09    (0.06) & \textbf{0.13*   (0.06)} & -0.01    (0.08)\\
 \addlinespace[0.25cm]
 \hline
 \multicolumn{9}{l}{\textbf{\makecell[l]{\\Model Fit}}}\\
 \hspace{1em}\cellcolor{gray!6}{N (city-years)} & \cellcolor{gray!6}{31493} & \cellcolor{gray!6}{31493} & \cellcolor{gray!6}{31493} & \cellcolor{gray!6}{31493} & \cellcolor{gray!6}{31493} & \cellcolor{gray!6}{29755} & \cellcolor{gray!6}{29755} & \cellcolor{gray!6}{29755}\\
 \hspace{1em}Max VIF & 2.30 & 2.33 & 4.38 & 5.32 & 8.12 & 8.16 & 8.06 & 8.40\\
-\hspace{1em}\cellcolor{gray!6}{F-statistic (df)} & \cellcolor{gray!6}{1039.7***    (25)} & \cellcolor{gray!6}{921.8***    (30)} & \cellcolor{gray!6}{1242***              (32)} & \cellcolor{gray!6}{1016.3***    (40)} & \cellcolor{gray!6}{552***              (86)} & \cellcolor{gray!6}{1872.4***    (86)} & \cellcolor{gray!6}{1715.6***    (86)} & \cellcolor{gray!6}{1727.8***    (86)}\\
-\hspace{1em}Change in Deviance (df) & - & -148***              (5) & -867.7***     (2) & -54***              (8) & -365.3***    (46) & -2177.3***     (1) & -2337***              (1) & -29.7***    (17)\\
+\hspace{1em}\cellcolor{gray!6}{F-statistic (df)} & \textbf{\cellcolor{gray!6}{1039.7***    (25)}} & \textbf{\cellcolor{gray!6}{921.8***    (30)}} & \textbf{\cellcolor{gray!6}{1242***              (32)}} & \textbf{\cellcolor{gray!6}{1016.3***    (40)}} & \textbf{\cellcolor{gray!6}{552***              (86)}} & \textbf{\cellcolor{gray!6}{1872.4***    (86)}} & \textbf{\cellcolor{gray!6}{1715.6***    (86)}} & \textbf{\cellcolor{gray!6}{1727.8***    (86)}}\\
+\hspace{1em}Change in Deviance (df) & - & \textbf{-148***              (5)} & \textbf{-867.7***     (2)} & \textbf{-54***              (8)} & \textbf{-365.3***    (46)} & \textbf{-2177.3***     (1)} & \textbf{-2337***              (1)} & \textbf{-29.7***    (17)}\\
 \hspace{1em}\cellcolor{gray!6}{Sigma (Avg. Error)} & \cellcolor{gray!6}{0.41} & \cellcolor{gray!6}{0.40} & \cellcolor{gray!6}{0.37} & \cellcolor{gray!6}{0.36} & \cellcolor{gray!6}{0.35} & \cellcolor{gray!6}{0.22} & \cellcolor{gray!6}{0.23} & \cellcolor{gray!6}{0.23}\\
-\hspace{1em}R$^{2}$ & \textbf{0.45} & \textbf{0.47} & \textbf{0.56} & \textbf{0.56} & \textbf{0.60} & \textbf{0.84} & \textbf{0.83} & \textbf{0.83}\\
+\hspace{1em}R$^{2}$ & 0.45 & 0.47 & 0.56 & 0.56 & 0.60 & 0.84 & 0.83 & 0.83\\
 \bottomrule
 \insertTableNotes
 \end{longtabu}
@@ -1820,9 +1991,11 @@ achieve that aim.
 \endgroup{}
 
 \renewcommand{\arraystretch}{1}
-
 \end{landscape}
 
+\newpage
+
+\renewcommand\refname{References}
 \bibliography{mybibfile.bib}
 
 

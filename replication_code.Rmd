@@ -1284,7 +1284,7 @@ rm(list = ls())
 
 ```
 
-## 1.6 Indices
+## 1.4 Indices
 
 ### Function
 
@@ -2116,6 +2116,8 @@ test %>%
 
 ```
 
+
+
 # 3. Models
 
 ## Format Dataset
@@ -2870,7 +2872,7 @@ get_ktable = function(tableno, multiplier = 1){
     switch_order()
   
   get_bold = function(data, column){
-    unlist(tab[1:23,column]) %>% str_detect("[*]+") %>% c(., rep(FALSE, 6)) %>%
+    unlist(tab[1:30,column]) %>% str_detect("[*]+") %>% c(., rep(FALSE, 6)) %>%
       return()
   }
   
@@ -2882,13 +2884,15 @@ get_ktable = function(tableno, multiplier = 1){
       nm = paste0("Model ", (1:8)+(multiplier-1)*8) %>%
         c(" ", .))
   
+  id = str_extract(tableno, "tab:.*") %>% str_remove("[}]")
+  
   tab %>%
     kbl(format = "latex", booktabs = TRUE, longtable = TRUE, linesep = "\\addlinespace",
         # You can write LaTEX in the caption, as long as you use \\, not \
-        caption = paste(tableno, ": \\textbf{OLS Models of ", outcome, " Regimes.}
-        \\newline \\normalsize
+        caption = paste0(tableno, ": ", "\\label{", id, "}{", "\\textbf{OLS Models of ", outcome, " Regimes.}", "} ",
+        "\\newline \\normalsize 
         \\textit{Dependent Variable}: ", outcome, " Regime Index (Z-score). 
-        \\newline \\normalsize
+        \\newline \\normalsize 
         \\textit{Unit of Observation}: ", mygof$nobs %>% max(), " Japanese municipality-years (2000-2018), with annual fixed effects.", sep = "")) %>%
     kable_styling(latex_options = c("striped", "hold_position"), full_width = TRUE, font_size = 10) %>%
     column_spec(column = 1, width = "6cm") %>%
@@ -2945,102 +2949,222 @@ get_ktable = function(tableno, multiplier = 1){
 save(mycoefnames, mycolumns, get_ktable, file = "table/captions.RData")
 ```
 
-## Table
+# 4. Prepare Outputs
 
-```{r, eval = FALSE}
-# OLD
-load("table/table_soc.RData")
-load("table/captions.RData")
+## 4.1 Table A1: Descriptives
 
-texreg::htmlreg(
-  file = "viz/table_soc.html", l = mytex, 
-  custom.note = mynote, caption.above = TRUE, include.adjr = FALSE,
-  single.row = TRUE, bold = 0.10, stars = c(0.001, 0.01, 0.05, 0.10),
-  custom.model.names = mycolumns, custom.gof.rows = goflist,
-  custom.coef.map = mycoefnames, groups = mygroups,
-  caption = paste("<b>OLS Models of ", outcome, " Regimes</b>:
-  <br><i>Dependent Variable</b>: ", outcome, " Regime Index (Z-score)
-  <br><i>Unit of Observation</i>: Japanese municipality governments over time (2000-2018), with annual fixed effects.", sep = ""))
+```{r, echo = FALSE, message=FALSE, warning = FALSE, eval = FALSE}
+logit = function(x){log(x / (1 - x)) %>% return()}
+
+read_rds("raw_data/dataset.rds") %>%
+  select(-year,-muni_code, -pref) %>%
+  pivot_longer(cols = -c(), names_to = "variable", values_to = "value") %>%
+  filter(variable != "social_capital") %>%
+  filter(variable != "tsunami") %>%
+  mutate(term = variable %>% recode_factor(
+    "regime_soc" = "Social Welfare Regime",
+    "regime_mid" = "Middle Class Regime",
+    "regime_dev" = "Developmental Regime",
+    "pop" = "Population",
+    "inhabitable_area" = "Inhabitable Area (ha)",
+    "age_elder" = "% Over Age 65",
+    "income" = "Income per capita<sup>1</sup>",
+    "rev" = "Revenue per capita<sup>1</sup>",
+    "rev_external" = "% National & Prefectural Funding",
+    "rev_to_exp" = "Real Term Budget Balance (+/-)",
+    "deaths" = "Disaster Deaths<sup>2</sup>", 
+    "damages" = "Disaster Damage<sup>2</sup>", 
+    "tsunami" = "Hit by 2011 tsunami (1/0)",
+    "dis_restoration" = "Disaster Recovery Spending Rate<sup>1</sup>",
+    "dis_relief" = "Disaster Relief Spending Rate<sup>1</sup>",
+    "LDP_Komeito_house" = "% LDP Coalition Votes: Lower House",
+    "LDP_Komeito_pref" = "% LDP Coalition Votes: Prefecture",
+    "bonding" = "Bonding Social Capital",
+    "bridging" = "Bridging Social Capital",
+    "linking" = "Linking Social Capital",
+    "college" = "% Some College",
+    "unemployed" = "% Unemployed",
+    "migration" = "Total Migration per capita"),
+    transformation = variable %>% recode_factor(
+      "regime_soc" = "x",
+      "regime_dev" = "x",
+      "regime_mid" = "x",
+      "pop" = "x<sup>1/10</sup>",
+      "inhabitable_area" = "log(x)",
+      "age_elder" = "logit(x)",
+      "income" = "log(x)",
+      "rev" = "sqrt(x)",
+      "rev_external" = "logit(x)",
+      "rev_to_exp" = "x",
+      "deaths" = "x<sup>1/10</sup>", 
+      "damages" = "x<sup>1/10</sup>", 
+      "tsunami" = "x",
+      "dis_restoration" = "x<sup>1/10</sup>",
+      "dis_relief" = "x<sup>1/10</sup>",
+      "LDP_Komeito_house" = "logit(x + 0.01)",
+      "LDP_Komeito_pref" = "logit(x + 0.01)",
+      "bonding" = "logit(x)",
+      "bridging" = "quartiles(x)",
+      "linking" = "logit(x)",
+      "college" = "logit(x)",
+      "unemployed" = "logit(x)",
+      "migration" = "log(x)")) %>%
+  group_by(variable) %>%
+  mutate(scaled = scales::rescale(value, to = c(0, 1))) %>%
+  group_by(variable) %>%
+  mutate(trans = case_when(
+    variable == "pop" ~ value^0.1,
+    variable == "inhabitable_area" ~ log(value),
+    variable == "income" ~ log(value),
+    variable == "age_elder" ~ logit(value),
+    variable == "rev" ~ sqrt(value),
+    variable == "rev_external" ~ logit(value),
+    variable == "deaths" ~ value^0.1,
+    variable == "damages" ~ value^0.1,
+    variable == "dis_restoration" ~ value^0.1,
+    variable == "dis_relief" ~ value^0.1,
+    variable == "LDP_Komeito_house" ~ logit(value + 0.01),
+    variable == "LDP_Komeito_pref" ~ logit(value + 0.01),
+    variable == "bonding" ~ logit(value),
+    variable == "bridging" ~ ntile(value, 4) %>% as.numeric(),
+    variable == "linking" ~ logit(value),
+    variable == "college" ~ logit(value),
+    variable == "unemployed" ~ logit(value),
+    variable == "migration" ~ log(value),
+    TRUE ~ value)) %>%
+  mutate(trans = scales::rescale(trans, to = c(0, 1))) %>%
+  ungroup() %>%
+  saveRDS("raw_data/datalist.rds")
+
 ```
-```{r, eval = FALSE}
-# OLD
 
-load("table/table_dev.RData")
-load("table/captions.RData")
+```{r tablea1, message=FALSE, warning = FALSE, echo = FALSE, results='asis', cache = TRUE, eval = FALSE}
 
-texreg::htmlreg(
-  file = "viz/table_dev.html", l = mytex, 
-  custom.note = mynote, caption.above = TRUE, include.adjr = FALSE,
-  single.row = TRUE, bold = 0.10, stars = c(0.001, 0.01, 0.05, 0.10),
-  custom.model.names = mycolumns, custom.gof.rows = goflist,
-  custom.coef.map = mycoefnames, groups = mygroups,
-  caption = paste("<b>OLS Models of ", outcome, " Regimes</b>:
-  <br><i>Dependent Variable</b>: ", outcome, " Regime Index (Z-score)
-  <br><i>Unit of Observation</i>: Japanese municipality governments over time (2000-2018), with annual fixed effects.", sep = ""))
+# myvalue <- read_rds("raw_data/datalist.rds") %>%
+#   with(split(value, term))
+
+.scaled <- read_rds("raw_data/datalist.rds") %>%
+  # Truncate the zeros for our disaster variables,
+  # to better show the value added of the transformation.
+  mutate(identifier = case_when(
+    variable %in% c("deaths", "damages", "dis_restoration", "dis_relief") &
+      value == 0 ~ 1,   TRUE ~ 0)) %>%
+  filter(identifier == 0) %>%
+  with(split(scaled, term))
+
+.trans <- read_rds("raw_data/datalist.rds") %>%
+  # Truncate the zeros for our disaster variables,
+  # to better show the value added of the transformation.
+  mutate(identifier = case_when(
+    variable %in% c("deaths", "damages", "dis_restoration", "dis_relief") &
+      value == 0 ~ 1,   TRUE ~ 0)) %>%
+  filter(identifier == 0) %>%
+  filter(!is.infinite(trans)) %>%
+  with(split(trans, term))
+
+.n <- read_rds("raw_data/dataset.rds") %>% nrow()
+
+data <- read_rds("raw_data/datalist.rds") %>%
+  group_by(`Variable` = term,variable) %>%
+  summarize(
+    Mean = mean(value, na.rm = TRUE) %>% round(2),
+    `SD` = sd(value,na.rm = TRUE) %>% round(2),
+    Min = min(value, na.rm = TRUE) %>% round(2),
+    Median = median(value,na.rm = TRUE) %>% round(2),
+    Max = max(value, na.rm = TRUE) %>% round(2),
+    N = sum(!is.na(value), na.rm = TRUE),
+    `% Missing` = round(sum(is.na(value),na.rm= TRUE) * 100 / n(), 1),
+    `Distribution<sup>3</sup>` = "",
+    `Transformed<sup>3</sup>` = "",
+    Transformation = unique(transformation)) %>%
+  ungroup() %>%
+  mutate_at(vars(`Mean`:Max), 
+            list(~if_else(variable == "pop", 
+                          true = round(., 0) %>% as.character(), 
+                          false = as.character(.)))) %>%
+  select(-variable)
+
+
+viz = function(data, .n, .scaled, .trans){
+  require(knitr)
+  require(kableExtra)
+  require(dplyr)
+  data %>%
+  kbl(format = "latex", booktabs = TRUE, longtable = TRUE,
+   caption = paste0(
+        "\\textbf{Table \\ref{tab:tablea1}: \\label{tab:tablea1}{Descriptive Statistics}} \\newline \\normalsize ",
+        paste0(.n, " Japanese city-years (2000-2018)"))) %>%
+      kable_styling(latex_options = c("striped", "hold_position"), full_width = FALSE, font_size = 9) %>%
+    column_spec(column = 1, width = "4cm") %>%
+      # #column_spec(2, bold = TRUE, width = "1.6cm") %>%
+    column_spec(column = 9, image = spec_hist(.scaled)) %>%
+    column_spec(column = 10, image = spec_hist(.trans)) %>%
+    pack_rows("\nUrban Regime Indices", 1, 3, hline_before = TRUE, latex_gap_space = "0.25cm") %>%
+    pack_rows("\nDemographics", 4, 7, hline_before = TRUE, latex_gap_space = "0.25cm") %>%
+    pack_rows("\nRevenue", 8, 10, hline_before = TRUE, latex_gap_space = "0.25cm") %>%
+    pack_rows("\nDisaster Conditions", 11, 12, hline_before = TRUE, latex_gap_space = "0.25cm") %>%
+    pack_rows("\nDisaster Spending", 13, 14, hline_before = TRUE, latex_gap_space = "0.25cm") %>%
+    pack_rows("\nPolitical Parties", 15, 16, hline_before = TRUE, latex_gap_space = "0.25cm") %>%
+    pack_rows("\nCollective Action", 17, 19, hline_before = TRUE, latex_gap_space = "0.25cm") %>%
+    pack_rows("\nExtra Controls", 20, 21, hline_before = TRUE, latex_gap_space = "0.25cm") %>%
+    add_header_above(header = c(" ", "Statistics" = 5, "Observations" = 2)) %>%
+    footnote(
+      number = c(
+        "Spending measured in 1,000s of yen.",
+        "Disaster deaths and damages (# of buildings damaged) measured per 100,000 persons.",
+        "Zeros from unaffected cities in disaster variable distributions omitted to show nonzero values clearly."),
+      general = c("Categorical Variables include Year<sup>a</sup>, Prefecture<sup>b</sup>, and Tsunami<sup>c</sup>. Models use multiple imputation with 5 imputations to account for missing data."),
+      alphabet = c("Years range from 2000 (n = 1428 cities) to 2018 (n = 1727). Mode is 2010 (n = 1732). In models, baseline year is 2000. Some municipalities consolidated over time, while others split. Dataset omits outliers including Fukushima Exclusion Zone cities from 2011-2018 and Yubari 2000-2018.",
+                   "47 Prefectures. Modal prefecture is Hokkaido, with 178 cities (10%, n = 1,738) and 3,327 city-years (10%, n = 31,493). In models, the baseline prefecture is Hokkaido.",
+                   "Tsunami hit 85 municipalities in 2011; cities labeled 2011-2018 as tsunami-affected (n = 680)."),
+      footnote_order = c("general",  "alphabet", "number"),
+      threeparttable = TRUE
+    ) %>%
+    str_replace_all(c("<sup>" = "$^{",   "</sup>" = "}$",
+                      "R2" = "R$^{2}$", "<b>" = "\textbf{",  "</b>" = "}",
+                      "<sqrt>" = "$sqrt{", "</sqrt>" = "}$")) %>%
+    knitr::asis_output()
+}
+
+list(viz = viz, data = data, .n = .n, .scaled = .scaled, .trans = .trans) %>%
+  saveRDS("table/table_A1.rds")
+
+rm(list = ls())
 ```
 
-```{r, eval = FALSE}
-# OLD
-load("table/table_mid.RData")
-load("table/captions.RData")
-
-texreg::htmlreg(
-  file = "viz/table_soc.html", l = mytex, 
-  custom.note = mynote, caption.above = TRUE, include.adjr = FALSE,
-  single.row = TRUE, bold = 0.10, stars = c(0.001, 0.01, 0.05, 0.10),
-  custom.model.names = mycolumns, custom.gof.rows = goflist,
-  custom.coef.map = mycoefnames, groups = mygroups,
-  caption = paste("<b>OLS Models of ", outcome, " Regimes</b>:
-  <br><i>Dependent Variable</b>: ", outcome, " Regime Index (Z-score)
-  <br><i>Unit of Observation</i>: Japanese municipality governments over time (2000-2018), with annual fixed effects.", sep = ""))
-
-```
-
-
-
-
-## Time
+## 4.2 Table A2
 
 ```{r}
-texreg::htmlreg(
-  l = list(m1,m2,m3,m4,m5,m6,m7, pool(m8)),
-  caption.above = TRUE,
-  caption = "<b>Annual Fixed Effects for OLS Models of Social Welfare Regimes</b>:
-  <br>
-  <i>Dependent Variable</b>: Social Welfare Regime Index (Z-score)
-  <br>
-  <i>Unit of Observation</i>: Japanese municipality governments over time (2000-2018), with annual fixed effects.",
-  single.row = TRUE, bold = 0.10, stars = c(0.001, 0.01, 0.05, 0.10),
-  custom.model.names = c("Model 1<br>Year", "Model 2<br>Basic Controls",
-                         "Model 3<br>Disaster Controls", "Model 4<br>Other Regimes",
-                         "Model 5<br>Collective Action", "Model 6<br>Prefectures<sup>1</sup>",
-                         "Model 7<br>Transformed<sup>2</sup>", "Model 8<br>Multiple Imputation"),
-  custom.gof.rows = list("Max VIF" = myvif),
-  custom.coef.map = list(
-    "year2001" = "2001",
-    "year2002" = "2002",
-    "year2003" = "2003",
-    "year2004" = "2004",
-    "year2005" = "2005",
-    "year2006" = "2006",
-    "year2007" = "2007",
-    "year2008" = "2008",
-    "year2009" = "2009",
-    "year2010" = "2010",
-    "year2011" = "2011",
-    "year2012" = "2012",
-    "year2013" = "2013",
-    "year2014" = "2014",
-    "year2015" = "2015",
-    "year2016" = "2016",
-    "year2017" = "2017",
-    "year2018" = "2018",
-    "(Intercept)" = "Constant"),
-  file = "viz/table_soc_fe.html"
-)
+## Table A2: Models of Social Welfare Regime Scores
+load("table/table_soc.RData")
+load("table/captions.RData")
+get_ktable(tableno = "Table \\ref{tab:tablea2}", multiplier = 1) %>%
+  saveRDS("table/table_A2.rds")
 ```
 
-## GLH
+## 4.3 Table A3
+
+```{r}
+## Table A3: Models of Developmental Regime Scores
+load("table/table_dev.RData")
+load("table/captions.RData")
+get_ktable(tableno = "Table \\ref{tab:tablea3}", multiplier = 2) %>%
+  saveRDS("table/table_A3.rds")
+```
+
+## 4.4 Table A4
+
+```{r}
+load("table/table_mid.RData")
+load("table/captions.RData")
+get_ktable(tableno = "Table \\ref{tab:tablea4}", multiplier = 3) %>%
+  saveRDS("table/table_A4.rds")
+```
+
+
+## 4.5 GLH Table
+
+### GLH Functions (Generalized Linear Hypothesis Tests)
 
 ```{r}
 
@@ -3130,393 +3254,81 @@ rm(list = ls())
 #Torsten Hothorn, Frank Bretz and Peter Westfall (2008), Simultaneous Inference in General Parametric Models. Biometrical Journal, 50(3), 346--363; See vignette("generalsiminf", package = "multcomp").
 ```
 
-## Simulation
-
-```{r, eval = FALSE}
-# Can we install Zelig from the CRAN archive? Let's find out.
-library(devtools)
-# Must install dependencies first
-install.packages(c("AER", "Amelia", "coda", "Formula", "geepack", "MatchIt", "maxLik", "MCMCpack", "survey", "VGAM"))
-install.packages("/cloud/project/raw_data/Zelig_5.1.7.tar.gz", 
-                 repos = NULL, type = "source")
-
-```
+### GLH Table
 
 ```{r}
-library(Zelig)
-
-# Specify covariates to be lagged
-mylags = c("pop", "inhabitable_area", "income", "age_elder",
-           "rev", "rev_external", "rev_to_exp", 
-           "deaths", "damages", "tsunami", "dis_restoration", "dis_relief",
-           "college", "unemployed", "migration", "LDP_Komeito_house", "LDP_Komeito_pref", 
-           "bonding", "bridging", "linking")
-
-m9 <- read_rds("model/model_soc.RData")
-
-m9$analyses[[1]]
-# IF you're doing first differences, you could always...
-# take model imputation 1
-# get multivariate normal distribution for imp 1
-# get first differences for it
-# repeat for model imp 2
-```
-
-### Functions
-
-```{r}
-myconstants = list(
-  "regime_dev" = 0,
-  "regime_soc" = 0,
-  "regime_mid" = 0,
-  "ylag" = 0,
-  # Median
-  "I(pop^0.1)" = 24750^.1,
-  "log(inhabitable_area)" = log(4170),
-  "sqrt(rev)" = sqrt(503.74),
-  "log(income)" = log(1199.19),
-  "log(age_elder/(1 - age_elder))" = log(0.28/(1-0.28)),
-  "log(rev_external/(1 - rev_external))" = log(0.16/(1-0.16)),
-  "rev_to_exp" = 4.7,
-  # Assume not disasterhit
-  "I(deaths^0.1)" = 0^.1,
-  "I(damages^0.1)"= 0^.1,
-  "tsunami" = 0,
-  "I(dis_restoration^0.1)" = 0^.1,
-  "I(dis_relief^0.1)" = 0^.1,
-  # That's totally the median, BUT WHOA,CHECK THIS.
-  "log(college/(1 - college))" = log(0.09/(1 - 0.09)),
-  "log((unemployed + 0.01)/(1 - (unemployed + 0.01)))" = log((0.05 + 0.01) / (1 - (0.05 + 0.01) )),
-  "log(migration)" = log(0.06), 
-  
-  "log((LDP_Komeito_house + 0.01)/(1 - (LDP_Komeito_house + 0.01)))" = log((0.51 + 0.01) / (1 - (0.51 + 0.01) )),
-  "log((LDP_Komeito_pref + 0.01)/(1 - (LDP_Komeito_pref + 0.01)))" = log((0.32 + 0.01) / (1 - (0.32 + 0.01) )),
-  
-  
-  "log(bonding/(1 - bonding))" = log(0.71/(1 - 0.71)),
-  "ntile(bridging, 4)" = 2, # 0.32
-  "log(linking/(1 - linking))" = log(0.25/(1 - 0.25)),
-  
-  "year2001" = 0,
-  "year2002" = 0,
-  "year2003" = 0,
-  "year2004" = 0,
-  "year2005" = 0,
-  "year2006" = 0,
-  "year2007" = 0,
-  "year2008" = 0,
-  "year2009" = 0,
-  "year2010" = 0,
-  "year2011" = 0,
-  "year2012" = 0,
-  "year2013" = 0,
-  "year2014" = 0,
-  "year2015" = 0,
-  "year2016" = 0,
-  "year2017" = 0,
-  "year2018" = 0,
-  
-  
-  "pref01" = 0,
-  "pref02" = 0,
-  "pref03" = 0,
-  "pref04" = 0,
-  "pref05" = 0,
-  "pref06" = 0,
-  "pref07" = 0,
-  "pref08" = 0,
-  "pref09" = 0,
-  "pref10" = 0,
-  "pref11" = 0,
-  "pref12" = 0,
-  "pref13" = 0,
-  "pref14" = 0,
-  "pref15" = 0,
-  "pref16" = 0,
-  "pref17" = 0,
-  "pref18" = 0,
-  "pref19" = 0,
-  "pref20" = 0,
-  "pref21" = 0,
-  "pref22" = 0,
-  "pref23" = 0,
-  "pref24" = 0,
-  "pref25" = 0,
-  "pref26" = 0,
-  "pref27" = 0,
-  "pref28" = 0,
-  "pref29" = 0,
-  "pref30" = 0,
-  "pref31" = 0,
-  "pref32" = 0,
-  "pref33" = 0,
-  "pref34" = 0,
-  "pref35" = 0,
-  "pref36" = 0,
-  "pref37" = 0,
-  "pref38" = 0,
-  "pref39" = 0,
-  "pref40" = 0,
-  "pref41" = 0,
-  "pref42" = 0,
-  "pref43" = 0,
-  "pref44" = 0,
-  "pref45" = 0,
-  "pref46" = 0,
-  "pref47" = 0)
-#m9 <-read_rds("model/model_soc.RData")
-#m9$analyses[[1]]$model$`ntile(bridging, 4)` %>% summary()
-
-# Write a function to get a consistent multivariate normal distribution pertaining to each imputed dataset
-get_dist = function(m){
-  
-  mycoef <- m$coefficients %>%
-    bind_rows() %>%
-    rename(intercept = 1)
-  
-  mydist <- data.frame(
-    id = 1:200,  # Give each row a unique ID
-    MASS::mvrnorm(
-      n = 200, # get 100 simulations per imputation
-      mu = unlist(mycoef), # get vector of our coefficients 
-      Sigma = vcov(m)) # get variance/covariance of variables
-  ) %>%
-    # Rename columns to match mycoef
-    magrittr::set_colnames(value = c("id", names(mycoef)))
-  
-  
-  return(mydist)
-}
+data <- read_rds("raw_data/effects.rds") %>%
+  mutate(type = case_when(
+    type == "Mean Post - Mean Pre" ~ "Post - Pre",
+    type == "Mean(2002:2010)" ~ "Mean Pre",
+    type == "Mean(2011:2018)" ~ "Mean Post", 
+    TRUE ~ type)) %>%
+  pivot_wider(id_cols = c(type), names_from = group, values_from = c(label, estimate, lower, upper)) %>%
+  magrittr::set_colnames(value = names(.) %>% str_replace_all(" ", "_")) %>%
+  mutate(se_Social_Welfare = str_extract(label_Social_Welfare, "[(].+[)]") %>% str_remove_all("[(]|[)]"),
+         se_Developmental = str_extract(label_Developmental, "[(].+[)]") %>% str_remove_all("[(]|[)]"),
+         se_Middle_Class = str_extract(label_Middle_Class, "[(].+[)]") %>% str_remove_all("[(]|[)]")) %>%
+  mutate(label_Social_Welfare = str_remove(label_Social_Welfare, " [(].+[)]"),
+         label_Developmental = str_remove(label_Developmental, " [(].+[)]"),
+         label_Middle_Class = str_remove(label_Middle_Class, " [(].+[)]")) %>%
+  mutate(`95% CI` = "", `95% CI ` = "",`95% CI  ` = "") %>%
+  slice(1:21) 
 
 
-
-get_sim = function(m, xmatrix = NULL, mydist, constants = NULL){
-  
-  require(dplyr)
-  require(moderndive)
-  
-  mycoef <- m$coefficients %>%
-    bind_rows() %>%
-    rename(intercept = 1)
-  
-  
-  get_mode = function(myvector){
-    myvector %>%
-      table() %>% 
-      sort(decreasing = TRUE) %>% 
-      names() %>% 
-      .[1] %>%
-      return()
-  }
-  
-  x <- model.matrix(m)[,-1] %>%
-    as_tibble() %>%
-    # Set our supplied predictor values (like setx() )
-    summarize(
-      # Now, let's set all other values to their means or modes
-      across(where(is.factor), ~get_mode(.x)),
-      across(where(is.character), ~get_mode(.x)),
-      across(where(is.numeric), ~if_else(length(unique(.x)) == 2,
-                                         true = get_mode(.x) %>% as.numeric(),
-                                         false = mean(.x, na.rm = TRUE))))
-  # If you want to set specific constants, do so here.
-  if(!is.null(constants)){
-    # In this case, just to be sure, we're going to set constants,
-    x <- x %>%
-      mutate(constants %>% as_tibble())
-  }
-  
-  # Last, let's choose a value for the independent variable
-  x <- x %>% 
-    mutate(xmatrix %>% as_tibble())
-  
-  sigma <- broom::glance(m)$sigma
-  
-  diysim <- mydist %>% 
-    # Use our simulated coefficients, 
-    # saved in mydist under each variable name
-    pivot_longer(cols = -c(id), names_to = "variable", values_to = "simbeta")  %>%
-    left_join(by = "variable", y = x %>% 
-                pivot_longer(cols = -c(), names_to = "variable", values_to = "fixedx")) %>%
-    # Fill in the intercept with 1
-    mutate(fixedx = if_else(variable == "intercept", 1, fixedx)) %>%
-    # Filter out the precision term, which is used at a different point in the model
-    #filter(variable != "(phi)") %>%
-    # Add together the intercept * 1 + the beta coefficient times each fixed value of x
-    group_by(id) %>%
-    # Multiply each by single value for variables in x
-    # In this case, theta just IS ysim, because there's just a 1-to-1 link function for OLS
-    summarize(ysim = sum(simbeta * fixedx) )
-  
-  diyresults <- diysim %>% 
-    # For each of our 1000 simulated outcomes,
-    # which already accounted for estimation uncertainty,
-    group_by(id) %>%
-    summarize(
-      # Record the value(s) we used to calculate everything (9%) 
-      xmatrix %>% as_tibble(),
-      # Calculate the predicted value by drawing 1 value
-      # from our normal distribution
-      # to represent fundamental uncertainty
-      pv = rnorm(n = 1, mean = ysim, sd = sigma),
-      # Calculate the expected value by drawing 1000 values for that imputation
-      # from our normal distribution
-      # and average them to eliminate fundamental uncertainty
-      ev = rnorm(n = 1000, mean = ysim, sd = sigma) %>% mean()) %>%
-    ungroup() %>%
-    magrittr::set_colnames(value = c("id", names(xmatrix), "pv", "ev"))
-  
-  return(diyresults)
-  
-}
-
-
-# Let's write a second wrapped function to simulate many models at once.
-get_simrange = function(m, xmatrix, constants = myconstants){ 
-  # Using 1 consistent multivariate normal distribution
-  mydist <- get_dist(m)
-  
-  # Please return 1000 simulations for each of these values
-  out <- xmatrix %>% as_tibble() %>%
-    mutate(row = 1:n()) %>%
-    split(.$row) %>%
-    map_dfr(~get_sim(m = m, xmatrix = select(., -row) %>% as.list(), 
-                     mydist = mydist, constants = constants), 
-            .id = "row")
-  print("simulated")
-  return(out)
-}
-
-get_simrange_mi = function(mymi, xmatrix, constants = myconstants){
-  mymi$analyses %>%
-    map_dfr(~get_simrange(m = .,
-                          xmatrix = xmatrix, 
-                          constants = constants), .id = "imp") %>%
-    mutate(id = id + (as.numeric(imp)-1)*200) %>%
-    return()
-}
-
-
-
-
-get_bands = function(data, var){
+viz = function(data){
   data %>%
-    rename(qi = var) %>%
-    summarize(estimate = quantile(qi, probs = 0.50),
-              lower_90 = quantile(qi, probs = 0.05),
-              lower_95 = quantile(qi, probs = 0.025),
-              lower_99 = quantile(qi, probs = 0.005),
-              lower_999 = quantile(qi, probs = 0.0005),
-              upper_90 = quantile(qi, probs = 0.950),
-              upper_95 = quantile(qi, probs = 0.975),
-              upper_99 = quantile(qi, probs = 0.995),
-              upper_999 = quantile(qi, probs = 0.9995)) %>%
-    pivot_longer(cols = c(lower_90:upper_999), names_to = "ci", values_to = "value") %>%
-    mutate(level = str_remove(ci, "lower_|upper_") %>% as.numeric(),
-           ci = str_extract(ci, "lower|upper")) %>%
-    pivot_wider(id_cols = c(estimate, level), names_from = ci, values_from = value) %>%
-    mutate(level = level %>% dplyr::recode_factor(
-      "90" = "90%", "95" = "95%", "99" = "99%", "999" = "99.9%")) %>%
+    select(`Year` = type, 
+           `Estimate` = label_Social_Welfare, `SE` = se_Social_Welfare, `95% CI`,
+           `Estimate ` = `label_Developmental`, `SE ` = se_Developmental, `95% CI `,
+           `Estimate  ` = label_Middle_Class, `SE  ` = se_Middle_Class, `95% CI  `) %>%
+    kbl(format = "latex", booktabs = TRUE, longtable = TRUE, linesep = "\\addlinespace",
+        # You can write LaTEX in the caption, as long as you use \\, not \
+        caption = paste("\\textbf{Table \\ref{tab:linearhyp}", ": Linear Hypothesis Tests of Temporal Effects}", sep = "")) %>%
+    kable_styling(latex_options = c("striped", "hold_position"), full_width = TRUE, font_size = 8) %>%
+    column_spec(column = 1, width = "2.25cm") %>%
+    # Social Welfare
+    column_spec(column = 2, width = "1.35cm") %>%
+    column_spec(column = 3, width = "0.5cm") %>%
+    column_spec(column = 4,
+                image = spec_pointrange(
+      x = data$estimate_Social_Welfare, xmin = data$lower_Social_Welfare, xmax = data$upper_Social_Welfare, vline = 0)) %>%
+    # Developmental
+    column_spec(column = 5, width = "1.35cm") %>%
+    column_spec(column = 6, width = "0.5cm") %>%
+    column_spec(column = 7, 
+                image = spec_pointrange(
+      x = data$estimate_Developmental, xmin = data$lower_Developmental, xmax = data$upper_Developmental, vline = 0)) %>%
+    # Middle Class
+    column_spec(column = 8, width = "1.35cm") %>%
+    column_spec(column = 9, width = "0.5cm") %>%
+    column_spec(column = 10, 
+                image = spec_pointrange(
+      x = data$estimate_Middle_Class, xmin = data$lower_Middle_Class, xmax = data$upper_Middle_Class, vline = 0)) %>%
+    pack_rows("\nPre-Disaster", 1, 10) %>% 
+    row_spec(row = 10, bold = TRUE, background = "#D3D3D3") %>%
+    pack_rows("\nPost-Disaster", 11, 19, hline_before = TRUE, latex_gap_space = "0.25cm") %>%
+    row_spec(row = 19, bold = TRUE, background = "#D3D3D3") %>%
+    pack_rows("\nAverage Treatment Effect", 20, 20, hline_before = TRUE, latex_gap_space = "0.25cm") %>%
+    row_spec(row = 20, bold = TRUE, background = "#D3D3D3") %>%
+    pack_rows("\nNet Gain over Time", 21, 21, hline_before = TRUE, latex_gap_space = "0.25cm") %>%
+    row_spec(row = 21, bold = TRUE, background = "#D3D3D3") %>%
+    add_header_above(c(" ", "Social Welfare\nRegime" = 3, "Developmental\nRegime" = 3, "Middle Class\nRegime" = 3)) %>%
+    footnote(
+      general = c("Statistical Significance: *** p < 0.001, ** p < 0.01, * p < 0.05, . p < 0.10. All p-values and asterisks reflect two-tailed hypothesis tests. Based on annual fixed effects from Models 8, 16, & 24 in Tables A2, A3, & A4, respectively."),
+      threeparttable = TRUE) %>%
+    str_replace_all(c("<sup>" = "$^{",   "</sup>" = "}$",
+                      "R2" = "R$^{2}$", "<b>" = "\textbf{",  "</b>" = "}",
+                      "<sqrt>" = "$sqrt{", "</sqrt>" = "}$")) %>%
+    knitr::asis_output()  %>%
     return()
 }
 
-
-get_fd = function(data, setx1, setx){
-  
-  data %>%
-    select(imp, id, x = row, ev) %>%
-    filter(x %in% c(setx, setx1)) %>%
-    mutate(x = case_when(
-      x == setx ~ "0", 
-      x == setx1 ~ "1")) %>% 
-    pivot_wider(id_cols = c(id, imp), names_from = x, names_prefix = "x", values_from = ev) %>%
-    mutate(fd = x1 - x0) %>%
-    return()
-}
-
-get_stats = function(data){
-  data %>%
-    #group_by(variable) %>%
-    summarize(estimate = quantile(fd, probs = 0.50),
-              lower_ci = quantile(fd, probs = 0.025),
-              upper_ci = quantile(fd, probs = 0.975),
-              # Get the false positive rate
-              p_value = 1 - if_else(estimate > 0, sum(fd > 0), sum(fd < 0)) / n(),
-              stars = gtools::stars.pval(p_value),
-              estimate_label = round(estimate, 3),
-              estimate_label = if_else(estimate > 0, 
-                                       true = paste("+", estimate_label, sep = ""), 
-                                       false = paste(estimate_label)),
-              diff_label = paste(estimate_label, stars, sep = "")) %>%
-    return()
-}
-
-save(get_simrange_mi, get_simrange, get_sim, get_dist, myconstants,
-     get_fd, get_bands,get_stats,
-     file = "table/simulator.RData")
+list(viz = viz, tab = data) %>%
+  saveRDS("table/table_glh.rds")
+rm(list = ls())
 ```
 
-
-```{r}
-load("table/simulator.RData")
-m9 <- read_rds("model/model_soc.RData")
-
-mymatrix <- data.frame(year = as.character(2001:2018)) %>%
-  model.matrix(~year - 1, .) %>% as_tibble() %>% 
-  mutate(pref21 = 1) %>%
-  as.list()
-
-out <- get_simrange_mi(m9, xmatrix = mymatrix, constants = myconstants) 
-saveRDS("viz/sim_year.rds")
-```
-
-```{r}
-out <- read_rds("viz/sim_year.rds") %>%
-  # relies on row variable
-  mutate(row = as.numeric(row) + 2000)
-
-effects <- bind_rows(
-  out %>% get_fd(setx1 = 2002, setx = 2001),
-  out %>% get_fd(setx1 = 2003, setx = 2001),
-  out %>% get_fd(setx1 = 2004, setx = 2001),
-  out %>% get_fd(setx1 = 2005, setx = 2001),
-  out %>% get_fd(setx1 = 2006, setx = 2001),
-  out %>% get_fd(setx1 = 2007, setx = 2001),
-  out %>% get_fd(setx1 = 2008, setx = 2001),
-  out %>% get_fd(setx1 = 2009, setx = 2001),
-  out %>% get_fd(setx1 = 2010, setx = 2001),
-  out %>% get_fd(setx1 = 2011, setx = 2001),
-  out %>% get_fd(setx1 = 2012, setx = 2001),
-  out %>% get_fd(setx1 = 2013, setx = 2001),
-  out %>% get_fd(setx1 = 2014, setx = 2001),
-  out %>% get_fd(setx1 = 2015, setx = 2001),
-  out %>% get_fd(setx1 = 2016, setx = 2001),
-  out %>% get_fd(setx1 = 2017, setx = 2001),
-  out %>% get_fd(setx1 = 2018, setx = 2001), 
-  .id = "group") %>%
-  mutate(group = paste(as.numeric(group) + 2001, " - 2001", sep = ""))
-
-# Get first differences with p-values results
-effects %>% 
-  group_by(group) %>%
-  get_stats()
-
-# Get confidence intervals
-effects %>%
-  split(.$group) %>%
-  map_dfr(~get_bands(., var = "fd"), .id = "group")
-
-effects %>%
-  group_by() %>%
-  get_stats() %>%
-  head()
-mutate(x = str_remove(group, " - 2001") %>% as.numeric()) %>%
-  ggplot(mapping = aes(x = x, y = estimate, ymin = lower, ymax = upper, fill = level)) +
-  geom_crossbar(data = . %>% filter(level == "95%")) +
-  geom_ribbon(data = . %>% filter(level == "95%"), fill = "red", alpha = 0.5)
-```
-
-# 4. Key Cities
+## 4.6 Table Key Cities
 
 ```{r, eval = FALSE, include = FALSE}
 dat <- read_rds("raw_data/dataset.rds") %>%
@@ -3670,8 +3482,237 @@ tab <- mysum %>%
 rm(list= ls())
 ```
 
+```{r}
+require(knitr)
+require(dplyr)
+require(readr)
+require(kableExtra)
+require(purrr)
+
+tab <- read_rds("raw_data/table_cases.rds") %>%
+  mutate(Literature = Municipality %>% recode_factor(
+    "Mitaka" = "Steiner 1957; Fukushima & Yamaguchi 1997; Ohashi & Phelps 2021",
+    "Fukushima" = "Otsuki et al. 2016; Abeysinghe et al. 2022",
+    "Ishinomaki" = "Dimmer & Lindenberg 2014; Matthews 2017; Ji & Imai 2022",
+    "Kobe" = "Nunokawa 2007; Funck 2007; Yasui 2007; Edgington 2010; Aldrich 2012; Maly et al. 2012", 
+    "Sendai" = "Morris 2012; Tsuji 2017",
+    "Muroran" = "Edgington 2013", 
+    .default = "")) %>%
+  filter(Municipality %in% c("Mitaka", "Fukushima", "Ishinomaki", "Kobe", "Sendai", "Muroran"))
+
+viz = function(data){
+  data %>%
+    kbl(format = "latex", booktabs = TRUE, longtable = TRUE, linesep = "\\addlinespace",
+        # You can write LaTEX in the caption, as long as you use \\, not \
+        caption = "Table \\ref{tab:keycities}: \\label{tab:keycities}{Regime Change in Past Case Studies}") %>%
+    kable_styling(latex_options = c("striped", "hold_position"), full_width = TRUE, font_size = 9) %>%
+    add_header_above(header = c(" " = 3, "Regime in 2000" = 4, "Regime in 2018" = 4)) %>%
+    column_spec(column = 1, width = "1.5cm") %>%
+    column_spec(column = 2, width = "1.5cm") %>%
+    column_spec(column = 3, width = "2.5cm") %>%
+    # 2020
+    column_spec(column = 4, width = "1.7cm") %>%
+    column_spec(column = 5, width = "0.3cm") %>%
+    column_spec(column = 6, width = "0.3cm") %>%
+    column_spec(column = 7, width = "0.3cm") %>%
+    # 2018
+    column_spec(column = 8, width = "1.7cm") %>%
+    column_spec(column = 9, width = "0.3cm") %>%
+    column_spec(column = 10, width = "0.3cm") %>%
+    column_spec(column = 11, width = "0.3cm") %>%
+    footnote(number = c("SW = Social Welfare. MC = Middle Class. D = Developental. C = Caretaker.",
+                        "Numbers rank city-year as a percentile (0-100) compared to all other city-years."),
+             threeparttable = TRUE) %>%
+    #str_replace_all(c("<sup>" = "$^{",   "</sup>" = "}$", "R2" = "R$^{2}$", 
+    #                  "<b>" = "\textbf{", "</b>" = "}", "<sqrt>" = "$sqrt{", "</sqrt>" = "}$")) %>%
+    knitr::asis_output() %>%
+    return()
+}
+
+list(viz = viz, tab = tab) %>% 
+  saveRDS("table/table_cities.rds")
+rm(list = ls())
+```
+
+## 4.6 Table 1: Regime Lit
+
+```{r}
+tab <- bind_rows(
+  # Caretaker
+  tibble(
+    Regime = c("Caretaker"),
+    Definition = c("maintains status quo, traditional municipal service provision"),
+    Examples = c("New Orleans (Whelan et al. 1994)"),
+    Related = c("Maintenance/Status Quo (Stone 1989)
+                 \n
+                 Bystander (Portz 1990)
+                 \n
+                 Austerity (Davies & Blanco 2017)"),
+    `Japanese Examples` = " - "),
+  
+  # Developmental
+  tibble(
+    Regime = c("Developmental"),
+    Definition = c("promotes economic growth while preventing economic decline"),
+    Examples = c("Atlanta (Stone 1989)"),
+    Related = c("Entrepreneurial Regimes (Euchner 1993)
+                 \n
+                 Public-Private Partnerships (Davies 2017)
+                 \n
+                 Player (Portz 1990)
+                 \n
+                 Castle Towns (Funabashi 2006; Hill & Fujita 1993)"),
+    `Japanese Examples` = "Tokyo (Saito 2003; Tsukamoto 2012; Sorensen et al. 2010)
+    \n
+    Kitakyushu (Yeum 2002)
+    \n
+    Minamata (Funabashi 2006)
+    \n
+    Kobe Post-1995 (Edgington 2010)"),
+  
+  # Middle Class
+  tibble(
+    Regime = c("Middle-Class"),
+    Definition = c("promotes egalitarian policies in education, health, environment, and city planning"),
+    Examples = c("Santa Cruz (Gendron & Domhoff 2018)"),
+    Related = c("Progressive (Stone 1989)
+                \n
+                'Anti-Regime' (DeLeon 1992)"),
+    `Japanese Examples` = "Mitaka (Takao 2006)
+                           \n
+                           Kyoto (Sugiyama & Takeuchi 2008)
+                           \n
+                           Iida (Fraser et al. 2020)"),
+  # Social Welfare
+  tibble(
+    Regime = c("Social Welfare"),
+    Definition = c("improves conditions for working class, expands social safety net"),
+    Examples = c("Early Toronto (Mahon 2007)"),
+    Related = c("Opportunist (Stone 1989)
+                 \n
+                 Activist (Clark 2001)
+                 \n
+                 Stewardship Regimes (Nissen 1995)"),
+    `Japanese Examples` = "Yokohama (Hayashi 2013)
+                           \nMikura Ward, Kobe (Yasui 2007)")
+)
+
+
+require(knitr)
+require(kableExtra)
+
+viz = function(data){
+  kbl(data, booktabs=TRUE,label = NA,
+      caption = "\\textbf{Table \\ref{tab:regimelit}: \\label{tab:regimelit}{Typology of Urban Regimes}}") %>%
+    kable_styling(full_width = TRUE, latex_options = "striped") %>%
+    column_spec(column = 1, width = "2cm")  
+}
+
+list(viz = viz, tab = tab) %>%
+  saveRDS(file = "table/table_lit.rds")
+
+rm(list = ls())
+```
+
+## 4.7 Table 2: Regime Class!
+
+```{r}
+tab <- bind_rows(
+  read_rds("raw_data/datcat.rds") %>% 
+    group_by(type) %>%
+    summarize(percent = round(n() / nrow(.)*100, 1),
+              threshold = "Median"),
+  read_rds("raw_data/datcat2.rds") %>% 
+    group_by(type) %>%
+    summarize(percent = round(n() / nrow(.)*100, 1),
+              threshold = "Mean")) %>%
+  pivot_wider(id_cols = c(type), names_from = threshold, values_from = percent) %>%
+  mutate(abbr = str_extract(type, "[(].+[)]") %>% str_remove_all("[(]|[)]")) %>%
+  left_join(by = "abbr", y = list(
+    name = c("Social Welfare", "Middle Class", "Developmental", "Caretaker", 
+             "Social Welfare Hybrid (1)", "Social Welfare Hybrid (2)", "Hybrid", "Middle Class Hybrid"),
+    abbr = c("SW", "MC", "D", "C",  "SW-MC", "SW-D", "SW-MC-D", "MC-D"),
+    soc =  c("High",  "Low",  "Low", "Low",  "High",     "High",    "High",       "Low"),
+    mid =  c("Low",  "High",  "High", "Low",  "High",     "Low",    "High",       "High"),
+    dev =  c("Low",  "Low",  "Low", "Low",  "Low",     "Low",    "High",       "High"),
+    order = 1:8) %>% as_tibble()) %>%
+  arrange(order) %>%
+  select(Name = name, `Code` = abbr, `Social Welfare` = soc, `Middle Class` = mid, `Developmental` = dev, 
+         Median, Mean)
+
+viz = function(data){
+  data %>%
+    kbl(format = "latex", booktabs = TRUE, longtable = TRUE, linesep = "\\addlinespace",escape = F,
+        # You can write LaTEX in the caption, as long as you use \\, not \
+        caption = "\\textbf{Table \\ref{tab:regimeclass}: \\label{tab:regimeclass}{Regime Classifications}}") %>%
+    kable_styling(latex_options = c("hold_position"), full_width = FALSE, font_size = 9) %>%
+    # Note: full_width must = FALSE when using background and color in kableExtra latex
+    # striped must also not be a latex_option
+    add_header_above(c(" " = 2, "Index Scores<sup>1</sup>" = 3, "Percentage of Cases\nby Threshold<sup>2</sup>" = 2)) %>%
+    column_spec(
+      column = 1, width = "3.9cm", 
+      color = c("black", "white", "white", "black", "white", "white", "white", "white"),
+      background = c("#ffb000", "#648FFF","#696880", "#ADADC9", "#DC267F", "#ff683b","#5542AD","#001FA2")) %>% 
+    column_spec(2, width = "1.75cm") %>%
+    column_spec(3, width = "1.5cm", background = if_else(data$`Social Welfare` == "High", "#C5C6D0", "white")) %>%
+    column_spec(4, width = "1.5cm", background = if_else(data$`Middle Class` == "High", "#C5C6D0", "white")) %>%
+    column_spec(5, width = "1.75cm", background = if_else(data$`Developmental` == "High", "#C5C6D0", "white")) %>%
+    column_spec(6, width = "1.25cm") %>%
+    column_spec(7, width = "1.25cm") %>%
+    pack_rows("\nClassic Regimes", 1, 4, hline_before = FALSE, latex_gap_space = "0.10cm") %>%
+    pack_rows("\nHybrid  Regimes", 5, 8, hline_before = TRUE, latex_gap_space = "0.25cm") %>%
+    footnote(
+      number = c("City-years classified based on three regime scores being above (High) or below (Low) threshold.",
+                 "% of cases, when using median as threshold; robustness check uses mean as threshold."),
+      threeparttable = TRUE)  %>%
+    str_replace_all(c("<sup>" = "$^{",   "</sup>" = "}$")) %>%
+    knitr::asis_output()
+}
+
+list(viz = viz, tab = tab) %>%
+  saveRDS("table/table_regimeclass.rds")
+
+tab %>%
+  with(`Median` %>% `names<-`(Code)) %>%
+  saveRDS("table/nums.rds")
+
+rm(list = ls())
+```
+
+## 4.8 Text Correlations
+
+```{r}
+soc <- read_rds("raw_data/correlations.rds") %>%
+  filter(regime == "regime_soc") %>%
+  with(label %>% `names<-`(covariate))
+
+mid <- read_rds("raw_data/correlations.rds") %>%
+  filter(regime == "regime_mid") %>%
+  with(label %>% `names<-`(covariate))
+
+dev <- read_rds("raw_data/correlations.rds") %>%
+  filter(regime == "regime_dev") %>%
+  with(label %>% `names<-`(covariate))
+
+save(soc, mid, dev, file = "table/text_correlations.rds")
+```
+
+
+## 4.9 Text Percentages
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE, eval = FALSE}
+r <- read_rds("raw_data/map_regions.rds")
+r2000 <- r %>% filter(year == 2000)
+r2010 <- r %>% filter(year == 2010)
+r2018 <- r %>% filter(year == 2018)
+rm(list = ls())
+# Pairs with paragraph that starts with: 
+
+#"The spread of social welfare regimes is especially evident..."
+```
 
 # Other
+
 ### Comparisons
 
 ```{r, eval = FALSE}
@@ -3764,7 +3805,7 @@ rm(list= ls())
 
 
 
-## 1.4 Tidy Dataset
+## Tidy Dataset
 
 ```{r}
 # Finally, let's convert the indices and indicators into a tidy dataset
