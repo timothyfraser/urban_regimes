@@ -1,0 +1,179 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Background Data
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Copyright 2019-2020 Elsevier Ltd
+\documentclass[a4paper,fleqn]{cas-dc}
+
+\usepackage[authoryear,longnamesfirst]{natbib}
+
+\usepackage[dvipsnames]{xcolor}
+\definecolor{myblue}{HTML}{648FFF}
+\definecolor{myred}{HTML}{DC267F}
+\definecolor{mypurple}{HTML}{785EF0}
+\definecolor{myyellow}{HTML}{FFB000}
+
+
+
+%%%Author definitions
+\def\tsc#1{\csdef{#1}{\textsc{\lowercase{#1}}\xspace}}
+\tsc{WGM}
+\tsc{QE}
+\tsc{EP}
+\tsc{PMS}
+\tsc{BEC}
+\tsc{DE}
+%%%
+
+
+\begin{document}
+\let\WriteBookmarks\relax
+\def\floatpagepagefraction{1}
+\def\textpagefraction{.001}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Header
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Short title
+\shorttitle{Validating New Measures for Mapping Social Infrastructure}
+
+% Short author
+\shortauthors{T Fraser et~al.}
+
+% Main title of the paper
+\title [mode = title]{Trust but Verify: Validating New Measures for Mapping Social Infrastructure in Cities}                      
+
+% First author
+\author[1]{ Timothy Fraser}[
+    type=author,
+    bioid=1,
+    orcid=0000-0002-4509-0244]
+\cormark[1] % Corresponding author indication
+\ead{timothy.fraser.1@gmail.com} % Email id of the first author
+\credit{wrote and edited manuscript, coordinated and conducted data collection, and analyzed the data} %  Credit authorship
+
+% Second author
+\author[2]{ Napuck Cherdchaiyapong}[]
+\ead{cherdchaiyapong.n@northeastern.edu}
+\credit{conducted data collection}
+
+% Third author
+\author[2]{ Winta Tekle}[]
+\ead{tekle.w@northeastern.edu}
+\credit{conducted data collection}
+
+
+% Fourth author
+\author[2]{ Erin Thomas}[]
+\ead{thomas.eri@northeastern.edu}
+\credit{conducted data collection}
+
+% Fifth author
+\author[2]{ Joel Zayas}[]
+\ead{zayas.j@northeastern.edu}
+\credit{conducted data collection}
+
+% Sixth author
+\author[3]{ Courtney Page-Tan}[
+    orcid=0000-0002-3584-3484]
+\ead{courtneypagetan@gmail.com}
+\credit{edited manuscript, gathered data, contributed to methods and research design}
+
+% Seventh author
+\author[1,2]{ Daniel P. Aldrich}[
+    orcid=0000-0002-4150-995X]
+\ead{daniel.aldrich@gmail.com}
+\credit{wrote and edited manuscript and contributed to research design}
+
+
+% Address/affiliation
+\affiliation[1]{organization={Political Science Dept., Northeastern University},
+    addressline={960A Renaissance Park, 360 Huntington Avenue}, 
+    city={Boston},
+    state={MA},
+    postcode={02115}, 
+    country={USA}}
+    
+% Address/affiliation
+\affiliation[2]{organization={School of Public Policy and Urban Affairs, Northeastern University},
+    addressline={215H Renaissance Park, 360 Huntington Avenue}, 
+    city={Boston},
+    postcode={02115}, 
+    state={MA},
+    country={USA}}
+    
+% Address/affiliation
+\affiliation[3]{organization={Security and Emergency Services Department, Embry-Riddle Aeronautical University},
+    addressline={Embry–Riddle Aeronautical University Global Campus}, 
+    city={Daytona Beach},
+    postcode={32114}, 
+    state={FL},
+    country={USA}}
+
+% Corresponding author text
+\cortext[cor1]{Corresponding author}
+
+% Footnote text
+\fntext[fn1]{\textit{Data Availability Statement:} All data associated with this study have been uploaded to a Github Repository for replication and use by other scholars. It can be accessed at the following URL: \url{https://github.com/timothyfraser/trust_but_verify}}
+
+\fntext[fn2]{\textit{Acknowledgements:} Thank you to Ilana Beliakova, Olivia Feeley, Jimena Marquez, and Jesse Fusco for their research assistance on this article.}
+
+% Here goes the abstract
+\begin{abstract}
+Scholars and policymakers increasingly recognize the value of social capital - the connections that generate and enable trust among people - in responding to and recovering from shocks and disasters. However, some communities have more social infrastructure, that is, sites that produce and maintain social capital, than others. Community centers, libraries, public pools, and parks serve as locations where people can gather, interact, and build social ties. Much research on urban spaces relies on Google maps because of its ubiquity and this article tests the degree to which it can accurately, reliably, and effectively capture social infrastructure. In this study, we map the social infrastructure of Boston using Google Maps Places API and then ground truth our measures, mapping social infrastructure on street corners with in-person site observations to evaluate the accuracy of available data. We find that though we may need to use multi-vectored measurement when trying to capture social infrastructure, Google maps serve as reliable measurements with a predictable, acceptable margin of error.
+\end{abstract}
+
+% Use if graphical abstract is present
+% \begin{graphicalabstract}
+% \includegraphics{figs/grabs.pdf}
+% \end{graphicalabstract}
+
+% Research highlights
+\begin{highlights}
+    \item We validate methods of mapping urban social infrastructure, using Boston case study.
+    \item We benchmark mapping strategies using human-made maps and in-person site visits.
+    \item The Google Maps Places API reliably captures social infrastructure, with error. 
+    \item Social infrastructure correlates closely with social capital measures.
+    \item Rates reveal disparities in social infrastructure in marginalized neighborhoods of Boston.
+\end{highlights}
+
+% Keywords
+% Each keyword is seperated by \sep
+\begin{keywords}
+    social infrastructure \sep social capital \sep cities \sep GIS \sep big data \sep
+\end{keywords}
+
+
+\maketitle
+
+\section{Introduction}
+
+
+With the onset of climate change-induced floods, fires, and storms, as well as the global COVID-19 pandemic, a wave of recent scholarship has examined social infrastructure to approximate community resilience to crisis, referring to the capacity of neighborhoods to bounce back after crisis \citep{rivera_and_nickels_2014, aldrich_and_meyer_2015, aldrich_and_kiyota_2017, fraser_et_al_2021_GEC}. Early work from social scientists highlighted that the strength of social ties in communities often depends greatly on the built environment, stemming from everyday cafes and corner stores \citep{jacobs_1961}, day care centers \citep{small_2009}, and, yes, even bowling alleys \citep{putnam_2000}. These sites can provide social glue for residents, providing or standing in for the reputation and trust that help build social networks \citep{bourdieu_1986, coleman_1988, lin_2001, glanville_and_bienenstock_2009}. 
+
+\subsection{The Role of the Built Environment in Social Connectivity}
+
+
+<!-- \begin{figure}[t] -->
+<!-- 	\centering -->
+<!-- 		\includegraphics[ -->
+<!-- 		    width=9cm -->
+<!-- 		    %width=\textwidth, -->
+<!-- 		    %scale=.25 -->
+<!-- 		    ]{figs/figure_1.png} -->
+<!-- 	\caption{Social Infrastructure Sites in Boston -->
+<!-- 	    \newline -->
+<!-- 	    All sites sourced from Google Places API searches across populated census tracts, tallied by fishnet grid of 1 km$^{2}$. Several well-known neighborhoods labeled as geographic reference points.} -->
+<!-- 	\label{FIG:1} -->
+<!-- \end{figure} -->
+
+\printcredits
+
+%% Loading bibliography style file
+\bibliographystyle{cas-model2-names}
+
+% Loading bibliography database
+\bibliography{references}
+%\vskip3pt
+
+\end{document}
